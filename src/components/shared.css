@@ -1,0 +1,225 @@
+@font-face {
+  font-family: HeaderFont;
+  src: url(../assets/fonts/Oswald-Bold.ttf);
+  font-weight: bold;
+}
+
+@font-face {
+  font-family: HeaderFont;
+  src: url(../assets/fonts/Oswald-ExtraLight.ttf);
+  font-weight: normal;
+}
+
+@font-face {
+  font-family: BodyFont;
+  src: url(../assets/fonts/Quicksand-Light.ttf);
+  font-weight: normal;
+}
+
+@font-face {
+  font-family: BodyFont;
+  src: url(../assets/fonts/Quicksand-Bold.ttf);
+  font-weight: bold;
+}
+
+body{
+  --dark: #1D3557;
+  --light: #F1FAEE;
+  --border: rgba(0,0,0,0.2);
+  --white: white;
+  --opaque: rgba(255,255,255,0.07);
+  --red: #E63946;
+  font-family: BodyFont;
+  overflow: hidden;
+}
+
+
+.searchpillar{
+  background: var(--dark);
+  color: var(--light);
+  min-width: 420px;
+  height: 100vh;
+  overflow-y: auto;
+}
+
+.resultspillar{
+  background: var(--light);
+  color: var(--dark);
+  flex: 1;
+  height: 100vh;
+  overflow-y: auto;
+}
+
+.contentpillar{
+  max-width: 800px;
+  padding: 20px;
+  margin: auto;
+}
+
+.pill{
+  padding: 5px 10px;
+  border: 1px solid var(--border);
+  background: var(--white);
+  display: inline-block;
+  font-size: 12px;
+  margin-right: 5px;
+}
+
+.pill.highrisk{
+  background: var(--red);
+  color: white;
+  font-weight: bold;
+}
+
+.radio{
+  padding: 10px;
+  border: 1px solid var(--opaque);
+  border-top: none;
+  background: var(--opaque);
+}
+
+.radio[active], .dropdown[active]{
+  box-shadow: inset 0px -2px var(--white);
+}
+
+.radio:first-of-type{
+  border-top: 1px solid var(--opaque);
+}
+
+.searchpillar .pill{
+  background: var(--opaque);
+  border-color: var(--opaque);
+  color: var(--white);
+}
+
+button{
+  display: block;
+  width: 100%;
+  background: var(--opaque);
+  border: 1px solid var(--opaque);
+  color: var(--white);
+  text-align: left;
+  font: inherit;
+  padding: 10px;
+  position: relative;
+}
+
+button:before, button:after, .dropdown:after{
+  border-color: var(--white);
+  border-style: solid;
+  border-width: 0px 0px 0px 0px;
+}
+
+button.more:after, .dropdown:after{
+  content: "";
+  display: block;
+  width: 8px;
+  height: 8px;
+  border-width: 1px 1px 0px 0px;
+  transform: rotate(45deg);
+  position: absolute;
+  right: 15px;
+  bottom: 16px;
+  opacity: 0.4;
+}
+
+.dropdown:after{
+  transform: rotate(135deg);
+}
+
+button.back:before{
+  content: "";
+  display: inline-block;
+  width: 8px;
+  height: 8px;
+  border-width: 1px 0px 0px 1px;
+  transform: rotate(-45deg);
+  position: relative;
+  margin-right: 10px;
+  opacity: 0.4;
+  left: 3px;
+  top: -1px;
+}
+
+.resultspillar button{
+  background: var(--dark);
+}
+
+.locationbuilder button{
+  background: none;
+  border-top: none;
+}
+
+.result{
+  padding: 10px;
+  border: 1px solid var(--border);
+  background: var(--white);
+  display: inline-block;
+}
+
+.logo{
+  font-family: HeaderFont;
+  font-size: 35px;
+  text-transform: uppercase;
+}
+
+.gallery{
+  white-space: nowrap;
+  overflow-x: scroll;
+  padding-bottom: 10px; /* space for scroller */
+  position: relative;
+}
+
+.gallery:after{
+  position: sticky;
+  right: 0px;
+  top: 0px;
+}
+
+.galleryimage{
+  margin-right: 5px;
+}
+
+.br1{
+  height: 20px;
+}
+
+.br2{
+  height: 15px;
+}
+
+h1{
+  font-size: 1.5em;
+}
+
+h2{
+  font-size: 1.2em;
+}
+
+h3{
+  font-size: 0.7em;
+  opacity: 0.7;
+}
+
+h1, h2, h3, h4, p{
+  font-weight: normal;
+  margin: 0px;
+  padding: 0px;
+}
+
+input, select, .dropdown{
+  background: var(--opaque);
+  border: 1px solid var(--opaque);
+  border-top: none;
+  font: inherit;
+  padding: 10px;
+  color: inherit;
+  width: 100%;
+  box-sizing: border-box;
+  display: block;
+  appearance: none;
+}
+
+select:first-of-type, input:first-of-type, .dropdown:first-of-type{
+  border-top: 1px solid var(--opaque);
+}
