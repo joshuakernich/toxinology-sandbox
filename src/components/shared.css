@@ -33,11 +33,10 @@ body{
   overflow: hidden;
 }
 
-
 .searchpillar{
   background: var(--dark);
   color: var(--light);
-  min-width: 420px;
+  width: 420px;
   height: 100vh;
   overflow-y: auto;
 }
@@ -84,6 +83,21 @@ body{
 
 .radio:first-of-type{
   border-top: 1px solid var(--opaque);
+}
+
+.radiogroup.grid{
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 5px;
+  text-align: center;
+}
+
+.radiogroup.grid .radio{
+  border-top: 1px solid var(--opaque);
+}
+
+.radio img{
+  height: 40px;
 }
 
 .searchpillar .pill{
