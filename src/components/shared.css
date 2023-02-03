@@ -41,7 +41,7 @@ body{
   overflow-y: auto;
 }
 
-.resultspillar{
+resultsPillar {
   background: var(--light);
   color: var(--dark);
   flex: 1;

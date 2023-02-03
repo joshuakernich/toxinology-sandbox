@@ -303,7 +303,7 @@ const LocationBuilder = (props) => {
   ;}
 
   return <div class={style.locationbuilder}>
-    {list.map((loc, index)=> <LocationSelector value={loc} onChange={onLocationChanged(index)} onRemove={onLocationRemoved(index)} />)}
+    {list.map((loc, index) => <LocationSelector value={loc} onChange={onLocationChanged(index)} onRemove={onLocationRemoved(index)} />)}
     <button onclick={doNewLocation}>+ add location</button>
   </div>
 };
