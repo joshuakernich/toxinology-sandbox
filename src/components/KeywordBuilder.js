@@ -5,13 +5,16 @@ import { useState } from 'preact/hooks';
 import {Br1, Br2} from './Br';
 
 const KeywordBuilder = (props) => {
-
-  const [list, setList] = useState([]);
+  // PF TODO: this pill builder needs help
+  const [list, setList] = useState(props.current);
   const ideas = ['snake','spider','scorpion']
 
   const addKeyword = (key)=> {
-    
-    setList(list.concat(key));
+    const newList = list.concat(key);
+
+    props.onChange(newList);
+
+    setList(newList);
   }
 
   return <div class={style.keywordBuilder}>

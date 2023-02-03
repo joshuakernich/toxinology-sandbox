@@ -8,7 +8,6 @@ import { Br1, Br2 } from './Br';
 import { useState } from 'preact/hooks';
 
 const ResultsPillar = ({toBack}) => {
-
   const [organism,setOrganism] = useState(undefined);
 
   const unResult = () =>{

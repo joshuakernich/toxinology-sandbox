@@ -2,12 +2,15 @@ import { h,  } from 'preact';
 import style from './shared.css';
 import { useState } from 'preact/hooks';
 
-const Radio = ({t,b,i}) => {
-
-  const [on,setOn] = useState(false);
+const Radio = ({t,b,i,current,onChange}) => {
+  const [on,setOn] = useState(current);
 
   function tog(){
-    setOn(!on);
+    const newState = !on;
+
+    setOn(newState);
+
+    onChange(newState);
   }
 
   return <div active={on} class={style.radio} onclick={tog}>
@@ -17,10 +20,17 @@ const Radio = ({t,b,i}) => {
   </div>
 };
 
-const RadioGroup = ({type='stacked',o}) => (
-  <div class={style.radiogroup + ' ' + style[type]}>
-    {o.map((option)=> <Radio t={option.t} b={option.b} i={option.i}/> )}
+// what the fuck is an o? t? b?
+const RadioGroup = ({type='stacked', o, current, onChange}) => {
+  const onSubOptionChange = (optionTag) => (newState) => {
+    current = {...current, [optionTag]: newState}; 
+    
+    onChange(current);
+  }
+
+  return <div class={style.radiogroup + ' ' + style[type]}>
+    {o.map((option)=> <Radio t={option.t} b={option.b} i={option.i} current={current[option.t]} onChange={onSubOptionChange(option.t)} /> )}
   </div>
-);
+};
 
 export { Radio, RadioGroup };
