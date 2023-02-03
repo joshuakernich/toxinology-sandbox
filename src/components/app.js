@@ -1,13 +1,25 @@
 import { h } from 'preact';
 import { Router } from 'preact-router';
+import { useLayoutEffect } from 'preact/hooks';
+
+import { getSitemap } from '../libs/sitemap';
 
 // Code-splitting is automated for `routes` directory
 import Home from '../routes/home';
 import Profile from '../routes/profile';
 
-const App = () => (
-	<div id="app">
-		
+const App = () => {
+  useLayoutEffect(async () => {
+		try {
+    	await getSitemap();
+
+			console.log(`Sitemap Loaded`);
+		} catch (e) {
+			console.error(`Sitemap Error, try to continue`, e);
+		}
+  },[]);
+	
+	return <div id="app">	
 		<Router>
 			<Home path="/" />
 			<Home path="/search/:props" />
@@ -16,6 +28,6 @@ const App = () => (
 			<Profile path="/profile/:user" />
 		</Router>
 	</div>
-)
+};
 
 export default App;

@@ -28,9 +28,21 @@ const Home = () => {
     console.log(`Performing Search`, currentSearch);
 
     try {
-      const searchResults = await API.simpleSearch([...currentSearch.locations, ...currentSearch.keywords, ...Object.keys(currentSearch.organismTypes)].join(" "));
+      const searchTermsReduced = [
+        ...currentSearch.keywords.text
+      ];
+      const searchText = searchTermsReduced.join(" ");
+      const matchingTerms = [
+        ...currentSearch.organismTypes.map(type => ({ key: "orgclass", value: type})),
+        ...currentSearch.locations.map(location => ({ key: "countries", value: location.toLowerCase()})),
+        ...currentSearch.keywords.matchingTerms
+      ]
 
-      setSearchResults(searchResults);
+      if (searchText?.length || matchingTerms?.length) {
+        const newSearchResults = await API.advancedSearch(searchText, {matchingTerms});
+
+        setSearchResults(newSearchResults);
+      }
     } catch (e) {
       console.error(`Search Failed, `, e);
     }
@@ -40,14 +52,13 @@ const Home = () => {
     searchCriteria.current = newSearchCriteria;
 
     if (searchPollCallback.current) {
-      // 
       clearInterval(searchPollCallback.current);
     }
 
     searchPollCallback.current = setTimeout(() => {
       // don't send any variables, we'll use what we've stored
       performSearch();
-    }, SEARCH_POLL_DURATION)
+    }, SEARCH_POLL_DURATION);
   }
 
 	return <div class={style.home}>

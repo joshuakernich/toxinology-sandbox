@@ -1,6 +1,6 @@
 import { SYMPTOM_KEY } from "../libs/consts.js";
 import { getSimilarity } from "../libs/spellChecker.js";
-import { sitemap } from "../libs/sitemap.js";
+import { sitemap, getMatchingTerms } from "../libs/sitemap.js";
 
 import { API_URL } from '../libs/consts.js';
 
@@ -15,38 +15,6 @@ const buildQueryFromMatchingTerms = (matchingTerms, searchTerm) => {
   }
 
   return searchQuery;
-};
-const getMatchingTerms = async (searchTerm) => {
-  // check each term for something similar and add them
-  // const extraSearchTerms = searchTermsAsWords.map(searchWord => findSimilar(searchWord, creature.key)).flat();
-  const SIMILARITY_THRESHOLD = 0.9;
-  const SYMPTOM_SIMILARITY_THRESHOLD = 0.85;
-
-  const USELESS_SYMPTOM_WORDS = ["and", "or", "other", "wbc", "orgtype", "rbc", "eastern", "western", "northern", "southern"];
-
-  const wordSeparatedSearchTerm = searchTerm.split(" ");
-
-  return sitemap.terms
-    .map(term => {
-      const threshold = term.key == SYMPTOM_KEY ? SYMPTOM_SIMILARITY_THRESHOLD : SIMILARITY_THRESHOLD;
-
-      return term.values
-        .map(value => {
-          if (!value) return;
-
-          const termWords = value.split(/( |_)/g).filter(k => !USELESS_SYMPTOM_WORDS.includes(k));
-
-          const matches = termWords.filter(termWord => {
-            return wordSeparatedSearchTerm.filter(searchWord => {
-              return getSimilarity(searchWord, termWord) > threshold;
-            }).length;
-          });
-
-          return (matches.length > 0) && { key: term.key, value }; 
-        })
-        .filter(v => v)
-      })
-      .flat();
 };
 const getQueryFromSearchTerm = async (searchTerm) => {
   // we can reduce our search to just this creature.

@@ -7,27 +7,32 @@ import Result from './Result';
 import { Br1, Br2 } from './Br';
 import { useState } from 'preact/hooks';
 
-const ResultsPillar = ({toBack}) => {
-  const [organism,setOrganism] = useState(undefined);
+const ResultsPillar = ({results, resultPills, toBack}) => {
+  const [organism, setOrganism] = useState(undefined);
+
+  const exclusiveResults = results.exclusive;
+  const unexclusiveResults = results.unexclusive;
 
   const unResult = () =>{
     setOrganism(undefined);
   }
 
-  const doResult = () =>{
+  const showResult = (result) =>{
     setOrganism('blah');
   }
 
+  console.log(`Populating exclusive results`, exclusiveResults);
+  console.log(`Populating unexclusiveResults results`, unexclusiveResults);
+
   return <div class={style.resultspillar}>
     { !organism ? <ContentPillar>
-      <h1>800 Results</h1>
+      {exclusiveResults && <h1>{exclusiveResults.length} Results</h1>}
       <Br1/>
-      <Pill>Oh shit</Pill>
-      <Pill>Another pill</Pill>
-      <Pill>Third pill's a charm</Pill>
+
+      { resultPills?.map(value => <Pill>{ value }</Pill>) }
       <Br1/>
       
-      <Result onClick={doResult}/>
+      { exclusiveResults?.map(result => <Result current={result} onClick={() => showResult(result)}></Result>) }
       
     </ContentPillar>
     : <OrganismPillar onBack={unResult} /> }
