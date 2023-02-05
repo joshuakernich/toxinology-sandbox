@@ -18,7 +18,7 @@ const KeywordBuilder = (props) => {
     <input/>
     <Br2/>
     {list.map((keyword)=> <Pill>{keyword}</Pill>)}
-    {ideas.map((keyword)=> <Pill>{keyword}</Pill>)}
+    {/*ideas.map((keyword)=> <Pill>{keyword}</Pill>)*/}
     
   </div>
 };

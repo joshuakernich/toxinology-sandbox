@@ -1,4 +1,5 @@
 import { h } from 'preact';
+import { useState, useEffect } from 'preact/hooks';
 import style from './style.css';
 import SearchPillar from '../../components/SearchPillar';
 import ResultsPillar from '../../components/ResultsPillar';
@@ -8,7 +9,10 @@ import { API_URL } from '../../libs/consts';
 
 const Home = () => {
 
-	const search = async ()=>{
+	const [results,setResults] = useState([]);
+
+	const research = async (keywords=['snake'])=>{
+
 		const response = await fetch(`${API_URL}/search`, {
       method: 'post',
       mode: 'cors',
@@ -18,18 +22,26 @@ const Home = () => {
         'Access-Control-Allow-Headers': "true",
         'Content-Type': 'application/json'
       },
-      body: JSON.stringify({matchingTerms:'snake',unmatchedWords:'snake',text:'snake'})
+      body: JSON.stringify({matchingTerms:keywords,unmatchedWords:keywords,text:''})
     });
 
-    console.log(response);
+    if(response){
+    	const body = await response.json();
+    	console.log(body);
+    	console.log(body.exclusive[0]);
+
+    	setResults(body.exclusive);
+    }
 	}
 
+	useEffect(() => {
+		 research();
+		}, []);
 
-	search();
 
 	return <div class={style.home}>
-		<SearchPillar></SearchPillar>
-		<ResultsPillar></ResultsPillar>
+		<SearchPillar research={research}></SearchPillar>
+		<ResultsPillar results={results}></ResultsPillar>
 	</div>
 };
 
