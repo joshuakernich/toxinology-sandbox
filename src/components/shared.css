@@ -41,7 +41,7 @@ body{
   overflow-y: auto;
 }
 
-.resultspillar{
+resultsPillar {
   background: var(--light);
   color: var(--dark);
   flex: 1;
@@ -236,4 +236,22 @@ input, select, .dropdown{
 
 select:first-of-type, input:first-of-type, .dropdown:first-of-type{
   border-top: 1px solid var(--opaque);
+}
+
+selectContainer {
+  position: relative;
+}
+
+selectCancel {
+  display: block;
+  position: absolute;
+  background: url(../assets/icons/icon-close.svg);
+  background-size: contain;
+  background-position: center;
+  cursor:pointer;
+  width: 16px;
+  height: 16px;
+  top: 50%;
+  left: calc(100% - 24px);
+  transform: translate(-50%, -50%);
 }

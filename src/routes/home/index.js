@@ -14,7 +14,7 @@ const Home = () => {
   const searchPollCallback = useRef();
   const searchCriteria = useRef({});
 
-  const [searchResults, setSearchResults] = useState([]);
+  const [searchResults, setSearchResults] = useState(undefined);
 
   useEffect(() => {
     // PF: uncomment this if you want to perform a search immediately on load

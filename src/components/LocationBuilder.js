@@ -254,30 +254,38 @@ const COUNTRIES = [
   { "short": "ZW", "em": "🇿🇼", "long": "Zimbabwe" }
 ];
 
-const LocationDD = ({value, onChange}) => {   const handleOnChange = (e) => { onChange(e.target.value);
-  };
+const LocationSelector = ({value, onChange, onRemove}) => {   
+  const handleOnChange = (e) => { onChange(e.target.value); };
 
-  return <select value={value} class={style.locationdd} onChange={handleOnChange}>
-    {COUNTRIES.map((c)=> <option value={c.long}>{`${c.em} ${c.long}`}</option>)}
-  </select>
+  return <>
+    <selectContainer>
+      <selectCancel onClick={onRemove} />
+      <select value={value} class={style.locationdd} onChange={handleOnChange}>
+        {COUNTRIES.map((country)=> <option value={country.long}>{`${country.em} ${country.long}`}</option>)}
+      </select>
+    </selectContainer>
+  </>
 };
 
-const LocationBuilder = (props) => {   // This causes a re-render, we will have to keep track of these differently, potentially
+const LocationBuilder = (props) => {   
+  // This causes a re-render, we will have to keep track of these differently, potentially
   const [list, setList] = useState([]);
 
-  useEffect(() => { // on first render set the list to the current, after that, we can keep the list here
+  useEffect(() => { 
+    // on first render set the list to the current, after that, we can keep the list here
     setList(props.current);
   }, []);
 
-  const doNewLocation = () => { const newList = list.concat('Current Location');
-
+  const doNewLocation = () => { 
+    const newList = list.concat('Current Location');
+    
     setList(newList);
 
     props.onChange(newList);
   }
 
-  const onLocationChanged = (index) => (newLocation) => { const newList = [...list];
-
+  const onLocationChanged = (index) => (newLocation) => { 
+    const newList = [...list];
     newList[index] = newLocation;
 
     setList(newList);
@@ -285,8 +293,17 @@ const LocationBuilder = (props) => {   // This causes a re-render, we will have 
     props.onChange(newList);
   }
 
+  const onLocationRemoved = (index) => () => {
+    const newList = [...list];
+    newList.splice(index, 1);
+
+    setList(newList);
+
+    props.onChange(newList);
+  ;}
+
   return <div class={style.locationbuilder}>
-    {list.map((loc, index)=> <LocationDD value={loc} onChange={onLocationChanged(index)}/>)}
+    {list.map((loc, index) => <LocationSelector value={loc} onChange={onLocationChanged(index)} onRemove={onLocationRemoved(index)} />)}
     <button onclick={doNewLocation}>+ add location</button>
   </div>
 };
