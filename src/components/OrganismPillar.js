@@ -12,7 +12,7 @@ const taxonomy = [
 const OrganismPillar = ({current,onBack}) => {
 
   const names = current.common_names.split(',');
-  const primary = names.shift();
+  const primary = names?names.shift():current.common_names;
 
   return <div class={style.organismpillar}>
     <ContentPillar>
