@@ -5,14 +5,9 @@ const GalleryImage = () => (
   <img class={style.galleryimage} src='' width='150' height='150'/>
 )
 
-const Gallery = (props) => (
+const Gallery = ({gallery}) => (
   <div class={style.gallery}>
-    <GalleryImage/>
-    <GalleryImage/>
-    <GalleryImage/>
-    <GalleryImage/>
-    <GalleryImage/>
-    <GalleryImage/>
+    { gallery?.map(img => <GalleryImage img={img}/>) }
   </div>
 );
 

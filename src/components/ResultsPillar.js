@@ -56,7 +56,7 @@ const ResultsPillar = ({results, resultPills, toBack}) => {
   }
 
   const showResult = (result) =>{
-    setOrganism('blah');
+    setOrganism(result);
   }
 
   console.log(`Populating results`, joinedResults);
@@ -73,7 +73,7 @@ const ResultsPillar = ({results, resultPills, toBack}) => {
       { joinedResults?.map(result => <Result current={result} onClick={() => showResult(result)}></Result>) }
       </div>
     </ContentPillar>
-    : <OrganismPillar onBack={showResultList} /> }
+    : <OrganismPillar current={organism} onBack={showResultList} /> }
   </resultsPillar>
 };
 
