@@ -5,30 +5,36 @@ import Gallery from './Gallery';
 import Pill from './Pill';
 import { Br1, Br2 } from './Br';
 
-const OrganismPillar = ({current,onBack}) => (
-  <div class={style.organismpillar}>
+const taxonomy = [
+  'kingdom','phylum','class','order','family','subfamily','species','subspecies'
+]
+
+const OrganismPillar = ({current,onBack}) => {
+
+  const names = current.common_names.split(',');
+  const primary = names.shift();
+
+  return <div class={style.organismpillar}>
     <ContentPillar>
       <button onClick={onBack} class={style.back}>Back to Results</button>
       <Br1/>
-      <h1>{current.common_names}</h1>
+      <h1>{primary}</h1>
+      {names.length?<p>AKA {names.join(',')}</p>:undefined}
+      <Br2/>
       <h3>{current.genus + ' ' +current.species}</h3>
       <Br2/>
       <Pill type={'highrisk'}>High Risk</Pill>
-      <Pill>{current.kingdon}</Pill>
-      <Pill>{current.phylum}</Pill>
-      <Pill>{current.class}</Pill>
-      <Pill>{current.order}</Pill>
-      <Pill>{current.family}</Pill>
-      <Pill>{current.subfamily}</Pill>
-      <Pill>{current.genus}</Pill>
-      <Pill>{current.species}</Pill>
-      <Pill>{current.subspecies}</Pill>
+
+      {taxonomy.map(tax => current[tax]?<Pill><h3>{tax}</h3> {current[tax]}</Pill>:undefined)}
+      
       <Br1/>
       <Gallery gallery={[current.map_image_large,'','','']}/> 
       <Br2/>
       <h1>Distribution</h1>
       <Br2/>
       <p>{current.region}</p>
+      <Br2/>
+      <p>{current.countries}</p>
       <Br2/>
       <p>{current.distribution}</p>
       <Br1/>
@@ -42,7 +48,7 @@ const OrganismPillar = ({current,onBack}) => (
       <h1>Treatment</h1>
     </ContentPillar>
   </div>
-);
+};
 
 export default OrganismPillar;
 
