@@ -14,6 +14,7 @@ const Home = () => {
   const searchPollCallback = useRef();
   const searchCriteria = useRef({});
 
+  const [isSearching, setIsSearching] = useState(false);
   const [searchResults, setSearchResults] = useState(undefined);
 
   useEffect(() => {
@@ -24,6 +25,7 @@ const Home = () => {
   const performSearch = async () => {
     // break down everything we have into something we can search for... Fun
     const currentSearch = searchCriteria.current;
+    setIsSearching(true);
     
     console.log(`Performing Search`, currentSearch);
 
@@ -42,9 +44,11 @@ const Home = () => {
         const newSearchResults = await API.advancedSearch(searchText, {matchingTerms});
 
         setSearchResults(newSearchResults);
+        setIsSearching(false);
       }
     } catch (e) {
       console.error(`Search Failed, `, e);
+      setIsSearching(false);
     }
   };
 
@@ -63,7 +67,7 @@ const Home = () => {
 
 	return <div class={style.home}>
 		<SearchPillar onChange={onSearchChanged}></SearchPillar>
-		<ResultsPillar results={searchResults}></ResultsPillar>
+		<ResultsPillar isSearching={isSearching} results={searchResults}></ResultsPillar>
 	</div>
 };
 

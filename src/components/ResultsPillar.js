@@ -2,14 +2,17 @@ import { h } from 'preact';
 import style from './shared.css';
 import ContentPillar from './ContentPillar';
 import OrganismPillar from './OrganismPillar';
+import LoadModal from './LoadModal';
 import Pill from './Pill';
 import Result from './Result';
 import { Br1, Br2 } from './Br';
 import { useLayoutEffect, useState, useRef } from 'preact/hooks';
 
-const ResultsPillar = ({results, resultPills, toBack}) => {
+const ResultsPillar = ({isSearching, results, resultPills, toBack}) => {
   const [organism, setOrganism] = useState(undefined);
   
+  console.log(isSearching);
+
   // A list of strings
   const pills = useRef([]); 
   // PF: this doesn't need to be a state, we will update the 
@@ -72,6 +75,7 @@ const ResultsPillar = ({results, resultPills, toBack}) => {
       <div class={style.resultlist}>
       { joinedResults?.map(result => <Result current={result} onClick={() => showResult(result)}></Result>) }
       </div>
+      { isSearching?<LoadModal />:undefined }
     </ContentPillar>
     : <OrganismPillar current={organism} onBack={showResultList} /> }
   </resultsPillar>
