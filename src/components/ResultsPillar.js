@@ -69,8 +69,9 @@ const ResultsPillar = ({results, resultPills, toBack}) => {
       { resultPills?.map(value => <Pill>{ value }</Pill>) }
       <Br1/>
       
+      <div class={style.resultlist}>
       { joinedResults?.map(result => <Result current={result} onClick={() => showResult(result)}></Result>) }
-      
+      </div>
     </ContentPillar>
     : <OrganismPillar onBack={showResultList} /> }
   </resultsPillar>

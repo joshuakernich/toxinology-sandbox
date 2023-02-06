@@ -155,7 +155,7 @@ button.back:before{
   top: -1px;
 }
 
-.resultspillar button{
+resultspillar button{
   background: var(--dark);
 }
 
@@ -164,11 +164,29 @@ button.back:before{
   border-top: none;
 }
 
+.resultlist{
+  gap:5px;
+  display: flex;
+  flex-wrap: wrap;
+}
+
 .result{
   padding: 10px;
   border: 1px solid var(--border);
   background: var(--white);
   display: inline-block;
+  position: relative;
+  box-sizing: border-box;
+  vertical-align: top;
+  flex-grow: 1;
+}
+
+
+.img{
+  border: 1px solid var(--border);
+  background-position: center;
+  background-repeat: no-repeat;
+  background-color: rgba(150,150,150,0.3);
 }
 
 .logo{
