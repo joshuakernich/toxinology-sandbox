@@ -1,8 +1,8 @@
 import { h } from 'preact';
 import style from './shared.css';
 
-const GalleryImage = () => (
-  <img class={style.galleryimage} src='' width='150' height='150'/>
+const GalleryImage = ({img}) => (
+  <img class={style.galleryimage} src={img} height='150'/>
 )
 
 const Gallery = ({gallery}) => (

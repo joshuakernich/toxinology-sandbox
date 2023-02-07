@@ -19,7 +19,7 @@ const ICONS = {
 const Result = ({current,onClick}) => {
 
   const binomial = current.genus + ' ' +current.species;
-  const name = current.common_names.contains(',')?current.common_names.split(',')[0]:current.common_names;
+  const name = current.common_names.indexOf(',')?current.common_names.split(',')[0]:current.common_names;
   const img = ICONS[current.orgclass];
 
   return <div onClick={onClick} class={style.result}>
