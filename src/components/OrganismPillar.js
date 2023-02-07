@@ -60,32 +60,72 @@ const OrganismPillar = ({ current, onBack }) => {
     else if(currentDetails.region) return <p>{currentDetails.region}</p>
   }
 
+  const keys_treatment = [
 
+    //first aid
+    {key:'first_aid_text', header:'First Aid (first_aid_text)'},
+    {key:'descr', header:'First Aid (descr)'},
+    {key:'details', header:'First Aid (details)'},
 
-  const maybeShow = [
-
-    {key:'first_aid_text', header:'First Aid'},
-    {key:'general_approach_to_mngt', header:'General Approach to Management'},
+    // treatment
     {key:'treatment_key', header:'Treatment Key'},
     {key:'treatment_summary', header:'Treatment Summary'},
-    {key:'descr', header:'First Aid'},
     {key:'follow_up', header:'Follow Up'},
 
-    {key:'habitat', header:'Habitat'},
+    // granular management stuff
+    {key:'general_approach_to_mngt', header:'General Approach to Management'},
+    {key:'local_effects_mngt', header:'Local Effects Management'},
+    {key:'haematologic_effects_mngt', header:'Haematologic Effects Management'},
+    {key:'haematologic_other_effects_mngt', header:'Haematologic Other Effects Management'},
+    {key:'immediate_effects_mngt', header:'Immediate Effects Management'},
+    {key:'myotoxic_effects_mngt', header:'Myotoxic Effects Management'},
+    {key:'necrotoxin_effects_mngt', header:'Necrotoxic Effects Management'},
+    {key:'neurotoxic_excitatory_effects_mngt', header:'Necrotoxic Excitatory Effects Management'},
+    {key:'neurotoxic_other_effects_mngt', header:'Necrotoxic Other Effects Management'},
+    {key:'neurotoxic_paralytic_effects_mngt', header:'Necrotoxic Paralytic Effects Management'},
+    {key:'other_issues_in_trmt', header:'Other Issues in Treatment'},
+    {key:'other_specific_effects_mngt', header:'Other Specific Effects Management'},
+    
+    //antivenom
+    {key:'antivenom_therapy', header:'Antivenom Therapy'},
+    {key:'antivenom_reactions', header:'Antivenom Reactions'},
+  ]
+
+  const keys_effects = [
     {key:'specific_clinical_effects', header:'Clinical Effects'},
     {key:'key_diagnostic_features', header:'Diagnostic Features'},
+
+    {key:"detail_coagulopathy", header:"Coagulopathy"},
+    {key:"detail_haemorrhagins", header:"Haemorrhagins"},
+    {key:"detail_local_effects", header:"Local Effects"},
+    {key:"detail_myotoxicity", header:"Myotoxicity"},
+    {key:"detail_necrosis", header:"Necrosis"},
+    {key:"detail_nephrotoxicity", header:"Nephrotoxicity"},
+    {key:"detail_neurotoxicity", header:"Neurotoxicity"},
+    {key:"detail_other", header:"Other"},
+    {key:"detail_prognosis", header:"Prognosis"},
+  ]
+
+  const keys_description = [
+    {key:'comments', header:'Comments'},
+    {key:'approx_dry_bite', header:'Dry Bite'},
+    {key:'habitat', header:'Habitat'},
+    {key:'habits', header:'Habits'},
+    {key:'prey', header:'Prey'},
+    {key:'sexual_dimorphism', header:'Sexual Dimorphism'},
     {key:'breeding', header:'Breeding'},
     {key:'dentition', header:'Dentition'},
     {key:'general_shape', header:'General Shape'},
+    {key:'coloration_markings', header:'Coloration Markings'},
     {key:'head_scales', header:'Head Scales'},
-    {key:'anals_detail', header:'A Closer Look at the Butthole'},
-
-    
+    {key:'anals_detail', header:'A Closer Look at the Butthole'},  
   ]
+
+
 
   const makeSection = (header,raw) => {
     return<>
-          <h1>{header}</h1> 
+          <h2>{header}</h2> 
           <Br2/>
           {makeP(raw)}
           <Br1/>
@@ -96,11 +136,15 @@ const OrganismPillar = ({ current, onBack }) => {
     return <p dangerouslySetInnerHTML={{__html: raw.replace(/\n/g, "<br />")}} />;
   }
 
-  const getWhateverYouCan = () => {
+  const getWhateverYouCan = (keys) => {
 
     return <>{
-      maybeShow.map(maybe => currentDetails[maybe.key]?makeSection(maybe.header,currentDetails[maybe.key]):undefined)
+      keys.map(keyMap => currentDetails[keyMap.key]?makeSection(keyMap.header,currentDetails[keyMap.key]):undefined)
     }</>
+  }
+
+  const getNames = () => {
+    return currentDetails.common_names.replace(' , ',', ')
   }
 
   return <div class={style.organismpillar}>
@@ -109,7 +153,7 @@ const OrganismPillar = ({ current, onBack }) => {
       <ContentPillar>
         <button onClick={onBack} class={style.back}>Back to Results</button>
         <Br1/>
-        <h1>{currentDetails.common_names}</h1>
+        <h1>{ getNames() }</h1>
         <h3>{currentDetails.genus} {currentDetails.species}</h3>
         <Br2/>
         { getRiskPill() }
@@ -119,10 +163,19 @@ const OrganismPillar = ({ current, onBack }) => {
         <Br2/>
         
         <h1>Distribution</h1>
+        <hr/>
         <Br2/>
         {getMostGranularDistribution()}
         <Br1/>
-        {getWhateverYouCan()}
+        <h1>Treatment</h1>
+        <hr/>
+        {getWhateverYouCan(keys_treatment)}
+        <h1>Effects</h1>
+        <hr/>
+        {getWhateverYouCan(keys_effects)}
+        <h1>Description</h1>
+        <hr/>
+        {getWhateverYouCan(keys_description)}
         
         {/*<h1>First Aid</h1>
         <Br2/>
