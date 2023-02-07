@@ -26,7 +26,18 @@ const Collapsible = ({header,...props}) =>{
 const OrganismPillar = ({ current, onBack }) => {
   const [currentDetails, setCurrentDetails] = useState(undefined);
 
-  const bucket = 'http://www.toxinology.com/images/snakes/';
+  const bucket = 
+  {
+    'SN':'http://www.toxinology.com/images/snakes/',
+    'SC':'http://www.toxinology.com/images/scorpions/',
+    'SP':'http://www.toxinology.com/images/spiders/',
+    'PM':'http://www.toxinology.com/images/poisonous_mushrooms/',
+    'PM':'http://www.toxinology.com/images/poisonous_plants/',
+    'TV':'http://www.toxinology.com/images/other_life/',
+    'TI':'http://www.toxinology.com/images/other_life/',
+    'MV':'http://www.toxinology.com/images/marine_life/',
+    'MI':'http://www.toxinology.com/images/marine_life/',
+  }
 
   useEffect(async () => {
     try {
@@ -52,7 +63,7 @@ const OrganismPillar = ({ current, onBack }) => {
   }
 
   const getGallery = () => {
-    return <Gallery gallery={[bucket+current.map_image_large,bucket+currentDetails.image]}/>;
+    return <Gallery gallery={[bucket[currentDetails.orgclass]+current.map_image_large,bucket[currentDetails.orgclass]+currentDetails.image]}/>;
   }
 
   const getFirstAidDescription = () => {
@@ -85,6 +96,8 @@ const OrganismPillar = ({ current, onBack }) => {
   ]
 
   const keys_treatment = [
+
+    {key:"detail_prognosis", header:"Prognosis"},
     // treatment
     {key:'treatment_key', header:'Treatment Key'},
     {key:'treatment_summary', header:'Treatment Summary'},
@@ -121,7 +134,6 @@ const OrganismPillar = ({ current, onBack }) => {
     {key:"detail_nephrotoxicity", header:"Nephrotoxicity"},
     {key:"detail_neurotoxicity", header:"Neurotoxicity"},
     {key:"detail_other", header:"Other"},
-    {key:"detail_prognosis", header:"Prognosis"},
   ]
 
   const keys_description = [
