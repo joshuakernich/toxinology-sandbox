@@ -22,10 +22,11 @@ const Result = ({current,onClick}) => {
   const name = current.common_names.indexOf(',')?current.common_names.split(',')[0]:current.common_names;
   const img = ICONS[current.orgclass];
 
+
   return <div onClick={onClick} class={style.result}>
     <Image size={40} width={'100%'} height={100} src={img}/>
     <Br2/>
-    <h2>{name}</h2>
+    <h2>{name.length?name:binomial}</h2>
     <h3>{binomial}</h3>
   </div>
 };

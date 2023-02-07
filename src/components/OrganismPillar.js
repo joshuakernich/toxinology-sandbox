@@ -183,7 +183,7 @@ const OrganismPillar = ({ current, onBack }) => {
       <ContentPillar>
         <button onClick={onBack} class={style.back}>Back to Results</button>
         <Br1/>
-        <h1>{ getNames() }</h1>
+        <h1>{ getNames().length?getNames():currentDetails.genus+' '+currentDetails.species}</h1>
         <h3>{currentDetails.genus} {currentDetails.species}</h3>
         <Br2/>
         { getRiskPill() }
