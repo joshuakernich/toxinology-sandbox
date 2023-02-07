@@ -7,6 +7,22 @@ import { Br1, Br2 } from './Br';
 import api from '../services/api';
 import { useEffect, useState, useRef } from 'preact/hooks';
 
+const Collapsible = ({header,...props}) =>{
+
+  const [open,setOpen] = useState(false);
+
+  const toggle = ()=>{
+    setOpen(!open);
+  }
+
+  return <div class={style.collapsiblecontainer}>
+    <h1 onclick={toggle}>{header}</h1>
+    
+    {open?<><Br2/>{props.children}</>:undefined}
+    <hr/>
+  </div>
+}
+
 const OrganismPillar = ({ current, onBack }) => {
   const [currentDetails, setCurrentDetails] = useState(undefined);
 
@@ -54,19 +70,21 @@ const OrganismPillar = ({ current, onBack }) => {
     return <organismFirstAidContainer dangerouslySetInnerHTML={{__html: rawDescription.replace(/\n/g, "<br /><br />")}} />;
   }
 
-  const getMostGranularDistribution = () => {
-    if(currentDetails.distribution) return <p>{currentDetails.distribution}</p>
-    else if(currentDetails.countries) return <p>{currentDetails.countries}</p>
-    else if(currentDetails.region) return <p>{currentDetails.region}</p>
-  }
+  const keys_distribution = [
+    {key:'region', header:'Region'},
+    {key:'countries', header:'Countries'},
+    {key:'distribution', header:'Detailed Distribution'},
+  ]
 
-  const keys_treatment = [
+  const keys_first_aid = [
 
     //first aid
     {key:'first_aid_text', header:'First Aid (first_aid_text)'},
     {key:'descr', header:'First Aid (descr)'},
     {key:'details', header:'First Aid (details)'},
+  ]
 
+  const keys_treatment = [
     // treatment
     {key:'treatment_key', header:'Treatment Key'},
     {key:'treatment_summary', header:'Treatment Summary'},
@@ -125,22 +143,22 @@ const OrganismPillar = ({ current, onBack }) => {
 
   const makeSection = (header,raw) => {
     return<>
-          <h2>{header}</h2> 
-          <Br2/>
-          {makeP(raw)}
-          <Br1/>
-        </>
+      <h2>{header}</h2>
+      <Br2/>
+      {makeP(raw)}
+      <Br1/>
+    </>
   }
 
   const makeP = (raw) => {
     return <p dangerouslySetInnerHTML={{__html: raw.replace(/\n/g, "<br />")}} />;
   }
 
-  const getWhateverYouCan = (keys) => {
+  const getWhateverYouCan = (header,keys) => {
 
-    return <>{
+    return <Collapsible header={header}>{
       keys.map(keyMap => currentDetails[keyMap.key]?makeSection(keyMap.header,currentDetails[keyMap.key]):undefined)
-    }</>
+    }</Collapsible>
   }
 
   const getNames = () => {
@@ -160,22 +178,14 @@ const OrganismPillar = ({ current, onBack }) => {
         { getTaxonomyPills() }
         <Br1/>
         { getGallery() }
-        <Br2/>
-        
-        <h1>Distribution</h1>
-        <hr/>
-        <Br2/>
-        {getMostGranularDistribution()}
         <Br1/>
-        <h1>Treatment</h1>
-        <hr/>
-        {getWhateverYouCan(keys_treatment)}
-        <h1>Effects</h1>
-        <hr/>
-        {getWhateverYouCan(keys_effects)}
-        <h1>Description</h1>
-        <hr/>
-        {getWhateverYouCan(keys_description)}
+      
+        
+        {getWhateverYouCan('First Aid',keys_first_aid)}
+        {getWhateverYouCan('Further Treatment',keys_treatment)}
+        {getWhateverYouCan('Effects',keys_effects)}
+        {getWhateverYouCan('Distribution',keys_distribution)}
+        {getWhateverYouCan('Description',keys_description)}
         
         {/*<h1>First Aid</h1>
         <Br2/>

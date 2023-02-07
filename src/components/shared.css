@@ -321,7 +321,20 @@ loadWheel{
   background-size: 100%;
 }
 
+.collapsiblecontainer h1{
+  position: relative;
+}
+
+.collapsiblecontainer h1:after{
+  content: "+";
+  position: absolute;
+  right: 0px;
+  top: 0px;
+  display: block;
+}
+
 .organismpillar p{
   font-weight: 500;
   line-height: 1.5;
+  color: #222;
 }
