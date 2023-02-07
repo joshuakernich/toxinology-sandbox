@@ -63,7 +63,12 @@ const OrganismPillar = ({ current, onBack }) => {
   }
 
   const getGallery = () => {
-    return <Gallery gallery={[bucket[currentDetails.orgclass]+current.map_image_large,bucket[currentDetails.orgclass]+currentDetails.image]}/>;
+    return <Gallery gallery={
+      [
+        (current.map_image_large?bucket[currentDetails.orgclass]+current.map_image_large:undefined),
+        (currentDetails.image?bucket[currentDetails.orgclass]+currentDetails.image:undefined),
+      ]
+    }/>;
   }
 
   const getFirstAidDescription = () => {
