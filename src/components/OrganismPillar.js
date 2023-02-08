@@ -208,6 +208,44 @@ const OrganismPillar = ({ current, onBack }) => {
     </>
   }
 
+  const getClinical = () => {
+
+    const keys = [
+      {h:'Cardiotoxicity',        key:'general_cardiotoxicity'},
+      {h:'Coagulopathy',          key:'general_coagulopathy_and_haemorrhages',key2:'detail_coagulopathy'},
+      {h:'System Effects',        key:'general_general_system_effects'},
+      {h:'Local Effects',         key:'general_local_effects',key2:'detail_local_effects'},
+      {h:'Necrosis',              key:'general_local_necrosis',key2:'detail_necrosis'},
+      {h:'Myotoxicity',           key:'general_myotoxicity'},
+      {h:'Neurotoxic Paralysis',  key:'general_neurotoxic_paralysis'},
+      {h:'Rate of Envenoming',    key:'general_rate_of_envenoming'},
+      {h:'Renal Damage',          key:'general_renal_damage'},
+      {h:'Untreated Lethality',   key:'general_untreated_lethality_rate'},
+      {h:'Venom Anticoagulants',  key:'general_venom_anticoagulants'},
+      {h:'Venom Cardiotoxins',    key:'general_venom_cardiotoxins'},
+      {h:'Venom Haemorrhagins',   key:'general_venom_haemorrhagins',key2:'detail_haemorrhagins'},
+      {h:'Venom Myotoxins',       key:'general_venom_myotoxins',key2:'detail_myotoxicity'},
+      {h:'Venom Necrotoxins',     key:'general_venom_necrotoxins'},
+      {h:'Venom Nephrotoxins',    key:'general_venom_nephrotoxins', key2:'detail_nephrotoxicity'},
+      {h:'Venom Neurotoxins',     key:'general_venom_neurotoxins', key2:'detail_neurotoxicity'},
+      {h:'Venom Other',           key:'general_venom_other'},
+      {h:'Venom Procoagulants',   key:'general_venom_procoagulants'},
+      {h:'Prognosis',             key:'detail_prognosis'},
+      {h:'Other',                 key:'general_other', key2:'detail_other'},
+    ]
+
+    //key2 may or may not be useful
+    return <Grid>
+      {keys.map( key => 
+        <Pill>
+        <h3>{key.h}</h3>
+        <p>{currentDetails.clinical[key.key]}</p>
+        {key.key2?<p>{currentDetails.clinical[key.key2]}</p>:undefined}
+        </Pill>
+        )}
+    </Grid>
+  }
+
   const getDiagnosis = () => {
 
     const diags = [
@@ -273,23 +311,14 @@ const OrganismPillar = ({ current, onBack }) => {
           <Br1/>
           <h2>Clinical Effects</h2>
           <Br2/>
-          <Grid>
-            <Pill><h3>Coagulopathy</h3>{currentDetails.clinical.detail_coagulopathy}</Pill>
-            <Pill><h3>Haemorrhagins</h3>{currentDetails.clinical.detail_haemorrhagins}</Pill>
-            <Pill><h3>Local Effects</h3>{currentDetails.clinical.detail_local_effects}</Pill>
-            <Pill><h3>Myotoxicity</h3>{currentDetails.clinical.detail_myotoxicity}</Pill>
-            <Pill><h3>Necrosis</h3>{currentDetails.clinical.detail_necrosis}</Pill>
-            <Pill><h3>Nephrotoxicity</h3>{currentDetails.clinical.detail_nephrotoxicity}</Pill>
-            <Pill><h3>Neurotoxicity</h3>{currentDetails.clinical.detail_neurotoxicity}</Pill>
-            <Pill><h3>Other</h3>{currentDetails.clinical.detail_other}</Pill>
-          </Grid>
+          {getClinical()}
           <Br1/>
           {makeP(currentDetails.clinical.specific_clinical_effects)}
         </Collapsible>
         <Collapsible header="Diagnosis">
           {getDiagnosis()}
         </Collapsible>
-        { getAll('Clinical',currentDetails.clinical) }
+        
         { getAll('First Aid',currentDetails.first_aid) }
         { getAll('General Info',currentDetails.geninfo) }
         { getAll('Taxonomy',currentDetails.taxonomy) }
