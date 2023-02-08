@@ -23,6 +23,12 @@ const Collapsible = ({header,...props}) =>{
   </div>
 }
 
+const Grid = ({...props}) => {
+  return <div style='display:grid;grid-template-columns: repeat(4, 1fr);'>
+    {props.children}
+  </div>
+}
+
 const OrganismPillar = ({ current, onBack }) => {
   const [currentDetails, setCurrentDetails] = useState(undefined);
 
@@ -52,9 +58,10 @@ const OrganismPillar = ({ current, onBack }) => {
   }, [ current ]);
 
   const getTaxonomyPills = () => {
-    const taxonomy = ["kingdom", "phylum", "class", "order", "family", "subfamily", "genus", "species", "subspecies"];
+    const taxonomy = ["kingdom", "phylum", "class", "order", "family", "subfamily", "genus", "species"];
     return <>
       { taxonomy.map((key) => currentDetails.taxonomy[key] && <Pill class={key}><h3>{key}</h3>{currentDetails.taxonomy[key]}</Pill>) }
+      { currentDetails.master['subspecies']?<Pill><h3>subspecies</h3>{currentDetails.master['subspecies']}</Pill>:undefined }
     </>;
   };
 
@@ -211,12 +218,31 @@ const OrganismPillar = ({ current, onBack }) => {
         <Br1/>
         { getNames() }
         <Br2/>
-        { getRiskPill() }
         { getTaxonomyPills() }
+        <Br2/>
+        { getRiskPill() }
+        <Pill><h3>Dry Bite</h3>{currentDetails.clinical['approx_dry_bite']}</Pill>
+        <Pill><h3>Rate of Envenoming</h3>{currentDetails.clinical['general_rate_of_envenoming']}</Pill>
         <Br1/>
         { getGallery() }
         <Br1/>
-        { getAll('Master',currentDetails.master) }
+        <Collapsible header='Distribution and Habitat'>
+          {makeSection('Region',currentDetails.master.region)}
+          {makeSection('Countries',currentDetails.master.countries)}
+          {makeSection('Distribution',currentDetails.master.distribution)}
+          {makeSection('Habitat',currentDetails.geninfo.habitat)}
+        </Collapsible>
+        <Collapsible header='Risks and Clinical Effects'>
+          <Grid>
+            <Pill><h3>Dangers</h3>{currentDetails.clinical.dangerousness}</Pill>
+            <Pill><h3>Children</h3>{currentDetails.clinical.children}</Pill>
+            <Pill><h3>Pregnancy</h3>{currentDetails.clinical.pregnancy}</Pill>
+            <Pill><h3>Elderly</h3>{currentDetails.clinical.elderly}</Pill>
+          </Grid>
+          <Br2/>
+          {makeSection('Special Clinical Effects',currentDetails.clinical.specific_clinical_effects)}
+        </Collapsible>
+        {/* getAll('Master',currentDetails.master) */}
         { getAll('Clinical',currentDetails.clinical) }
         { getAll('Diagnosis',currentDetails.diagnosis) }
         { getAll('First Aid',currentDetails.first_aid) }
