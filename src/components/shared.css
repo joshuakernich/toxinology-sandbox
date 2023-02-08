@@ -65,11 +65,16 @@ resultsPillar {
   margin-right: 5px;
 }
 
-.pill.highrisk{
-  background: var(--red);
-  color: var(--white);
+.pill.risk{
   font-weight: bold;
 }
+
+.pill[risk="High Risk"]{ background: var(--red); color:var(--white); }
+.pill[risk="Moderate Risk"]{ background: #ff6600; color:var(--white); }
+.pill[risk="Mild Risk"]{ background: #ff9900; }
+.pill[risk="Low Risk"]{ background: #bbbbee; }
+.pill[risk="No Risk"]{ background: #bbffbb; }
+.pill[risk="Unknown Risk"]{ background: white; }
 
 .radio{
   padding: 10px;
@@ -176,8 +181,7 @@ resultspillar button{
   flex-wrap: wrap;
 }
 
-.result{
-  padding: 10px;
+resultContainer{
   border: 1px solid var(--border);
   background: var(--white);
   display: inline-block;
@@ -187,12 +191,17 @@ resultspillar button{
   flex-grow: 1;
 }
 
+resultBody{
+  padding: 10px;
+  display: block;
+}
+
 
 .img{
-  border: 1px solid var(--border);
+  
   background-position: center;
   background-repeat: no-repeat;
-  background-color: rgba(150,150,150,0.3);
+  background-color: #555;
 }
 
 .logo{

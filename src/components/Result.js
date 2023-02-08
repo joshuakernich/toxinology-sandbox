@@ -13,22 +13,35 @@ const ICONS = {
   "TI":'../assets/icons/icon-bee.svg',
   "MV":'../assets/icons/icon-fish.svg',
   "MI":'../assets/icons/icon-octopus.svg',
+}
 
+const bucket = 
+{
+  'SN':'http://www.toxinology.com/images/snakes/',
+  'SC':'http://www.toxinology.com/images/scorpions/',
+  'SP':'http://www.toxinology.com/images/spiders/',
+  'PM':'http://www.toxinology.com/images/poisonous_mushrooms/',
+  'PM':'http://www.toxinology.com/images/poisonous_plants/',
+  'TV':'http://www.toxinology.com/images/other_life/',
+  'TI':'http://www.toxinology.com/images/other_life/',
+  'MV':'http://www.toxinology.com/images/marine_life/',
+  'MI':'http://www.toxinology.com/images/marine_life/',
 }
 
 const Result = ({current,onClick}) => {
 
   const binomial = current.genus + ' ' +current.species;
   const name = current.common_names.indexOf(',')?current.common_names.split(',')[0]:current.common_names;
-  const img = ICONS[current.orgclass];
+  const img = current.image?bucket[current.orgclass]+current.image:undefined
+  const icon = ICONS[current.orgclass];
 
-
-  return <div onClick={onClick} class={style.result}>
-    <Image size={40} width={'100%'} height={100} src={img}/>
-    <Br2/>
-    <h2>{name.length?name:binomial}</h2>
-    <h3>{binomial}</h3>
-  </div>
+  return <resultContainer onClick={onClick}>
+    { img?<Image size={'cover'} width={'100%'} height={100} src={img}/>:<Image size={40} width={'100%'} height={100} src={icon}/> }
+    <resultBody>
+      <h2>{name.length?name:binomial}</h2>
+      <h3>{binomial}</h3>
+    </resultBody>
+  </resultContainer>
 };
 
 export default Result;

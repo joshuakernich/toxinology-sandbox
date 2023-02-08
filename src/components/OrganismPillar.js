@@ -54,36 +54,43 @@ const OrganismPillar = ({ current, onBack }) => {
   const getTaxonomyPills = () => {
     const taxonomy = ["kingdom", "phylum", "class", "order", "family", "subfamily", "genus", "species", "subspecies"];
     return <>
-      { taxonomy.map((key) => currentDetails[key] && <Pill class={key}><h3>{key}</h3>{currentDetails[key]}</Pill>) }
+      { taxonomy.map((key) => currentDetails.taxonomy[key] && <Pill class={key}><h3>{key}</h3>{currentDetails.taxonomy[key]}</Pill>) }
     </>;
   };
 
   const getRiskPill = () => {
-    return <Pill type={'highrisk'}><h3>{currentDetails.venomous_or_poisonous}</h3> High Risk</Pill>;
+
+    // t represents the upper threshold
+    const categories = [
+      {t:0, d:'Unknown Risk'},
+      {t:1, d:'No Risk'},
+      {t:20, d:'Low Risk'},
+      {t:40, d:'Mild Risk'},
+      {t:70, d:'Moderate Risk'},
+      {t:100, d:'High Risk'},
+    ]
+
+    const raw = currentDetails.clinical.dangerousness_index;
+    const di = parseInt(raw?raw.substring(2,raw.indexOf('.')):-1);
+
+    let iCat = 0;
+    while( di >= categories[iCat].t ) iCat++;
+
+    return <Pill risk={categories[iCat].d} type={'risk'}><h3>{currentDetails.master.venomous_or_poisonous}</h3>{categories[iCat].d} | {currentDetails.clinical.dangerousness}</Pill>;
   }
 
   const getGallery = () => {
-    return <Gallery gallery={
-      [
-        (current.map_image_large?bucket[currentDetails.orgclass]+current.map_image_large:undefined),
-        (currentDetails.image?bucket[currentDetails.orgclass]+currentDetails.image:undefined),
-      ]
-    }/>;
-  }
 
-  const getFirstAidDescription = () => {
-    const rawDescription = currentDetails.descr;
-    return <organismFirstAidContainer dangerouslySetInnerHTML={{__html: rawDescription.replace(/\n/g, "<br /><br />")}} />;
-  }
+    const g = [];
+    const b = bucket[currentDetails.master.orgclass];
 
-  const getDiagnosticEffects = () => {
-    const rawDescription = currentDetails.details;
-    return <organismFirstAidContainer dangerouslySetInnerHTML={{__html: rawDescription.replace(/\n/g, "<br /><br />")}} />;
-  }
+    if(currentDetails.master.map_image_large) g.push(b+currentDetails.master.map_image_large);
 
-  const getTreatment = () => {
-    const rawDescription = currentDetails.details;
-    return <organismFirstAidContainer dangerouslySetInnerHTML={{__html: rawDescription.replace(/\n/g, "<br /><br />")}} />;
+    currentDetails.graphics.map( graphic => g.push(b+graphic.image) );
+
+    console.log(g);
+
+    return <Gallery gallery={g}/>;
   }
 
   const keys_distribution = [
@@ -159,6 +166,9 @@ const OrganismPillar = ({ current, onBack }) => {
 
 
   const makeSection = (header,raw) => {
+
+    console.log(raw);
+
     return<>
       <h2>{header}</h2>
       <Br2/>
@@ -168,19 +178,30 @@ const OrganismPillar = ({ current, onBack }) => {
   }
 
   const makeP = (raw) => {
-    return <p dangerouslySetInnerHTML={{__html: raw.replace(/\n/g, "<br />")}} />;
+    return <p dangerouslySetInnerHTML={{__html: raw.toString().replace(/\n/g, "<br />")}} />;
   }
 
   const getWhateverYouCan = (header,keys) => {
-
     return <Collapsible header={header}>{
       keys.map(keyMap => currentDetails[keyMap.key]?makeSection(keyMap.header,currentDetails[keyMap.key]):undefined)
     }</Collapsible>
   }
 
-  const getNames = () => {
-    return currentDetails.common_names.replace(' , ',', ')
+  const getAll = (header,data) => {
+    console.log(data);
+    return <Collapsible header={header}>
+      {Object.keys(data).map(key => data[key]?makeSection(key,data[key]):undefined)}
+    </Collapsible>
   }
+
+  const getNames = () => {
+    return <>
+      <h1>{currentDetails.master.common_names.replace(' , ',', ')}</h1>
+      <h3>{currentDetails.taxonomy.genus} {currentDetails.taxonomy.species}</h3>
+    </>
+  }
+
+  
 
   return <div class={style.organismpillar}>
     { !currentDetails ? 
@@ -188,6 +209,23 @@ const OrganismPillar = ({ current, onBack }) => {
       <ContentPillar>
         <button onClick={onBack} class={style.back}>Back to Results</button>
         <Br1/>
+        { getNames() }
+        <Br2/>
+        { getRiskPill() }
+        { getTaxonomyPills() }
+        <Br1/>
+        { getGallery() }
+        <Br1/>
+        { getAll('Master',currentDetails.master) }
+        { getAll('Clinical',currentDetails.clinical) }
+        { getAll('Diagnosis',currentDetails.diagnosis) }
+        { getAll('First Aid',currentDetails.first_aid) }
+        { getAll('General Info',currentDetails.geninfo) }
+        { getAll('Taxonomy',currentDetails.taxonomy) }
+        { getAll('Treatment',currentDetails.treatment) }
+        { getAll('Venom',currentDetails.venom) }
+
+        {/*<Br1/>
         <h1>{ getNames().length?getNames():currentDetails.genus+' '+currentDetails.species}</h1>
         <h3>{currentDetails.genus} {currentDetails.species}</h3>
         <Br2/>
@@ -195,27 +233,19 @@ const OrganismPillar = ({ current, onBack }) => {
         { getTaxonomyPills() }
         <Br1/>
         { getGallery() }
-        <Br1/>
+        <Br1/>*/}
       
         
+        {/*}
+
         {getWhateverYouCan('First Aid',keys_first_aid)}
         {getWhateverYouCan('Further Treatment',keys_treatment)}
         {getWhateverYouCan('Effects',keys_effects)}
         {getWhateverYouCan('Distribution',keys_distribution)}
         {getWhateverYouCan('Description',keys_description)}
+        */}
         
-        {/*<h1>First Aid</h1>
-        <Br2/>
-        { getFirstAidDescription() }
-        <Br1/>
-        <h1>Diagnostic Effects</h1>
-        <Br2/>
-        { getDiagnosticEffects() }
-        <Br1/>
-        <h1>Treatment</h1>
-        <Br2/>
-        { getTreatment() }
-        <Br1/>*/}
+        
       </ContentPillar> }
   </div>
 };
