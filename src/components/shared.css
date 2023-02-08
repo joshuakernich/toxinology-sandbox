@@ -76,6 +76,20 @@ resultsPillar {
 .pill[risk="No Risk"]{ background: #bbffbb; }
 .pill[risk="Unknown Risk"]{ background: white; }
 
+gridContainer{
+  display:grid;
+  grid-template-columns: repeat(3, 1fr);
+  grid-row-gap: 10px;
+}
+
+gridContainer .pill{
+  padding: 0px;
+  padding-left: 10px;
+  border: none;
+  background: none;
+  border-left: 1px solid var(--border);
+}
+
 .radio{
   padding: 10px;
   border: 1px solid var(--opaque);

@@ -24,9 +24,9 @@ const Collapsible = ({header,...props}) =>{
 }
 
 const Grid = ({...props}) => {
-  return <div style='display:grid;grid-template-columns: repeat(4, 1fr);'>
+  return <gridContainer>
     {props.children}
-  </div>
+  </gridContainer>
 }
 
 const OrganismPillar = ({ current, onBack }) => {
@@ -208,7 +208,36 @@ const OrganismPillar = ({ current, onBack }) => {
     </>
   }
 
-  
+  const getDiagnosis = () => {
+
+    const diags = [
+      'cardiotoxin',
+      'haemostasis_and_bleeding',
+      'haematologic_rbc',
+      'haematologic_wbc',
+      'haematologic_platelet',
+      'myotoxic',
+      'neurotoxic_paralytic',
+      'neurotoxic_excitatory',
+      'dermatological',
+      'localised',
+      'necrotoxin',
+      'cardiovascular',
+      'respiratory',
+      'angio_oedema_or_allergic',
+      'venom_spit_ophthalmia',
+      'anterior_pituitary_haemorrhage',
+      'other',
+      'general_system',
+      'renal'
+    ]
+
+    return <>
+      {diags.map( key => <Pill><h3>{key}</h3>{currentDetails.diagnosis[key]}</Pill>)}
+    </>
+  }  
+
+
 
   return <div class={style.organismpillar}>
     { !currentDetails ? 
@@ -233,43 +262,40 @@ const OrganismPillar = ({ current, onBack }) => {
           {makeSection('Habitat',currentDetails.geninfo.habitat)}
         </Collapsible>
         <Collapsible header='Risks and Clinical Effects'>
+          <h2></h2>
+          <Br2/>
+          {makeSection('Danger and Prognosis',currentDetails.clinical.detail_prognosis + ' | ' + currentDetails.clinical.dangerousness)}
           <Grid>
-            <Pill><h3>Dangers</h3>{currentDetails.clinical.dangerousness}</Pill>
             <Pill><h3>Children</h3>{currentDetails.clinical.children}</Pill>
             <Pill><h3>Pregnancy</h3>{currentDetails.clinical.pregnancy}</Pill>
-            <Pill><h3>Elderly</h3>{currentDetails.clinical.elderly}</Pill>
+            <Pill><h3>Elderly</h3>{currentDetails.clinical.elderly}</Pill>    
           </Grid>
+          <Br1/>
+          <h2>Clinical Effects</h2>
           <Br2/>
-          {makeSection('Special Clinical Effects',currentDetails.clinical.specific_clinical_effects)}
+          <Grid>
+            <Pill><h3>Coagulopathy</h3>{currentDetails.clinical.detail_coagulopathy}</Pill>
+            <Pill><h3>Haemorrhagins</h3>{currentDetails.clinical.detail_haemorrhagins}</Pill>
+            <Pill><h3>Local Effects</h3>{currentDetails.clinical.detail_local_effects}</Pill>
+            <Pill><h3>Myotoxicity</h3>{currentDetails.clinical.detail_myotoxicity}</Pill>
+            <Pill><h3>Necrosis</h3>{currentDetails.clinical.detail_necrosis}</Pill>
+            <Pill><h3>Nephrotoxicity</h3>{currentDetails.clinical.detail_nephrotoxicity}</Pill>
+            <Pill><h3>Neurotoxicity</h3>{currentDetails.clinical.detail_neurotoxicity}</Pill>
+            <Pill><h3>Other</h3>{currentDetails.clinical.detail_other}</Pill>
+          </Grid>
+          <Br1/>
+          {makeP(currentDetails.clinical.specific_clinical_effects)}
         </Collapsible>
-        {/* getAll('Master',currentDetails.master) */}
+        <Collapsible header="Diagnosis">
+          {getDiagnosis()}
+        </Collapsible>
         { getAll('Clinical',currentDetails.clinical) }
-        { getAll('Diagnosis',currentDetails.diagnosis) }
         { getAll('First Aid',currentDetails.first_aid) }
         { getAll('General Info',currentDetails.geninfo) }
         { getAll('Taxonomy',currentDetails.taxonomy) }
         { getAll('Treatment',currentDetails.treatment) }
         { getAll('Venom',currentDetails.venom) }
 
-        {/*<Br1/>
-        <h1>{ getNames().length?getNames():currentDetails.genus+' '+currentDetails.species}</h1>
-        <h3>{currentDetails.genus} {currentDetails.species}</h3>
-        <Br2/>
-        { getRiskPill() }
-        { getTaxonomyPills() }
-        <Br1/>
-        { getGallery() }
-        <Br1/>*/}
-      
-        
-        {/*}
-
-        {getWhateverYouCan('First Aid',keys_first_aid)}
-        {getWhateverYouCan('Further Treatment',keys_treatment)}
-        {getWhateverYouCan('Effects',keys_effects)}
-        {getWhateverYouCan('Distribution',keys_distribution)}
-        {getWhateverYouCan('Description',keys_description)}
-        */}
         
         
       </ContentPillar> }
