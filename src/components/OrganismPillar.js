@@ -286,11 +286,78 @@ const OrganismPillar = ({ current, onBack }) => {
       {h:'Renal',                     key:'renal'},
     ]
 
-    return <Columns>
-      {keys.map( key => console.log(currentDetails.diagnosis[key.key]))}
-      {keys.map( key => <Pill type={'tick-'+currentDetails.diagnosis[key.key]}>{key.h}</Pill>)}
-    </Columns>
+    const keysLab = [
+      {h:'Abs Lymph',key:'abs_lymph'},
+      {h:'Apao2',key:'apao2'},
+      {h:'Aptt',key:'aptt'},
+      {h:'CK',key:'ck'},
+      {h:'Creatinine',key:'creatinine'},
+      {h:'Fdpxdp',key:'fdpxdp'},
+      {h:'Fibrinogen',key:'fibrinogen'},
+      {h:'HB',key:'hb'},
+      {h:'K',key:'k'},
+      {h:'Platelets',key:'platelets'},
+      {h:'PT INR',key:'pt_inr'},
+      {h:'Urea',key:'urea'},
+      {h:'Wbct',key:'wbct'},
+      {h:'Wcc',key:'wcc'},
+    ]
+
+    return <div>
+      {makeP(currentDetails.treatment.key_diagnostic_features)}
+      <Br2/>
+      <Columns>
+        {keys.map( key => <Pill type={'tick-'+currentDetails.diagnosis[key.key]}>{key.h}</Pill>)}
+      </Columns>
+      <Br2/>
+      <Columns>
+        {keysLab.map( key => makePill(key.h,currentDetails.treatment[key.key]))}
+      </Columns>
+    </div>
   }  
+
+  const getTreatment = () => {
+    const keys = [
+     
+      {h:'Adverse Antivenom Reaction Management',key:'adverse_av_reaction_mngt'},
+      {h:'Antivenom Dosage',key:'antivenom_dosage'},
+      {h:'Antivenom Reactions',key:'antivenom_reactions'},
+      {h:'Antivenom Therapy',key:'antivenom_therapy'},
+      
+      {h:'Cardiotoxin Effects Management',key:'cardiotoxin_effects_mngt'},
+      
+      {h:'First Aid Text',key:'first_aid_text'},
+      {h:'Follow Up',key:'follow_up'},
+      {h:'Approach to Management',key:'general_approach_to_mngt'},
+      {h:'Systemic Effects Management',key:'general_systemic_effects_mngt'},
+      {h:'Haematologic Effects Management',key:'haematologic_effects_mngt'},
+      {h:'Haematologic Other Effects Management',key:'haematologic_other_effects_mngt'},
+      
+      {h:'Immediate Effects Management',key:'immediate_effects_mngt'},
+      {h:'Important Laboratory Test',key:'important_laboratory_test'},
+      
+      //{h:'Key Diagnostic Features',key:'key_diagnostic_features'},
+      {h:'Local Effects Mngt',key:'local_effects_mngt'},
+      {h:'Myotoxic Effects Mngt',key:'myotoxic_effects_mngt'},
+      {h:'Necrotoxin Effects Mngt',key:'necrotoxin_effects_mngt'},
+      {h:'Neurotoxic Excitatory Effects Mngt',key:'neurotoxic_excitatory_effects_mngt'},
+      {h:'neurotoxic_other_effects_mngt',key:'neurotoxic_other_effects_mngt'},
+      {h:'neurotoxic_paralytic_effects_mngt',key:'neurotoxic_paralytic_effects_mngt'},
+      {h:'other_issues_in_trmt',key:'other_issues_in_trmt'},
+      {h:'other_specific_effects_mngt',key:'other_specific_effects_mngt'},
+
+      {h:'renal_effects_mngt',key:'renal_effects_mngt'},
+    ]
+
+    return <div>
+      {makeP(currentDetails.treatment.treatment_key)}
+      <hr/>
+      {makeP(currentDetails.treatment.treatment_summary)}
+      <Columns>
+        {keys.map( key => makePill(key.h,currentDetails.treatment[key.key]))}
+      </Columns>
+    </div>
+  }
 
 
 
@@ -312,6 +379,25 @@ const OrganismPillar = ({ current, onBack }) => {
         <Br1/>
         { getGallery() }
         <Br1/>
+
+        <Collapsible header="First Aid">
+          {makeP(currentDetails.first_aid.descr)}
+          {makeList(currentDetails.first_aid.details)}
+        </Collapsible>
+        <Collapsible header="Description">
+          <Columns>
+            {makePill('Adult Length',currentDetails.taxonomy.adult_length)}
+            {makePill('A Closer Look at the Butthole',currentDetails.taxonomy.anals_detail)}
+          </Columns>
+          {makeSection('General Shape',currentDetails.taxonomy.general_shape)}
+          {makeSection('Coloration Markings',currentDetails.taxonomy.coloration_markings)}
+          {makeSection('Head Scales',currentDetails.taxonomy.head_scales)}
+          <Columns>
+            {makePill('Mid Body',currentDetails.taxonomy.min_mid_body_rows+' > '+currentDetails.taxonomy.max_mid_body_rows+' (usually '+currentDetails.taxonomy.modal_mid_body_rows+')')}
+            {makePill('Subcaudal',currentDetails.taxonomy.min_subcaudals+' > '+currentDetails.taxonomy.max_subcaudals)}
+            {makePill('Ventral',currentDetails.taxonomy.min_ventrals+' > '+currentDetails.taxonomy.max_ventrals)}
+          </Columns>
+        </Collapsible>
         <Collapsible header='Distribution and Habitat'>
           <Columns>
             {makePill('Region',currentDetails.master.region)}
@@ -340,26 +426,10 @@ const OrganismPillar = ({ current, onBack }) => {
         <Collapsible header="Diagnosis">
           {getDiagnosis()}
         </Collapsible>
-        <Collapsible header="First Aid">
-          {makeP(currentDetails.first_aid.descr)}
-          {makeList(currentDetails.first_aid.details)}
+        <Collapsible header="Treatment and Management">
+          {getTreatment()}
         </Collapsible>
-        <Collapsible header="Description">
-          <Columns>
-            {makePill('Adult Length',currentDetails.taxonomy.adult_length)}
-            {makePill('A Closer Look at the Butthole',currentDetails.taxonomy.anals_detail)}
-          </Columns>
-          {makeSection('General Shape',currentDetails.taxonomy.general_shape)}
-          {makeSection('Coloration Markings',currentDetails.taxonomy.coloration_markings)}
-          {makeSection('Head Scales',currentDetails.taxonomy.head_scales)}
-          <Columns>
-            {makePill('Mid Body',currentDetails.taxonomy.min_mid_body_rows+' > '+currentDetails.taxonomy.max_mid_body_rows+' (usually '+currentDetails.taxonomy.modal_mid_body_rows+')')}
-            {makePill('Subcaudal',currentDetails.taxonomy.min_subcaudals+' > '+currentDetails.taxonomy.max_subcaudals)}
-            {makePill('Ventral',currentDetails.taxonomy.min_ventrals+' > '+currentDetails.taxonomy.max_ventrals)}
-          </Columns>
-        </Collapsible>
-        { getAll('Treatment',currentDetails.treatment) }
-        { getAll('Venom',currentDetails.venom) }
+        
 
         <Collapsible header='References'>
         {makeP(currentDetails.taxonomy.ref)}
