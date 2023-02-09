@@ -185,6 +185,7 @@ const OrganismPillar = ({ current, onBack }) => {
   }
 
   const makeSection = (header,raw) => {
+    console.log('makeSection',header,raw);
     return<>
       <h2>{header}</h2>
       <Br2/>
@@ -325,9 +326,9 @@ const OrganismPillar = ({ current, onBack }) => {
           <Br2/>
           {makeSection('Danger and Prognosis',currentDetails.clinical.detail_prognosis + ' | ' + currentDetails.clinical.dangerousness)}
           <Columns>
-            <Pill><h3>Children</h3>{currentDetails.clinical.children}</Pill>
-            <Pill><h3>Pregnancy</h3>{currentDetails.clinical.pregnancy}</Pill>
-            <Pill><h3>Elderly</h3>{currentDetails.clinical.elderly}</Pill>    
+            {makePill('Children',currentDetails.clinical.children)}
+            {makePill('Pregnancy',currentDetails.clinical.pregnancy)}
+            {makePill('Elderly',currentDetails.clinical.elderly)}
           </Columns>
           <Br1/>
           <h2>Clinical Effects</h2>
@@ -343,14 +344,27 @@ const OrganismPillar = ({ current, onBack }) => {
           {makeP(currentDetails.first_aid.descr)}
           {makeList(currentDetails.first_aid.details)}
         </Collapsible>
-        
-        { getAll('General Info',currentDetails.geninfo) }
-        { getAll('Taxonomy',currentDetails.taxonomy) }
+        <Collapsible header="Description">
+          <Columns>
+            {makePill('Adult Length',currentDetails.taxonomy.adult_length)}
+            {makePill('A Closer Look at the Butthole',currentDetails.taxonomy.anals_detail)}
+          </Columns>
+          {makeSection('General Shape',currentDetails.taxonomy.general_shape)}
+          {makeSection('Coloration Markings',currentDetails.taxonomy.coloration_markings)}
+          {makeSection('Head Scales',currentDetails.taxonomy.head_scales)}
+          <Columns>
+            {makePill('Mid Body',currentDetails.taxonomy.min_mid_body_rows+' > '+currentDetails.taxonomy.max_mid_body_rows+' (usually '+currentDetails.taxonomy.modal_mid_body_rows+')')}
+            {makePill('Subcaudal',currentDetails.taxonomy.min_subcaudals+' > '+currentDetails.taxonomy.max_subcaudals)}
+            {makePill('Ventral',currentDetails.taxonomy.min_ventrals+' > '+currentDetails.taxonomy.max_ventrals)}
+          </Columns>
+        </Collapsible>
         { getAll('Treatment',currentDetails.treatment) }
         { getAll('Venom',currentDetails.venom) }
 
-        
-        
+        <Collapsible header='References'>
+        {makeP(currentDetails.taxonomy.ref)}
+        {makeSection('Status Notes',currentDetails.taxonomy.status_notes)}
+        </Collapsible>
       </ContentPillar> }
   </div>
 };
