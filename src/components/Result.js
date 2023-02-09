@@ -15,6 +15,18 @@ const ICONS = {
   "MI":'../assets/icons/icon-octopus.svg',
 }
 
+const ALT = {
+  "SN":'../assets/icons/icon-alt-grass.jpeg',
+  "SC":'../assets/icons/icon-alt-desert.jpeg',
+  "SP":'../assets/icons/icon-alt-web.jpeg',
+  "PM":'../assets/icons/icon-alt-forest.jpeg',
+  "PP":'../assets/icons/icon-alt-forest.jpeg',
+  "TV":'../assets/icons/icon-alt-mountains.jpeg',
+  "TI":'../assets/icons/icon-alt-mountains.jpeg',
+  "MV":'../assets/icons/icon-alt-water.jpeg',
+  "MI":'../assets/icons/icon-alt-water.jpeg',
+}
+
 const bucket = 
 {
   'SN':'http://www.toxinology.com/images/snakes/',
@@ -36,7 +48,15 @@ const Result = ({current={genus:'Thingo',species:'McThingo',common_names:'Thinga
   const icon = ICONS[current.orgclass];
 
   return <resultContainer onClick={onClick}>
-    { img?<Image size={'cover'} width={'100%'} height={100} src={img}/>:<Image size={40} width={'100%'} height={100} src={icon}/> }
+    { img?
+      <Image size={'cover'} width={'100%'} height={100} src={img}/>
+      :
+      <div style='position:relative'>
+        <Image size={'cover'} width={'100%'} height={100} src={ALT[current.orgclass]}/> 
+        <img src={icon} style='margin:auto;width:40px;height:40px;background-size:100%;position:absolute;top:0px;left:0px;right:0px;bottom:0px;'/>
+      </div>
+    }
+    
     <resultBody>
       <h2>{name.length?name:binomial}</h2>
       <h3>{binomial}</h3>
