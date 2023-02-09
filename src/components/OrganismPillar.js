@@ -45,7 +45,7 @@ const OrganismPillar = ({ current, onBack }) => {
     'SC':'http://www.toxinology.com/images/scorpions/',
     'SP':'http://www.toxinology.com/images/spiders/',
     'PM':'http://www.toxinology.com/images/poisonous_mushrooms/',
-    'PM':'http://www.toxinology.com/images/poisonous_plants/',
+    'PP':'http://www.toxinology.com/images/poisonous_plants/',
     'TV':'http://www.toxinology.com/images/other_life/',
     'TI':'http://www.toxinology.com/images/other_life/',
     'MV':'http://www.toxinology.com/images/marine_life/',
