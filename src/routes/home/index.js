@@ -19,7 +19,7 @@ const Home = () => {
 
   useEffect(() => {
     // PF: uncomment this if you want to perform a search immediately on load
-    // performSearch();
+    //performSearch();
   }, []);
   
   const performSearch = async () => {

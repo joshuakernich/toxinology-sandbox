@@ -16,11 +16,18 @@ const Collapsible = ({header,...props}) =>{
   }
 
   return <div class={style.collapsiblecontainer}>
+  <hr/>
     <h1 onclick={toggle}>{header}</h1>
     
     {open?<><Br2/>{props.children}</>:undefined}
-    <hr/>
+    
   </div>
+}
+
+const Columns = ({...props}) => {
+  return <columnContainer>
+    {props.children}
+  </columnContainer>
 }
 
 const Grid = ({...props}) => {
@@ -170,12 +177,14 @@ const OrganismPillar = ({ current, onBack }) => {
     {key:'anals_detail', header:'A Closer Look at the Butthole'},  
   ]
 
-
+  const makePill = (header,text) => {
+    return<Pill>
+      <h3>{header}</h3>
+      <p>{text}</p>
+    </Pill>
+  }
 
   const makeSection = (header,raw) => {
-
-    console.log(raw);
-
     return<>
       <h2>{header}</h2>
       <Br2/>
@@ -195,7 +204,6 @@ const OrganismPillar = ({ current, onBack }) => {
   }
 
   const getAll = (header,data) => {
-    console.log(data);
     return <Collapsible header={header}>
       {Object.keys(data).map(key => data[key]?makeSection(key,data[key]):undefined)}
     </Collapsible>
@@ -235,44 +243,45 @@ const OrganismPillar = ({ current, onBack }) => {
     ]
 
     //key2 may or may not be useful
-    return <Grid>
+    return <Columns>
       {keys.map( key => 
         <Pill>
         <h3>{key.h}</h3>
         <p>{currentDetails.clinical[key.key]}</p>
-        {key.key2?<p>{currentDetails.clinical[key.key2]}</p>:undefined}
+        {key.key2 && currentDetails.clinical[key.key2] != currentDetails.clinical[key.key] ?<p>{currentDetails.clinical[key.key2]}</p>:undefined}
         </Pill>
         )}
-    </Grid>
+    </Columns>
   }
 
   const getDiagnosis = () => {
 
-    const diags = [
-      'cardiotoxin',
-      'haemostasis_and_bleeding',
-      'haematologic_rbc',
-      'haematologic_wbc',
-      'haematologic_platelet',
-      'myotoxic',
-      'neurotoxic_paralytic',
-      'neurotoxic_excitatory',
-      'dermatological',
-      'localised',
-      'necrotoxin',
-      'cardiovascular',
-      'respiratory',
-      'angio_oedema_or_allergic',
-      'venom_spit_ophthalmia',
-      'anterior_pituitary_haemorrhage',
-      'other',
-      'general_system',
-      'renal'
+    const keys = [
+      {h:'Cardiotoxin',               key:'cardiotoxin'},
+      {h:'Haemostasis and Bleeding',  key:'haemostasis_and_bleeding'},
+      {h:'Haematologic Red Blood Cell',          key:'haematologic_rbc'},
+      {h:'Haematologic White Blook Cell',        key:'haematologic_wbc'},
+      {h:'Haematologic Platelet',     key:'haematologic_platelet'},
+      {h:'Myotoxic',                  key:'myotoxic'},
+      {h:'Neurotoxic Paralytic',      key:'neurotoxic_paralytic'},
+      {h:'Neurotoxic Excitatory',     key:'neurotoxic_excitatory'},
+      {h:'Dermatological',            key:'dermatological'},
+      {h:'Localised',                 key:'localised'},
+      {h:'Necrotoxin',                key:'necrotoxin'},
+      {h:'Cardiovascular',            key:'cardiovascular'},
+      {h:'Respiratory',               key:'respiratory'},
+      {h:'Angio Oedema or Allergic',  key:'angio_oedema_or_allergic'},
+      {h:'Venom Spit Ophthalmia',     key:'venom_spit_ophthalmia'},
+      {h:'Anterior Pituitary Haemorrhage', key:'anterior_pituitary_haemorrhage'},
+      {h:'Other',                     key:'other'},
+      {h:'General System',            key:'general_system'},
+      {h:'Renal',                     key:'renal'},
     ]
 
-    return <>
-      {diags.map( key => <Pill><h3>{key}</h3>{currentDetails.diagnosis[key]}</Pill>)}
-    </>
+    return <Columns>
+      {keys.map( key => console.log(currentDetails.diagnosis[key.key]))}
+      {keys.map( key => <Pill type={'tick-'+currentDetails.diagnosis[key.key]}>{key.h}</Pill>)}
+    </Columns>
   }  
 
 
@@ -287,15 +296,20 @@ const OrganismPillar = ({ current, onBack }) => {
         <Br2/>
         { getTaxonomyPills() }
         <Br2/>
-        { getRiskPill() }
-        <Pill><h3>Dry Bite</h3>{currentDetails.clinical['approx_dry_bite']}</Pill>
-        <Pill><h3>Rate of Envenoming</h3>{currentDetails.clinical['general_rate_of_envenoming']}</Pill>
+        <Columns>
+          { getRiskPill() }
+          <Pill><h3>Dry Bite</h3>{currentDetails.clinical['approx_dry_bite']}</Pill>
+          <Pill><h3>Rate of Envenoming</h3>{currentDetails.clinical['general_rate_of_envenoming']}</Pill>
+        </Columns>
         <Br1/>
         { getGallery() }
         <Br1/>
         <Collapsible header='Distribution and Habitat'>
-          {makeSection('Region',currentDetails.master.region)}
-          {makeSection('Countries',currentDetails.master.countries)}
+          <Columns>
+            {makePill('Region',currentDetails.master.region)}
+            {makePill('Countries',currentDetails.master.countries)}
+          </Columns>
+          <Br1/>
           {makeSection('Distribution',currentDetails.master.distribution)}
           {makeSection('Habitat',currentDetails.geninfo.habitat)}
         </Collapsible>
@@ -303,11 +317,11 @@ const OrganismPillar = ({ current, onBack }) => {
           <h2></h2>
           <Br2/>
           {makeSection('Danger and Prognosis',currentDetails.clinical.detail_prognosis + ' | ' + currentDetails.clinical.dangerousness)}
-          <Grid>
+          <Columns>
             <Pill><h3>Children</h3>{currentDetails.clinical.children}</Pill>
             <Pill><h3>Pregnancy</h3>{currentDetails.clinical.pregnancy}</Pill>
             <Pill><h3>Elderly</h3>{currentDetails.clinical.elderly}</Pill>    
-          </Grid>
+          </Columns>
           <Br1/>
           <h2>Clinical Effects</h2>
           <Br2/>

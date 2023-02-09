@@ -67,6 +67,27 @@ const ResultsPillar = ({isSearching, results, resultPills, toBack}) => {
 
   console.log(`Populating results`, joinedResults);
 
+  if(isSearching){
+    return <resultsPillar class={style.ghostResults}>
+      <ContentPillar>
+        <h1><span>Updating Results...</span></h1>
+        <Br1/>
+        <Br1/>
+        <div class={style.resultlist}>
+          <Result/>
+          <Result/>
+          <Result/>
+          <Result/>
+          <Result/>
+          <Result/>
+          <Result/>
+          <Result/>
+          <Result/>
+        </div>
+      </ContentPillar>
+    </resultsPillar>
+  }
+
   return <resultsPillar>
     { !organism ? <ContentPillar>
       {joinedResults && <h1>{joinedResults.length} Results</h1>}
