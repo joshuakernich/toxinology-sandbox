@@ -172,7 +172,6 @@ const OrganismPillar = ({ current, onBack }) => {
       {h:'Venom Neurotoxins',     key:'general_venom_neurotoxins', key2:'detail_neurotoxicity'},
       {h:'Venom Other',           key:'general_venom_other'},
       {h:'Venom Procoagulants',   key:'general_venom_procoagulants'},
-      {h:'Prognosis',             key:'detail_prognosis'},
       {h:'Other',                 key:'general_other', key2:'detail_other'},
     ]
 
@@ -306,10 +305,11 @@ const OrganismPillar = ({ current, onBack }) => {
         { getGallery() }
         <Br1/>
 
+        {currentDetails.first_aid? //sometimes, there is no first aid
         <Collapsible header="First Aid">
           {makeP(currentDetails.first_aid.descr)}
           {makeList(currentDetails.first_aid.details)}
-        </Collapsible>
+        </Collapsible>:undefined}
         <Collapsible header="Description">
           <Columns>
             {makePill('Adult Length',currentDetails.taxonomy.adult_length)}
@@ -337,6 +337,7 @@ const OrganismPillar = ({ current, onBack }) => {
           <h2></h2>
           <Br2/>
           {makeSection('Danger and Prognosis',currentDetails.clinical.detail_prognosis + ' | ' + currentDetails.clinical.dangerousness)}
+          <Br2/>
           <Columns>
             {makePill('Children',currentDetails.clinical.children)}
             {makePill('Pregnancy',currentDetails.clinical.pregnancy)}
