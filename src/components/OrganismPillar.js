@@ -197,6 +197,13 @@ const OrganismPillar = ({ current, onBack }) => {
     return <p dangerouslySetInnerHTML={{__html: raw.toString().replace(/\n/g, "<br />")}} />;
   }
 
+  const makeList = (raw) => {
+    const list = raw.split(/\n/g);
+    return <ol>
+      {list.map( entry => <li>{entry.substr(2)}</li>)}
+    </ol>;
+  }
+
   const getWhateverYouCan = (header,keys) => {
     return <Collapsible header={header}>{
       keys.map(keyMap => currentDetails[keyMap.key]?makeSection(keyMap.header,currentDetails[keyMap.key]):undefined)
@@ -332,8 +339,11 @@ const OrganismPillar = ({ current, onBack }) => {
         <Collapsible header="Diagnosis">
           {getDiagnosis()}
         </Collapsible>
+        <Collapsible header="First Aid">
+          {makeP(currentDetails.first_aid.descr)}
+          {makeList(currentDetails.first_aid.details)}
+        </Collapsible>
         
-        { getAll('First Aid',currentDetails.first_aid) }
         { getAll('General Info',currentDetails.geninfo) }
         { getAll('Taxonomy',currentDetails.taxonomy) }
         { getAll('Treatment',currentDetails.treatment) }

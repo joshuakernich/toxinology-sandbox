@@ -396,10 +396,13 @@ loadWheel{
   display: block;
 }
 
-.organismpillar p{
-  font-weight: 500;
+.organismpillar p, .organismpillar li{
   line-height: 1.5;
   color: #222;
+}
+
+.organismpillar li{
+  margin-bottom: 10px;
 }
 
 @keyframes throb{
