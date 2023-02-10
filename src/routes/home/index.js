@@ -19,12 +19,12 @@ const Home = () => {
 
   useEffect(() => {
     // PF: uncomment this if you want to perform a search immediately on load
-    //performSearch();
+    // performSearch();
   }, []);
   
   const performSearch = async () => {
     // break down everything we have into something we can search for... Fun
-    const currentSearch = searchCriteria.current;
+    const currentSearch = {...searchCriteria.current};
     setIsSearching(true);
     
     console.log(`Performing Search`, currentSearch);
@@ -43,6 +43,10 @@ const Home = () => {
       if (searchText?.length || matchingTerms?.length) {
         const newSearchResults = await API.advancedSearch(searchText, {matchingTerms});
 
+        // we're in a race condition, disregard this search, the criteria has changed.
+        if (searchCriteria.current.timeStamp != currentSearch.timeStamp) return;
+
+        // check if things have updated in this time.
         setSearchResults(newSearchResults);
         setIsSearching(false);
       }
@@ -54,9 +58,10 @@ const Home = () => {
 
   const onSearchChanged = (newSearchCriteria) => {
     searchCriteria.current = newSearchCriteria;
+    searchCriteria.current.timeStamp = Date.now();
 
     if (searchPollCallback.current) {
-      clearInterval(searchPollCallback.current);
+      clearTimeout(searchPollCallback.current);
     }
 
     searchPollCallback.current = setTimeout(() => {
