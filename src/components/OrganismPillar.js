@@ -7,6 +7,12 @@ import { Br1, Br2 } from './Br';
 import api from '../services/api';
 import { useEffect, useState, useRef } from 'preact/hooks';
 
+const Callout = ({...props}) => {
+  return <calloutCountainer>
+    {props.children}
+  </calloutCountainer>
+}
+
 const Collapsible = ({header,...props}) =>{
 
   const [open,setOpen] = useState(false);
@@ -275,12 +281,16 @@ const OrganismPillar = ({ current, onBack }) => {
     ]
 
     return <div>
-      {makeP(currentDetails.treatment.treatment_key)}
-      <hr/>
+      <Callout>
+        {makeSection('Key Considerations',currentDetails.treatment.treatment_key)}
+      </Callout>
+      <Br1/>
       {makeP(currentDetails.treatment.treatment_summary)}
+      <Br1/>
       <Columns>
         {keys.map( key => makePill(key.h,currentDetails.treatment[key.key]))}
       </Columns>
+      <Br1/>
     </div>
   }
 
@@ -348,7 +358,7 @@ const OrganismPillar = ({ current, onBack }) => {
           <Br2/>
           {getClinical()}
           <Br1/>
-          {makeP(currentDetails.clinical.specific_clinical_effects)}
+          {makeP(currentDetails.clinical.specific_clinical_effects)}t
         </Collapsible>
         <Collapsible header="Diagnosis">
           {getDiagnosis()}
@@ -359,8 +369,10 @@ const OrganismPillar = ({ current, onBack }) => {
         
 
         <Collapsible header='References'>
-        {makeP(currentDetails.taxonomy.ref)}
-        {makeSection('Status Notes',currentDetails.taxonomy.status_notes)}
+          {makeP(currentDetails.taxonomy.ref)}
+          <Br1/>
+          {makeSection('Status Notes',currentDetails.taxonomy.status_notes)}
+          <Br1/>
         </Collapsible>
       </ContentPillar> }
   </div>

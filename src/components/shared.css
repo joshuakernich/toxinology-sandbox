@@ -69,6 +69,8 @@ resultsPillar {
 
 .pill.risk{
   font-weight: normal;
+  background: none;
+  padding: 10px;
 }
 
 .pill.tick-N, .pill.tick-Y, .pill.tick-U{
@@ -386,6 +388,7 @@ loadWheel{
 
 .collapsiblecontainer h1{
   position: relative;
+  padding: 10px 0px;
 }
 
 .collapsiblecontainer h1:after{
@@ -442,4 +445,10 @@ loadWheel{
   color: transparent;
   background: var(--border);
   opacity: 1;
+}
+
+calloutCountainer{
+  padding: 20px;
+  border: 1px solid var(--border);
+  display: block;
 }
