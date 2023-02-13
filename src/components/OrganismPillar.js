@@ -152,9 +152,10 @@ const OrganismPillar = ({ current, onBack }) => {
   }
 
   const getNames = () => {
+    const binomial = currentDetails.taxonomy.genus+' '+currentDetails.taxonomy.species;
     return <>
-      <h1>{currentDetails.master.common_names.replace(' , ',', ')}</h1>
-      <h3>{currentDetails.taxonomy.genus} {currentDetails.taxonomy.species}</h3>
+      <h1>{currentDetails.master.common_names?currentDetails.master.common_names.replace(' , ',', '):binomial}</h1>
+      <h3>{binomial}</h3>
     </>
   }
 
