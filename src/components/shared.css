@@ -392,19 +392,34 @@ loadWheel{
 }
 
 .collapsiblecontainer h1:after{
-  content: "+";
+  content: "";
   position: absolute;
-  right: 0px;
-  top: 0px;
+  right: 15px;
+  top: 15px;
+  display: block;
+  width: 10px;
+  height: 10px;
+  border-right: 1px solid var(--dark);
+  border-bottom: 1px solid var(--dark);
+  transform: rotate(45deg);
+  transition: 0.5s all;
+}
+
+.collapsiblecontainer[open=true] h1:after{
+  transform: rotate(-135deg);
+}
+
+organismPillar{
+  position: relative;
   display: block;
 }
 
-.organismpillar p, .organismpillar li{
+organismPillar p, organismPillar li{
   line-height: 1.5;
   color: #222;
 }
 
-.organismpillar li{
+organismPillar li{
   margin-bottom: 10px;
 }
 
@@ -451,4 +466,22 @@ calloutCountainer{
   padding: 20px;
   border: 1px solid var(--border);
   display: block;
+}
+
+imageExpandContainer{
+  display: block;
+  position: absolute;
+  top: 0px;
+  left: 0px;
+  right: 0px;
+  height: 100vh;
+  background: rgba(241, 250, 238,0.85);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+imageExpandContainer img{
+  max-width: 90%;
+  max-height: 90%;
 }

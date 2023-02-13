@@ -21,7 +21,7 @@ const Collapsible = ({header,...props}) =>{
     setOpen(!open);
   }
 
-  return <div class={style.collapsiblecontainer}>
+  return <div open={open} class={style.collapsiblecontainer}>
   <hr/>
     <h1 onclick={toggle}>{header}</h1>
     
@@ -43,7 +43,9 @@ const Grid = ({...props}) => {
 }
 
 const OrganismPillar = ({ current, onBack }) => {
+
   const [currentDetails, setCurrentDetails] = useState(undefined);
+  const [imgExpand, setImageExpand] = useState(undefined);
 
   const bucket = 
   {
@@ -107,7 +109,7 @@ const OrganismPillar = ({ current, onBack }) => {
     if(currentDetails.master.map_image_large) g.push(b+currentDetails.master.map_image_large);
 
     currentDetails.graphics.map( graphic => g.push(b+graphic.image) );
-    return <Gallery gallery={g}/>;
+    return <Gallery onImage={setImageExpand} gallery={g}/>;
   }
 
   const makePill = (header,text) => {
@@ -296,7 +298,7 @@ const OrganismPillar = ({ current, onBack }) => {
 
 
 
-  return <div class={style.organismpillar}>
+  return <organismPillar>
     { !currentDetails ? 
       <loadingSpinner /> : 
       <ContentPillar>
@@ -344,7 +346,6 @@ const OrganismPillar = ({ current, onBack }) => {
           {makeSection('Habitat',currentDetails.geninfo.habitat)}
         </Collapsible>
         <Collapsible header='Risks and Clinical Effects'>
-          <h2></h2>
           <Br2/>
           {makeSection('Danger and Prognosis',currentDetails.clinical.detail_prognosis + ' | ' + currentDetails.clinical.dangerousness)}
           <Br2/>
@@ -366,16 +367,20 @@ const OrganismPillar = ({ current, onBack }) => {
         <Collapsible header="Treatment and Management">
           {getTreatment()}
         </Collapsible>
-        
-
         <Collapsible header='References'>
           {makeP(currentDetails.taxonomy.ref)}
           <Br1/>
           {makeSection('Status Notes',currentDetails.taxonomy.status_notes)}
           <Br1/>
         </Collapsible>
-      </ContentPillar> }
-  </div>
+      </ContentPillar>
+    }
+    { imgExpand ?
+      <imageExpandContainer onclick={()=> setImageExpand(undefined)}>
+        <img src={imgExpand}/>
+      </imageExpandContainer>:undefined
+    }
+  </organismPillar>
 };
 
 export default OrganismPillar;
