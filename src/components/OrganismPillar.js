@@ -297,9 +297,8 @@ const OrganismPillar = ({ current, onBack }) => {
     </div>
   }
 
-
-
   return <organismPillar>
+
     { !currentDetails ? 
       <loadingSpinner /> : 
       <ContentPillar>
@@ -348,7 +347,9 @@ const OrganismPillar = ({ current, onBack }) => {
         </Collapsible>
         <Collapsible header='Risks and Clinical Effects'>
           <Br2/>
-          {makeSection('Danger and Prognosis',currentDetails.clinical.detail_prognosis + ' | ' + currentDetails.clinical.dangerousness)}
+          <Callout>
+            {makeP(currentDetails.clinical.detail_prognosis)}
+          </Callout>
           <Br2/>
           <Columns>
             {makePill('Children',currentDetails.clinical.children)}
