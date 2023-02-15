@@ -63,6 +63,15 @@ const OrganismPillar = ({ current, onBack }) => {
 
       console.log(`Got creatureDetails: `, creatureDetails);
 
+      if(!creatureDetails.master) creatureDetails.master = {};
+      if(!creatureDetails.first_aid) creatureDetails.first_aid = {};
+      if(!creatureDetails.clinical) creatureDetails.clinical = {};
+      if(!creatureDetails.diagnosis) creatureDetails.diagnosis = {};
+      if(!creatureDetails.geninfo) creatureDetails.geninfo = {};
+      if(!creatureDetails.taxonomy) creatureDetails.taxonomy = {};
+      if(!creatureDetails.treatment) creatureDetails.treatment = {};
+      if(!creatureDetails.venom) creatureDetails.venom = {};
+
       setCurrentDetails(creatureDetails);
     } catch (e) {
       console.error("Error getting creature details", e);
