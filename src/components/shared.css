@@ -386,12 +386,21 @@ loadWheel{
   background-size: 100%;
 }
 
-.collapsiblecontainer h1{
+collapsibleContainer{
+  border-bottom: 1px solid var(--border);
+  display: block;
+}
+
+collapsibleContainer:last-of-type{
+  border-bottom: none;
+}
+
+collapsibleContainer h1{
   position: relative;
   padding: 10px 0px;
 }
 
-.collapsiblecontainer h1:after{
+collapsibleContainer h1:after{
   content: "";
   position: absolute;
   right: 15px;
@@ -405,8 +414,12 @@ loadWheel{
   transition: 0.5s all;
 }
 
-.collapsiblecontainer[open=true] h1:after{
+collapsibleContainer[open=true] h1:after{
   transform: rotate(-135deg);
+}
+
+collapsibleContainer[open=true]{
+  padding-bottom: 20px;
 }
 
 organismPillar{

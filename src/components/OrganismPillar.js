@@ -21,13 +21,10 @@ const Collapsible = ({header,...props}) =>{
     setOpen(!open);
   }
 
-  return <div open={open} class={style.collapsiblecontainer}>
-  <hr/>
+  return <collapsibleContainer open={open}>
     <h1 onclick={toggle}>{header}</h1>
-    
     {open?<><Br2/>{props.children}</>:undefined}
-    
-  </div>
+  </collapsibleContainer>
 }
 
 const Columns = ({...props}) => {
@@ -98,7 +95,7 @@ const OrganismPillar = ({ current, onBack }) => {
     let iCat = 0;
     while( di >= categories[iCat].t ) iCat++;
 
-    return <Pill risk={categories[iCat].d} type={'risk'}><h3>{currentDetails.master.venomous_or_poisonous}</h3>{categories[iCat].d} | {currentDetails.clinical.dangerousness}</Pill>;
+    return <Pill risk={categories[iCat].d} type={'risk'}><h3>{currentDetails.master.venomous_or_poisonous}</h3><p>{categories[iCat].d}</p><p>{currentDetails.clinical.dangerousness}</p></Pill>;
   }
 
   const getGallery = () => {
@@ -322,11 +319,10 @@ const OrganismPillar = ({ current, onBack }) => {
           {makeP(currentDetails.first_aid.descr)}
           {makeList(currentDetails.first_aid.details)}
         </Collapsible>:undefined}
+        <Collapsible header="Further Treatment">
+          {getTreatment()}
+        </Collapsible>
         <Collapsible header="Description">
-          <Columns>
-            {makePill('Adult Length',currentDetails.taxonomy.adult_length)}
-            {makePill('A Closer Look at the Butthole',currentDetails.taxonomy.anals_detail)}
-          </Columns>
           {makeSection('General Shape',currentDetails.taxonomy.general_shape)}
           {makeSection('Coloration Markings',currentDetails.taxonomy.coloration_markings)}
           {makeSection('Head Scales',currentDetails.taxonomy.head_scales)}
@@ -334,6 +330,8 @@ const OrganismPillar = ({ current, onBack }) => {
             {makePill('Mid Body',currentDetails.taxonomy.min_mid_body_rows+' > '+currentDetails.taxonomy.max_mid_body_rows+' (usually '+currentDetails.taxonomy.modal_mid_body_rows+')')}
             {makePill('Subcaudal',currentDetails.taxonomy.min_subcaudals+' > '+currentDetails.taxonomy.max_subcaudals)}
             {makePill('Ventral',currentDetails.taxonomy.min_ventrals+' > '+currentDetails.taxonomy.max_ventrals)}
+            {makePill('Adult Length',currentDetails.taxonomy.adult_length)}
+            {makePill('A Closer Look at the Butthole',currentDetails.taxonomy.anals_detail)}
           </Columns>
         </Collapsible>
         <Collapsible header='Distribution and Habitat'>
@@ -345,7 +343,7 @@ const OrganismPillar = ({ current, onBack }) => {
           {makeSection('Distribution',currentDetails.master.distribution)}
           {makeSection('Habitat',currentDetails.geninfo.habitat)}
         </Collapsible>
-        <Collapsible header='Risks and Clinical Effects'>
+        <Collapsible header='Clinical Effects'>
           <Br2/>
           <Callout>
             {makeP(currentDetails.clinical.detail_prognosis)}
@@ -357,8 +355,6 @@ const OrganismPillar = ({ current, onBack }) => {
             {makePill('Elderly',currentDetails.clinical.elderly)}
           </Columns>
           <Br1/>
-          <h2>Clinical Effects</h2>
-          <Br2/>
           {getClinical()}
           <Br1/>
           {makeP(currentDetails.clinical.specific_clinical_effects)}t
@@ -366,9 +362,7 @@ const OrganismPillar = ({ current, onBack }) => {
         <Collapsible header="Diagnosis">
           {getDiagnosis()}
         </Collapsible>
-        <Collapsible header="Treatment and Management">
-          {getTreatment()}
-        </Collapsible>
+        
         <Collapsible header='References'>
           {makeP(currentDetails.taxonomy.ref)}
           <Br1/>
