@@ -274,13 +274,12 @@ const LocationBuilder = (props) => {
   useEffect(() => { 
     // on first render set the list to the current, after that, we can keep the list here
     setList(props.current);
+    props.onChange(props.current);
   }, []);
 
   const doNewLocation = () => { 
     const newList = list.concat('Current Location');
-    
     setList(newList);
-
     props.onChange(newList);
   }
 
