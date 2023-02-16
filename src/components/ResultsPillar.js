@@ -8,7 +8,7 @@ import Result from './Result';
 import { Br1, Br2 } from './Br';
 import { useLayoutEffect, useState, useRef } from 'preact/hooks';
 
-const ResultsPillar = ({isSearching, results, resultPills, toBack}) => {
+const ResultsPillar = ({setSearchHidden, isSearching, results, resultPills, toBack}) => {
 
   const sample = undefined;
 
@@ -90,6 +90,9 @@ const ResultsPillar = ({isSearching, results, resultPills, toBack}) => {
 
   return <resultsPillar>
     { !organism ? <ContentPillar>
+      <resultsTogglePanel>
+        <button onclick={()=> setSearchHidden(false)} class={style.back}>Refine Search</button>
+      </resultsTogglePanel>
       {joinedResults && <h1>{joinedResults.length} Results</h1>}
       <Br1/>
 

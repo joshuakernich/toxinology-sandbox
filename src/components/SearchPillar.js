@@ -22,7 +22,10 @@ const ORGANISM_TYPES = [
   { key: "pp", t: 'Poisonous Plant', i: '../assets/icons/icon-flower.svg' },
 ];
 
-const SearchPillar = ({ onChange }) => {
+const SearchPillar = ({ isSearchHidden, setSearchHidden, onChange }) => {
+
+  console.log('isSearchHidden',isSearchHidden);
+
   // PF: we need to keep track of the list/keyword/organisms between renders.
   // using refs here because the child elements seem to be handling their own stuff.
   // that's cool and all <3.
@@ -99,27 +102,32 @@ const SearchPillar = ({ onChange }) => {
     onUpdate();
   }
 
-  return <div class={style.searchpillar}>
-    {drill == 'root' ? ( <ContentPillar>
-      <Logo/>
-      <Br1/>
-      <h2>Location</h2><Br2/>
-      <LocationBuilder current={locationsRef.current} onChange={onLocationChange}/>
-      <Br1/>
-      <h2>Keywords</h2><Br2/>
-      <KeywordBuilder current={keywordsRef.current} onChange={onKeywordChange}/>
-      <Br1/>
-      <h2>Organism Type</h2>
-      <h3>Include all possibilities</h3>
-      <Br2/>
-      <RadioGroup type='grid' o={ORGANISM_TYPES} current={organismTypesRef.current} onChange={onOrganismTypeChange}/>
-      <Br1/>
-      <h2>Diagnostic Effects</h2><Br2/>
-      <button onclick={toDiagnostic} class={style.more}>None Observed</button>
-    </ContentPillar>):undefined}
-    {drill == 'diagnostic' && <DiagnosticPillar current={diagnosticTypesRef.current} onChange={onDiagnosticTypesChange} toBack={toBack}/>}
-    {drill == 'labs' && <LabsPillar toBack={toBack}/>}
-  </div>
+  return <searchPillar hidden={isSearchHidden}>
+    <scrollPillar>
+      {drill == 'root' ? ( <ContentPillar>
+        <Logo/>
+        <Br1/>
+        <h2>Location</h2><Br2/>
+        <LocationBuilder current={locationsRef.current} onChange={onLocationChange}/>
+        <Br1/>
+        <h2>Keywords</h2><Br2/>
+        <KeywordBuilder current={keywordsRef.current} onChange={onKeywordChange}/>
+        <Br1/>
+        <h2>Organism Type</h2>
+        <h3>Include all possibilities</h3>
+        <Br2/>
+        <RadioGroup type='grid' o={ORGANISM_TYPES} current={organismTypesRef.current} onChange={onOrganismTypeChange}/>
+        <Br1/>
+        <h2>Diagnostic Effects</h2><Br2/>
+        <button onclick={toDiagnostic} class={style.more}>None Observed</button>
+      </ContentPillar>):undefined}
+      {drill == 'diagnostic' && <DiagnosticPillar current={diagnosticTypesRef.current} onChange={onDiagnosticTypesChange} toBack={toBack}/>}
+      {drill == 'labs' && <LabsPillar toBack={toBack}/>}
+    </scrollPillar>
+    <searchTogglePanel>
+      <button onclick={()=> setSearchHidden(true)} class={style.more}>Show Search Results</button>
+    </searchTogglePanel>
+  </searchPillar>
 };
 
 export default SearchPillar;
