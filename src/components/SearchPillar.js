@@ -117,9 +117,9 @@ const SearchPillar = ({ isSearchHidden, setSearchHidden, onChange }) => {
         <h3>Include all possibilities</h3>
         <Br2/>
         <RadioGroup type='grid' o={ORGANISM_TYPES} current={organismTypesRef.current} onChange={onOrganismTypeChange}/>
-        <Br1/>
+        {/*<Br1/>
         <h2>Diagnostic Effects</h2><Br2/>
-        <button onclick={toDiagnostic} class={style.more}>None Observed</button>
+        <button onclick={toDiagnostic} class={style.more}>None Observed</button>*/}
       </ContentPillar>):undefined}
       {drill == 'diagnostic' && <DiagnosticPillar current={diagnosticTypesRef.current} onChange={onDiagnosticTypesChange} toBack={toBack}/>}
       {drill == 'labs' && <LabsPillar toBack={toBack}/>}

@@ -139,6 +139,7 @@ const OrganismPillar = ({ current, onBack }) => {
   }
 
   const makeList = (raw) => {
+    if(!raw) return makeP(raw);
     const list = raw.split(/\n/g);
     return <ol>
       {list.map( entry => <li>{entry.substr(2)}</li>)}
