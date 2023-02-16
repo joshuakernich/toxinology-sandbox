@@ -359,6 +359,7 @@ select:first-of-type, input:first-of-type, .dropdown:first-of-type{
 
 selectContainer {
   position: relative;
+  display: block;
 }
 
 selectCancel {
@@ -544,7 +545,7 @@ resultsTogglePanel{
   }
 
   columnContainer{
-    columns: 3;
+    columns: 2;
   }
 
   searchPillar scrollPillar{
