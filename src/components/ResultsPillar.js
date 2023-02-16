@@ -65,13 +65,31 @@ const ResultsPillar = ({setSearchHidden, isSearching, searchCriteria, results, r
     setOrganism(result);
   }
 
+  const NAMES = {
+    "sn":'snakes',
+    "sc":'scorpions',
+    "sp":'spiders',
+    "pm":'poisonous mushrooms',
+    "pp":'poisonous plants',
+    "tv":'terrestrial verterbrates',
+    "ti":'terrestrial inverterbrates',
+    "mv":'marine verterbrates',
+    "mi":'marine inverterbrates',
+  }
+
   const getSearchCriteria = () =>{
 
     if(!searchCriteria.keywords) return undefined;
 
-    return<>
-          <p>{searchCriteria.keywords.text} in {searchCriteria.locations.join(', ')}</p>
-        </>
+    var orgs = [];
+    searchCriteria.organismTypes.map( type => orgs.push( NAMES[type] ));
+
+    return<h3>
+          for{' '}
+          {searchCriteria.organismTypes.length?orgs.join(', '):'all organisms'}{' '}
+          in {searchCriteria.locations.join(', ')}
+          {searchCriteria.keywords.text.length?' matching "'+searchCriteria.keywords.text+'"':undefined}
+        </h3>
   }
 
   if(!organism && isSearching){
