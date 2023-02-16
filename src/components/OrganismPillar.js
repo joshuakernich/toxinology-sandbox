@@ -307,7 +307,12 @@ const OrganismPillar = ({ current, onBack }) => {
   return <organismPillar>
 
     { !currentDetails ? 
-      <loadingSpinner /> : 
+      <ContentPillar>
+        <button onClick={onBack} class={style.back}>Back to Results</button>
+        <Br1/>
+        <h1>Loading...</h1>
+        <h2></h2>
+      </ContentPillar> : 
       <ContentPillar>
         <button onClick={onBack} class={style.back}>Back to Results</button>
         <Br1/>

@@ -248,14 +248,15 @@ resultspillar button{
   background: var(--dark);
 }
 
-.locationbuilder button{
+locationBuilder{
+  display: block;
+}
+
+locationBuilder button{
   background: none;
   border-top-width: 0xp;
 }
 
-.locationbuilder:empty button{
-  border-top-width: 1px;
-}
 
 .resultlist{
   gap:5px;
