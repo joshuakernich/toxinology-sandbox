@@ -480,7 +480,7 @@ organismPillar li{
 }
 
 .ghostResults h1 span{
-  opacity: 0.2;
+  opacity: 0.5;
 }
 
 .ghostResults .resultlist{
@@ -498,10 +498,10 @@ organismPillar li{
   background: var(--border);
 }
 
-.ghostResults h2, .ghostResults h3{
+.ghostResults resultContainer h2, .ghostResults resultContainer h3{
   color: transparent;
-  background: var(--border);
-  opacity: 1;
+  
+  opacity: 0;
 }
 
 calloutCountainer{

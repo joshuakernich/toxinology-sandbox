@@ -87,7 +87,7 @@ const ResultsPillar = ({setSearchHidden, isSearching, searchCriteria, results, r
     return<h3>
           for{' '}
           {searchCriteria.organismTypes.length?orgs.join(', '):'all organisms'}{' '}
-          in {searchCriteria.locations.join(', ')}
+          {searchCriteria.locations.length?'in '+searchCriteria.locations.join(', '):'Worldwide'}
           {searchCriteria.keywords.text.length?' matching "'+searchCriteria.keywords.text+'"':undefined}
         </h3>
   }
@@ -96,6 +96,7 @@ const ResultsPillar = ({setSearchHidden, isSearching, searchCriteria, results, r
     return <resultsPillar class={style.ghostResults}>
       <ContentPillar>
         <h1><span>Updating Results...</span></h1>
+        {getSearchCriteria()}
         <Br1/>
         <Br1/>
         <div class={style.resultlist}>
