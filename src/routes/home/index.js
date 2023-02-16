@@ -80,6 +80,7 @@ const Home = () => {
 		<ResultsPillar 
       isSearching={isSearching} 
       setSearchHidden={setSearchHidden} 
+      searchCriteria={searchCriteria.current}
       results={searchResults}>
       </ResultsPillar>
 	</div>

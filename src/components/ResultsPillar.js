@@ -8,7 +8,7 @@ import Result from './Result';
 import { Br1, Br2 } from './Br';
 import { useLayoutEffect, useState, useRef } from 'preact/hooks';
 
-const ResultsPillar = ({setSearchHidden, isSearching, results, resultPills, toBack}) => {
+const ResultsPillar = ({setSearchHidden, isSearching, searchCriteria, results, resultPills, toBack}) => {
 
   const sample = undefined;
 
@@ -65,7 +65,14 @@ const ResultsPillar = ({setSearchHidden, isSearching, results, resultPills, toBa
     setOrganism(result);
   }
 
-  console.log(`Populating results`, joinedResults);
+  const getSearchCriteria = () =>{
+
+    if(!searchCriteria.keywords) return undefined;
+
+    return<>
+          <p>{searchCriteria.keywords.text} in {searchCriteria.locations.join(', ')}</p>
+        </>
+  }
 
   if(!organism && isSearching){
     return <resultsPillar class={style.ghostResults}>
@@ -88,12 +95,17 @@ const ResultsPillar = ({setSearchHidden, isSearching, results, resultPills, toBa
     </resultsPillar>
   }
 
+  console.log('searchCriteria',searchCriteria);
+
   return <resultsPillar>
     { !organism ? <ContentPillar>
       <resultsTogglePanel>
         <button onclick={()=> setSearchHidden(false)} class={style.back}>Refine Search</button>
       </resultsTogglePanel>
       {joinedResults && <h1>{joinedResults.length} Results</h1>}
+
+      {getSearchCriteria()}
+      
       <Br1/>
 
       { resultPills?.map(value => <Pill>{ value }</Pill>) }
