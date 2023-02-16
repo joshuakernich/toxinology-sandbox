@@ -254,7 +254,10 @@ locationBuilder{
 
 locationBuilder button{
   background: none;
-  border-top-width: 0px;
+}
+
+locationBuilder select{
+  border-bottom-width: 0px;
 }
 
 
@@ -360,14 +363,14 @@ selectContainer {
 selectCancel {
   display: block;
   position: absolute;
-  background: url(../assets/icons/icon-close.svg);
+  background: url(../assets/icons/icon-cross-white.svg);
   background-size: contain;
   background-position: center;
   cursor:pointer;
   width: 16px;
   height: 16px;
   top: 50%;
-  left: calc(100% - 24px);
+  right: 5px;
   transform: translate(-50%, -50%);
   opacity: 0.3;
 }
