@@ -46,6 +46,7 @@ searchPillar{
   color: var(--light);
   width: 420px;
   height: 100vh;
+  overflow: hidden;
   
   position: relative;
 }
@@ -55,15 +56,15 @@ searchPillar[hidden]{
 }
 
 searchTogglePanel{
-  display: block;
+  display: none;
   position: absolute;
   bottom: 0px;
   left: 0px;
   right: 0px;
-  padding: 20px 20px;
+  padding: 20px;
   background: var(--dark);
   box-sizing: border-box;
-  border-top: 1px solid var(--opaque);
+  border-top: 1px solid var(--white);
 }
 
 resultsPillar {
@@ -154,7 +155,7 @@ gridContainer .pill, columnContainer .pill{
 
 columnContainer{
   display: block;
-  column-count: 3;
+  column-count: 2;
   column-rule: 1px solid black;
 }
 
@@ -529,15 +530,24 @@ imageExpandContainer img{
 }
 
 resultsTogglePanel{
-  display: block;
+  display: none;
+  padding-bottom: 20px;
 }
 
-@media only screen and (min-width: 1000px){
+@media only screen and (max-width: 1000px){
   searchTogglePanel{
-    display: none;
+    display: block;
   }
 
   resultsTogglePanel{
-    display: none;
+    display: block;
+  }
+
+  columnContainer{
+    columns: 3;
+  }
+
+  searchPillar scrollPillar{
+    padding-bottom: 100px;
   }
 }
