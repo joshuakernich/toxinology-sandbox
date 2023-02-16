@@ -278,7 +278,7 @@ const LocationBuilder = (props) => {
   }, []);
 
   const doNewLocation = () => { 
-    const newList = list.concat('Current Location');
+    const newList = list.concat('Australia');
     setList(newList);
     props.onChange(newList);
   }
