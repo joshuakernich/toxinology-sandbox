@@ -31,13 +31,13 @@ const Home = () => {
 
     try {
       const searchTermsReduced = [
-        ...currentSearch.keywords.text
+        currentSearch.keywords.text
       ];
       const searchText = searchTermsReduced.join(" ");
       const matchingTerms = [
         ...currentSearch.organismTypes.map(type => ({ key: "orgclass", value: type})),
         ...currentSearch.locations.map(location => ({ key: "countries", value: location.toLowerCase()})),
-        ...currentSearch.keywords.matchingTerms
+        ...(currentSearch.keywords.matchingTerms || [])
       ]
 
       if (searchText?.length || matchingTerms?.length) {

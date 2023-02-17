@@ -55,7 +55,7 @@ const ResultsPillar = ({isSearching, results, resultPills, toBack}) => {
     }
   }, [results]);
 
-  const joinedResults = results && [...results.exclusive, ...results.unexclusive];
+  const joinedResults = results && [...results.exclusive];
 
   const showResultList = () =>{
     setOrganism(undefined);
