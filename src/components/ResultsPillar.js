@@ -8,7 +8,7 @@ import Result from './Result';
 import { Br1, Br2 } from './Br';
 import { useLayoutEffect, useState, useRef } from 'preact/hooks';
 
-const ResultsPillar = ({isSearching, results, resultPills, toBack}) => {
+const ResultsPillar = ({setSearchHidden, isSearching, searchCriteria, results, resultPills, toBack}) => {
 
   const sample = undefined;
 
@@ -65,12 +65,38 @@ const ResultsPillar = ({isSearching, results, resultPills, toBack}) => {
     setOrganism(result);
   }
 
-  console.log(`Populating results`, joinedResults);
+  const NAMES = {
+    "sn":'snakes',
+    "sc":'scorpions',
+    "sp":'spiders',
+    "pm":'poisonous mushrooms',
+    "pp":'poisonous plants',
+    "tv":'terrestrial verterbrates',
+    "ti":'terrestrial inverterbrates',
+    "mv":'marine verterbrates',
+    "mi":'marine inverterbrates',
+  }
+
+  const getSearchCriteria = () =>{
+
+    if(!searchCriteria.keywords) return undefined;
+
+    var orgs = [];
+    searchCriteria.organismTypes.map( type => orgs.push( NAMES[type] ));
+
+    return<h3>
+          for{' '}
+          {searchCriteria.organismTypes.length?orgs.join(', '):'all organisms'}{' '}
+          {searchCriteria.locations.length?'in '+searchCriteria.locations.join(', '):'Worldwide'}
+          {searchCriteria.keywords.text.length?' matching "'+searchCriteria.keywords.text+'"':undefined}
+        </h3>
+  }
 
   if(!organism && isSearching){
     return <resultsPillar class={style.ghostResults}>
       <ContentPillar>
         <h1><span>Updating Results...</span></h1>
+        {getSearchCriteria()}
         <Br1/>
         <Br1/>
         <div class={style.resultlist}>
@@ -88,19 +114,31 @@ const ResultsPillar = ({isSearching, results, resultPills, toBack}) => {
     </resultsPillar>
   }
 
-  return <resultsPillar>
-    { !organism ? <ContentPillar>
-      {joinedResults && <h1>{joinedResults.length} Results</h1>}
-      <Br1/>
+  console.log('searchCriteria',searchCriteria);
 
-      { resultPills?.map(value => <Pill>{ value }</Pill>) }
-      <Br1/>
-      
-      <div class={style.resultlist}>
-      { joinedResults?.map(result => <Result current={result} onClick={() => showResult(result)}></Result>) }
-      </div>
-      { isSearching?<LoadModal />:undefined }
-    </ContentPillar>
+  return <resultsPillar>
+    
+    { !organism ? 
+      <scrollPillar>
+        <ContentPillar>
+        <resultsTogglePanel>
+          <button onclick={()=> setSearchHidden(false)} class={style.back}>Refine Search</button>
+        </resultsTogglePanel>
+        {joinedResults && <h1>{joinedResults.length} Results</h1>}
+
+        {getSearchCriteria()}
+        
+        <Br1/>
+
+        { resultPills?.map(value => <Pill>{ value }</Pill>) }
+        <Br1/>
+        
+        <div class={style.resultlist}>
+        { joinedResults?.map(result => <Result current={result} onClick={() => showResult(result)}></Result>) }
+        </div>
+        { isSearching?<LoadModal />:undefined }
+      </ContentPillar>
+    </scrollPillar>
     : <OrganismPillar current={organism} onBack={showResultList} /> }
   </resultsPillar>
 };

@@ -21,13 +21,10 @@ const Collapsible = ({header,...props}) =>{
     setOpen(!open);
   }
 
-  return <div class={style.collapsiblecontainer}>
-  <hr/>
+  return <collapsibleContainer open={open}>
     <h1 onclick={toggle}>{header}</h1>
-    
     {open?<><Br2/>{props.children}</>:undefined}
-    
-  </div>
+  </collapsibleContainer>
 }
 
 const Columns = ({...props}) => {
@@ -43,7 +40,9 @@ const Grid = ({...props}) => {
 }
 
 const OrganismPillar = ({ current, onBack }) => {
+
   const [currentDetails, setCurrentDetails] = useState(undefined);
+  const [imgExpand, setImageExpand] = useState(undefined);
 
   const bucket = 
   {
@@ -63,6 +62,15 @@ const OrganismPillar = ({ current, onBack }) => {
       const creatureDetails = await api.getCreatureDetails(current.oid);
 
       console.log(`Got creatureDetails: `, creatureDetails);
+
+      if(!creatureDetails.master) creatureDetails.master = {};
+      if(!creatureDetails.first_aid) creatureDetails.first_aid = {};
+      if(!creatureDetails.clinical) creatureDetails.clinical = {};
+      if(!creatureDetails.diagnosis) creatureDetails.diagnosis = {};
+      if(!creatureDetails.geninfo) creatureDetails.geninfo = {};
+      if(!creatureDetails.taxonomy) creatureDetails.taxonomy = {};
+      if(!creatureDetails.treatment) creatureDetails.treatment = {};
+      if(!creatureDetails.venom) creatureDetails.venom = {};
 
       setCurrentDetails(creatureDetails);
     } catch (e) {
@@ -96,7 +104,7 @@ const OrganismPillar = ({ current, onBack }) => {
     let iCat = 0;
     while( di >= categories[iCat].t ) iCat++;
 
-    return <Pill risk={categories[iCat].d} type={'risk'}><h3>{currentDetails.master.venomous_or_poisonous}</h3>{categories[iCat].d} | {currentDetails.clinical.dangerousness}</Pill>;
+    return <Pill risk={categories[iCat].d} type={'risk'}><h3>{currentDetails.master.venomous_or_poisonous}</h3><p>{categories[iCat].d}</p><p>{currentDetails.clinical.dangerousness}</p></Pill>;
   }
 
   const getGallery = () => {
@@ -107,7 +115,7 @@ const OrganismPillar = ({ current, onBack }) => {
     if(currentDetails.master.map_image_large) g.push(b+currentDetails.master.map_image_large);
 
     currentDetails.graphics.map( graphic => g.push(b+graphic.image) );
-    return <Gallery gallery={g}/>;
+    return <Gallery onImage={setImageExpand} gallery={g}/>;
   }
 
   const makePill = (header,text) => {
@@ -131,6 +139,7 @@ const OrganismPillar = ({ current, onBack }) => {
   }
 
   const makeList = (raw) => {
+    if(!raw) return makeP(raw);
     const list = raw.split(/\n/g);
     return <ol>
       {list.map( entry => <li>{entry.substr(2)}</li>)}
@@ -150,9 +159,10 @@ const OrganismPillar = ({ current, onBack }) => {
   }
 
   const getNames = () => {
+    const binomial = currentDetails.taxonomy.genus+' '+currentDetails.taxonomy.species;
     return <>
-      <h1>{currentDetails.master.common_names.replace(' , ',', ')}</h1>
-      <h3>{currentDetails.taxonomy.genus} {currentDetails.taxonomy.species}</h3>
+      <h1>{currentDetails.master.common_names?currentDetails.master.common_names.replace(' , ',', '):binomial}</h1>
+      <h3>{binomial}</h3>
     </>
   }
 
@@ -235,12 +245,14 @@ const OrganismPillar = ({ current, onBack }) => {
     ]
 
     return <div>
+      <Callout>
       {makeP(currentDetails.treatment.key_diagnostic_features)}
-      <Br2/>
+      </Callout>
+      <Br1/>
       <Columns>
         {keys.map( key => <Pill type={'tick-'+currentDetails.diagnosis[key.key]}>{key.h}</Pill>)}
       </Columns>
-      <Br2/>
+      <Br1/>
       <Columns>
         {keysLab.map( key => makePill(key.h,currentDetails.treatment[key.key]))}
       </Columns>
@@ -282,11 +294,17 @@ const OrganismPillar = ({ current, onBack }) => {
 
     return <div>
       <Callout>
-        {makeSection('Key Considerations',currentDetails.treatment.treatment_key)}
+        {makeP(currentDetails.treatment.treatment_key)}
       </Callout>
       <Br1/>
-      {makeP(currentDetails.treatment.treatment_summary)}
-      <Br1/>
+      { // sometimes the treatment_key and treatment_summary are identical
+        currentDetails.treatment.treatment_key != currentDetails.treatment.treatment_summary ?
+        <>
+        {makeP(currentDetails.treatment.treatment_summary)}
+        <Br1/>
+        </>:undefined
+      }
+      
       <Columns>
         {keys.map( key => makePill(key.h,currentDetails.treatment[key.key]))}
       </Columns>
@@ -294,11 +312,16 @@ const OrganismPillar = ({ current, onBack }) => {
     </div>
   }
 
+  return <organismPillar>
+    <scrollPillar>
 
-
-  return <div class={style.organismpillar}>
     { !currentDetails ? 
-      <loadingSpinner /> : 
+      <ContentPillar>
+        <button onClick={onBack} class={style.back}>Back to Results</button>
+        <Br1/>
+        <h1>Loading...</h1>
+        <h2></h2>
+      </ContentPillar> : 
       <ContentPillar>
         <button onClick={onBack} class={style.back}>Back to Results</button>
         <Br1/>
@@ -320,62 +343,73 @@ const OrganismPillar = ({ current, onBack }) => {
           {makeP(currentDetails.first_aid.descr)}
           {makeList(currentDetails.first_aid.details)}
         </Collapsible>:undefined}
-        <Collapsible header="Description">
-          <Columns>
-            {makePill('Adult Length',currentDetails.taxonomy.adult_length)}
-            {makePill('A Closer Look at the Butthole',currentDetails.taxonomy.anals_detail)}
-          </Columns>
-          {makeSection('General Shape',currentDetails.taxonomy.general_shape)}
-          {makeSection('Coloration Markings',currentDetails.taxonomy.coloration_markings)}
-          {makeSection('Head Scales',currentDetails.taxonomy.head_scales)}
-          <Columns>
-            {makePill('Mid Body',currentDetails.taxonomy.min_mid_body_rows+' > '+currentDetails.taxonomy.max_mid_body_rows+' (usually '+currentDetails.taxonomy.modal_mid_body_rows+')')}
-            {makePill('Subcaudal',currentDetails.taxonomy.min_subcaudals+' > '+currentDetails.taxonomy.max_subcaudals)}
-            {makePill('Ventral',currentDetails.taxonomy.min_ventrals+' > '+currentDetails.taxonomy.max_ventrals)}
-          </Columns>
+        <Collapsible header="Further Treatment">
+          {getTreatment()}
         </Collapsible>
-        <Collapsible header='Distribution and Habitat'>
+        <Collapsible header="Description">
+          {makeP(currentDetails.taxonomy.general_shape)}
+          <Br1/>
+          {makeP(currentDetails.taxonomy.coloration_markings)}
+          
+          { currentDetails.master.orgclass == 'SN'?
+            <>
+            <Br1/>
+            {makeSection('Scales',currentDetails.taxonomy.head_scales)}
+            <Columns>
+              {makePill('Adult Length',currentDetails.taxonomy.adult_length)}
+              {makePill('Mid Body Scales',currentDetails.taxonomy.min_mid_body_rows+' > '+currentDetails.taxonomy.max_mid_body_rows+' (usually '+currentDetails.taxonomy.modal_mid_body_rows+')')}
+              {makePill('Subcaudal Scales',currentDetails.taxonomy.min_subcaudals+' > '+currentDetails.taxonomy.max_subcaudals)}
+              {makePill('Ventral Scales',currentDetails.taxonomy.min_ventrals+' > '+currentDetails.taxonomy.max_ventrals)}
+              {makePill('Anal Scales',currentDetails.taxonomy.anals_detail)}
+            </Columns>
+            </> : undefined
+        }
+        </Collapsible>
+        <Collapsible header='Distribution'>
           <Columns>
             {makePill('Region',currentDetails.master.region)}
             {makePill('Countries',currentDetails.master.countries)}
           </Columns>
           <Br1/>
-          {makeSection('Distribution',currentDetails.master.distribution)}
+          {makeP(currentDetails.master.distribution)}
+          <Br1/>
           {makeSection('Habitat',currentDetails.geninfo.habitat)}
         </Collapsible>
-        <Collapsible header='Risks and Clinical Effects'>
-          <h2></h2>
-          <Br2/>
-          {makeSection('Danger and Prognosis',currentDetails.clinical.detail_prognosis + ' | ' + currentDetails.clinical.dangerousness)}
-          <Br2/>
+
+        <Collapsible header="Diagnosis">
+          {getDiagnosis()}
+        </Collapsible>
+        <Collapsible header='Clinical Effects'>
+          <Callout>
+            {makeP(currentDetails.clinical.detail_prognosis)}
+          </Callout>
+          <Br1/>
           <Columns>
             {makePill('Children',currentDetails.clinical.children)}
             {makePill('Pregnancy',currentDetails.clinical.pregnancy)}
             {makePill('Elderly',currentDetails.clinical.elderly)}
           </Columns>
           <Br1/>
-          <h2>Clinical Effects</h2>
-          <Br2/>
           {getClinical()}
           <Br1/>
-          {makeP(currentDetails.clinical.specific_clinical_effects)}t
-        </Collapsible>
-        <Collapsible header="Diagnosis">
-          {getDiagnosis()}
-        </Collapsible>
-        <Collapsible header="Treatment and Management">
-          {getTreatment()}
+          {makeP(currentDetails.clinical.specific_clinical_effects)}
         </Collapsible>
         
-
         <Collapsible header='References'>
           {makeP(currentDetails.taxonomy.ref)}
           <Br1/>
-          {makeSection('Status Notes',currentDetails.taxonomy.status_notes)}
+          {makePill('Status Notes',currentDetails.taxonomy.status_notes)}
           <Br1/>
         </Collapsible>
-      </ContentPillar> }
-  </div>
+      </ContentPillar>
+    }
+    </scrollPillar>
+    { imgExpand ?
+      <imageExpandContainer onclick={()=> setImageExpand(undefined)}>
+        <img src={imgExpand}/>
+      </imageExpandContainer>:undefined
+    }
+  </organismPillar>
 };
 
 export default OrganismPillar;

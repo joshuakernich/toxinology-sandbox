@@ -8,6 +8,7 @@ const Image = ({ size='', src='',width='100%',height=200}) => {
     height,
     'background-image':'url('+src+')',
     'background-size':size,
+    'background-position':'center',
   }
 
   return <div class={style.img} style={s}></div>

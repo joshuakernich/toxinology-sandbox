@@ -14,6 +14,7 @@ const Home = () => {
   const searchPollCallback = useRef();
   const searchCriteria = useRef({});
 
+  const [isSearchHidden, setSearchHidden] = useState(false);
   const [isSearching, setIsSearching] = useState(false);
   const [searchResults, setSearchResults] = useState(undefined);
 
@@ -71,8 +72,17 @@ const Home = () => {
   }
 
 	return <div class={style.home}>
-		<SearchPillar onChange={onSearchChanged}></SearchPillar>
-		<ResultsPillar isSearching={isSearching} results={searchResults}></ResultsPillar>
+		<SearchPillar 
+      isSearchHidden={isSearchHidden} 
+      setSearchHidden={setSearchHidden} 
+      onChange={onSearchChanged}>
+      </SearchPillar>
+		<ResultsPillar 
+      isSearching={isSearching} 
+      setSearchHidden={setSearchHidden} 
+      searchCriteria={searchCriteria.current}
+      results={searchResults}>
+      </ResultsPillar>
 	</div>
 };
 

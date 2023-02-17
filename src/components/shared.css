@@ -33,12 +33,38 @@ body{
   overflow: hidden;
 }
 
-.searchpillar{
+scrollPillar{
+  display: block;
+  overflow-y: auto;
+  width: 100%;
+  height: 100%;
+}
+
+searchPillar{
+  display: block;
   background: var(--dark);
   color: var(--light);
   width: 420px;
   height: 100vh;
-  overflow-y: auto;
+  overflow: hidden;
+  
+  position: relative;
+}
+
+searchPillar[hidden]{
+  display: none;
+}
+
+searchTogglePanel{
+  display: none;
+  position: absolute;
+  bottom: 0px;
+  left: 0px;
+  right: 0px;
+  padding: 20px;
+  background: var(--dark);
+  box-sizing: border-box;
+  border-top: 1px solid var(--white);
 }
 
 resultsPillar {
@@ -46,7 +72,6 @@ resultsPillar {
   color: var(--dark);
   flex: 1;
   height: 100vh;
-  overflow-y: auto;
   position: relative;
 }
 
@@ -223,14 +248,18 @@ resultspillar button{
   background: var(--dark);
 }
 
-.locationbuilder button{
-  background: none;
-  border-top-width: 0xp;
+locationBuilder{
+  display: block;
 }
 
-.locationbuilder:empty button{
-  border-top-width: 1px;
+locationBuilder button{
+  background: none;
 }
+
+locationBuilder select{
+  border-bottom-width: 0px;
+}
+
 
 .resultlist{
   gap:5px;
@@ -329,19 +358,20 @@ select:first-of-type, input:first-of-type, .dropdown:first-of-type{
 
 selectContainer {
   position: relative;
+  display: block;
 }
 
 selectCancel {
   display: block;
   position: absolute;
-  background: url(../assets/icons/icon-close.svg);
+  background: url(../assets/icons/icon-cross-white.svg);
   background-size: contain;
   background-position: center;
   cursor:pointer;
   width: 16px;
   height: 16px;
   top: 50%;
-  left: calc(100% - 24px);
+  right: 5px;
   transform: translate(-50%, -50%);
   opacity: 0.3;
 }
@@ -386,25 +416,54 @@ loadWheel{
   background-size: 100%;
 }
 
-.collapsiblecontainer h1{
+collapsibleContainer{
+  border-bottom: 1px solid var(--border);
+  display: block;
+}
+
+collapsibleContainer:last-of-type{
+  border-bottom: none;
+}
+
+collapsibleContainer h1{
   position: relative;
   padding: 10px 0px;
 }
 
-.collapsiblecontainer h1:after{
-  content: "+";
+collapsibleContainer h1:after{
+  content: "";
   position: absolute;
-  right: 0px;
-  top: 0px;
+  right: 15px;
+  top: 15px;
   display: block;
+  width: 10px;
+  height: 10px;
+  border-right: 1px solid var(--dark);
+  border-bottom: 1px solid var(--dark);
+  transform: rotate(45deg);
+  transition: 0.5s all;
 }
 
-.organismpillar p, .organismpillar li{
+collapsibleContainer[open=true] h1:after{
+  transform: rotate(-135deg);
+}
+
+collapsibleContainer[open=true]{
+  padding-bottom: 20px;
+}
+
+organismPillar{
+  position: relative;
+  display: block;
+  height: 100%;
+}
+
+organismPillar p, organismPillar li{
   line-height: 1.5;
   color: #222;
 }
 
-.organismpillar li{
+organismPillar li{
   margin-bottom: 10px;
 }
 
@@ -423,7 +482,7 @@ loadWheel{
 }
 
 .ghostResults h1 span{
-  opacity: 0.2;
+  opacity: 0.5;
 }
 
 .ghostResults .resultlist{
@@ -441,14 +500,71 @@ loadWheel{
   background: var(--border);
 }
 
-.ghostResults h2, .ghostResults h3{
+.ghostResults resultContainer h2, .ghostResults resultContainer h3{
   color: transparent;
-  background: var(--border);
-  opacity: 1;
+  
+  opacity: 0;
 }
 
 calloutCountainer{
   padding: 20px;
   border: 1px solid var(--border);
   display: block;
+}
+
+imageExpandContainer{
+  display: block;
+  position: absolute;
+  top: 0px;
+  left: 0px;
+  right: 0px;
+  height: 100vh;
+  background: rgba(241, 250, 238,0.85);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  backdrop-filter: blur(5px);
+}
+
+imageExpandContainer img{
+  max-width: 90%;
+  max-height: 90%;
+  border: 5px solid var(--white);
+  box-shadow: 0px 0px 2px var(--dark);
+}
+
+imageExpandContainer:after{
+  content: "";
+  width: 70px;
+  height: 70px;
+  background-image: url('../assets/icons/icon-cross.svg');
+  position: absolute;
+  top: 0px;
+  right: 0px;
+  background-size: 20px;
+  background-position: center;
+  background-repeat: no-repeat;
+}
+
+resultsTogglePanel{
+  display: none;
+  padding-bottom: 20px;
+}
+
+@media only screen and (max-width: 700px){
+  searchTogglePanel{
+    display: block;
+  }
+
+  resultsTogglePanel{
+    display: block;
+  }
+
+  columnContainer{
+    columns: 2;
+  }
+
+  searchPillar scrollPillar{
+    padding-bottom: 100px;
+  }
 }

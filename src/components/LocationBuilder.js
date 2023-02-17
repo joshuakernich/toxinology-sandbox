@@ -274,13 +274,12 @@ const LocationBuilder = (props) => {
   useEffect(() => { 
     // on first render set the list to the current, after that, we can keep the list here
     setList(props.current);
+    props.onChange(props.current);
   }, []);
 
   const doNewLocation = () => { 
-    const newList = list.concat('Current Location');
-    
+    const newList = list.concat('Australia');
     setList(newList);
-
     props.onChange(newList);
   }
 
@@ -302,10 +301,10 @@ const LocationBuilder = (props) => {
     props.onChange(newList);
   ;}
 
-  return <div class={style.locationbuilder}>
+  return <locationBuilder>
     {list.map((loc, index) => <LocationSelector value={loc} onChange={onLocationChanged(index)} onRemove={onLocationRemoved(index)} />)}
     <button onclick={doNewLocation}>+ add location</button>
-  </div>
+  </locationBuilder>
 };
 
 export default LocationBuilder;
