@@ -117,24 +117,28 @@ const ResultsPillar = ({setSearchHidden, isSearching, searchCriteria, results, r
   console.log('searchCriteria',searchCriteria);
 
   return <resultsPillar>
-    { !organism ? <ContentPillar>
-      <resultsTogglePanel>
-        <button onclick={()=> setSearchHidden(false)} class={style.back}>Refine Search</button>
-      </resultsTogglePanel>
-      {joinedResults && <h1>{joinedResults.length} Results</h1>}
+    
+    { !organism ? 
+      <scrollPillar>
+        <ContentPillar>
+        <resultsTogglePanel>
+          <button onclick={()=> setSearchHidden(false)} class={style.back}>Refine Search</button>
+        </resultsTogglePanel>
+        {joinedResults && <h1>{joinedResults.length} Results</h1>}
 
-      {getSearchCriteria()}
-      
-      <Br1/>
+        {getSearchCriteria()}
+        
+        <Br1/>
 
-      { resultPills?.map(value => <Pill>{ value }</Pill>) }
-      <Br1/>
-      
-      <div class={style.resultlist}>
-      { joinedResults?.map(result => <Result current={result} onClick={() => showResult(result)}></Result>) }
-      </div>
-      { isSearching?<LoadModal />:undefined }
-    </ContentPillar>
+        { resultPills?.map(value => <Pill>{ value }</Pill>) }
+        <Br1/>
+        
+        <div class={style.resultlist}>
+        { joinedResults?.map(result => <Result current={result} onClick={() => showResult(result)}></Result>) }
+        </div>
+        { isSearching?<LoadModal />:undefined }
+      </ContentPillar>
+    </scrollPillar>
     : <OrganismPillar current={organism} onBack={showResultList} /> }
   </resultsPillar>
 };

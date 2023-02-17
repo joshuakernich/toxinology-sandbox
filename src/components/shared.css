@@ -72,7 +72,6 @@ resultsPillar {
   color: var(--dark);
   flex: 1;
   height: 100vh;
-  overflow-y: auto;
   position: relative;
 }
 
@@ -155,7 +154,7 @@ gridContainer .pill, columnContainer .pill{
 
 columnContainer{
   display: block;
-  column-count: 2;
+  column-count: 3;
   column-rule: 1px solid black;
 }
 
@@ -456,6 +455,7 @@ collapsibleContainer[open=true]{
 organismPillar{
   position: relative;
   display: block;
+  height: 100%;
 }
 
 organismPillar p, organismPillar li{
@@ -523,11 +523,27 @@ imageExpandContainer{
   display: flex;
   align-items: center;
   justify-content: center;
+  backdrop-filter: blur(5px);
 }
 
 imageExpandContainer img{
   max-width: 90%;
   max-height: 90%;
+  border: 5px solid var(--white);
+  box-shadow: 0px 0px 2px var(--dark);
+}
+
+imageExpandContainer:after{
+  content: "";
+  width: 70px;
+  height: 70px;
+  background-image: url('../assets/icons/icon-cross.svg');
+  position: absolute;
+  top: 0px;
+  right: 0px;
+  background-size: 20px;
+  background-position: center;
+  background-repeat: no-repeat;
 }
 
 resultsTogglePanel{
@@ -535,7 +551,7 @@ resultsTogglePanel{
   padding-bottom: 20px;
 }
 
-@media only screen and (max-width: 1000px){
+@media only screen and (max-width: 700px){
   searchTogglePanel{
     display: block;
   }
@@ -545,7 +561,7 @@ resultsTogglePanel{
   }
 
   columnContainer{
-    columns: 3;
+    columns: 2;
   }
 
   searchPillar scrollPillar{

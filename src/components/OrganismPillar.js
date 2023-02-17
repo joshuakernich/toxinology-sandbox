@@ -297,8 +297,14 @@ const OrganismPillar = ({ current, onBack }) => {
         {makeP(currentDetails.treatment.treatment_key)}
       </Callout>
       <Br1/>
-      {makeP(currentDetails.treatment.treatment_summary)}
-      <Br1/>
+      { // sometimes the treatment_key and treatment_summary are identical
+        currentDetails.treatment.treatment_key != currentDetails.treatment.treatment_summary ?
+        <>
+        {makeP(currentDetails.treatment.treatment_summary)}
+        <Br1/>
+        </>:undefined
+      }
+      
       <Columns>
         {keys.map( key => makePill(key.h,currentDetails.treatment[key.key]))}
       </Columns>
@@ -307,6 +313,7 @@ const OrganismPillar = ({ current, onBack }) => {
   }
 
   return <organismPillar>
+    <scrollPillar>
 
     { !currentDetails ? 
       <ContentPillar>
@@ -340,18 +347,20 @@ const OrganismPillar = ({ current, onBack }) => {
           {getTreatment()}
         </Collapsible>
         <Collapsible header="Description">
-          {makeSection('General Shape',currentDetails.taxonomy.general_shape)}
-          {makeSection('Coloration Markings',currentDetails.taxonomy.coloration_markings)}
+          {makeP(currentDetails.taxonomy.general_shape)}
+          <Br1/>
+          {makeP(currentDetails.taxonomy.coloration_markings)}
           
           { currentDetails.master.orgclass == 'SN'?
             <>
-            {makeSection('Head Scales',currentDetails.taxonomy.head_scales)}
+            <Br1/>
+            {makeSection('Scales',currentDetails.taxonomy.head_scales)}
             <Columns>
-              {makePill('Mid Body',currentDetails.taxonomy.min_mid_body_rows+' > '+currentDetails.taxonomy.max_mid_body_rows+' (usually '+currentDetails.taxonomy.modal_mid_body_rows+')')}
-              {makePill('Subcaudal',currentDetails.taxonomy.min_subcaudals+' > '+currentDetails.taxonomy.max_subcaudals)}
-              {makePill('Ventral',currentDetails.taxonomy.min_ventrals+' > '+currentDetails.taxonomy.max_ventrals)}
               {makePill('Adult Length',currentDetails.taxonomy.adult_length)}
-              {makePill('A Closer Look at the Butthole',currentDetails.taxonomy.anals_detail)}
+              {makePill('Mid Body Scales',currentDetails.taxonomy.min_mid_body_rows+' > '+currentDetails.taxonomy.max_mid_body_rows+' (usually '+currentDetails.taxonomy.modal_mid_body_rows+')')}
+              {makePill('Subcaudal Scales',currentDetails.taxonomy.min_subcaudals+' > '+currentDetails.taxonomy.max_subcaudals)}
+              {makePill('Ventral Scales',currentDetails.taxonomy.min_ventrals+' > '+currentDetails.taxonomy.max_ventrals)}
+              {makePill('Anal Scales',currentDetails.taxonomy.anals_detail)}
             </Columns>
             </> : undefined
         }
@@ -365,6 +374,10 @@ const OrganismPillar = ({ current, onBack }) => {
           {makeP(currentDetails.master.distribution)}
           <Br1/>
           {makeSection('Habitat',currentDetails.geninfo.habitat)}
+        </Collapsible>
+
+        <Collapsible header="Diagnosis">
+          {getDiagnosis()}
         </Collapsible>
         <Collapsible header='Clinical Effects'>
           <Callout>
@@ -381,18 +394,16 @@ const OrganismPillar = ({ current, onBack }) => {
           <Br1/>
           {makeP(currentDetails.clinical.specific_clinical_effects)}
         </Collapsible>
-        <Collapsible header="Diagnosis">
-          {getDiagnosis()}
-        </Collapsible>
         
         <Collapsible header='References'>
           {makeP(currentDetails.taxonomy.ref)}
           <Br1/>
-          {makeSection('Status Notes',currentDetails.taxonomy.status_notes)}
+          {makePill('Status Notes',currentDetails.taxonomy.status_notes)}
           <Br1/>
         </Collapsible>
       </ContentPillar>
     }
+    </scrollPillar>
     { imgExpand ?
       <imageExpandContainer onclick={()=> setImageExpand(undefined)}>
         <img src={imgExpand}/>
