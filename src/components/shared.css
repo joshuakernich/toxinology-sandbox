@@ -163,8 +163,6 @@ riskKeyItem{
   background: blue;
 }
 
-
-
 gridContainer{
   display:grid;
   grid-template-columns: repeat(3, 1fr);
@@ -183,6 +181,10 @@ columnContainer{
   display: block;
   column-count: 3;
   column-rule: 1px solid black;
+}
+
+columnContainer[columns="2"]{
+  column-count: 2;
 }
 
 .radio{

@@ -27,8 +27,8 @@ const Collapsible = ({header,...props}) =>{
   </collapsibleContainer>
 }
 
-const Columns = ({...props}) => {
-  return <columnContainer>
+const Columns = ({columns,...props}) => {
+  return <columnContainer columns={columns?columns:undefined}>
     {props.children}
   </columnContainer>
 }
@@ -348,7 +348,7 @@ const OrganismPillar = ({ current, onBack }) => {
         
         <Br1/>
 
-        <Columns>
+        <Columns columns={2}>
           { getRiskPill() }
           <Pill><h3>Dry Bite</h3>{currentDetails.clinical['approx_dry_bite']}</Pill>
           <Pill><h3>Rate of Envenoming</h3>{currentDetails.clinical['general_rate_of_envenoming']}</Pill>
@@ -386,7 +386,7 @@ const OrganismPillar = ({ current, onBack }) => {
         <Collapsible header='Distribution'>
         
           {getGallery(true)}
-          <Columns>
+          <Columns columns={2}>
             {makePill('Region',currentDetails.master.region)}
             {makePill('Countries',currentDetails.master.countries)}
           </Columns>
