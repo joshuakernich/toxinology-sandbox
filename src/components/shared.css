@@ -455,6 +455,7 @@ collapsibleContainer:last-of-type{
 collapsibleContainer h1{
   position: relative;
   padding: 10px 0px;
+  cursor: pointer;
 }
 
 collapsibleContainer h1:after{
