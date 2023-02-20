@@ -104,7 +104,18 @@ const OrganismPillar = ({ current, onBack }) => {
     let iCat = 0;
     while( di >= categories[iCat].t ) iCat++;
 
-    return <Pill risk={categories[iCat].d} type={'risk'}><h3>{currentDetails.master.venomous_or_poisonous}</h3><p>{categories[iCat].d}</p><p>{currentDetails.clinical.dangerousness}</p></Pill>;
+    return <Pill risk={categories[iCat].d} type={'risk'}>
+      <riskKey>
+        <riskKeyItem/>
+        <riskKeyItem/>
+        <riskKeyItem/>
+        <riskKeyItem/>
+        <riskKeyItem/>
+      </riskKey>
+      <h3>{currentDetails.master.venomous_or_poisonous}</h3>
+      <p>{categories[iCat].d}</p>
+      <p>{currentDetails.clinical.dangerousness}</p>
+    </Pill>;
   }
 
   const getGallery = () => {
@@ -138,11 +149,13 @@ const OrganismPillar = ({ current, onBack }) => {
     return raw?<p dangerouslySetInnerHTML={{__html: raw.toString().replace(/\n/g, "<br />")}} />:<p>No data</p>;
   }
 
+  
+
   const makeList = (raw) => {
     if(!raw) return makeP(raw);
     const list = raw.split(/\n/g);
     return <ol>
-      {list.map( entry => <li>{entry.substr(2)}</li>)}
+      {list.map( entry => entry.length?<li>{ entry.substr(entry.indexOf('.')+1) }</li>:undefined)}
     </ol>;
   }
 
@@ -328,14 +341,19 @@ const OrganismPillar = ({ current, onBack }) => {
         { getNames() }
         <Br2/>
         { getTaxonomyPills() }
-        <Br2/>
+        
+        
+        <Br1/>
+        { getGallery() }
+        
+        <Br1/>
+
         <Columns>
           { getRiskPill() }
           <Pill><h3>Dry Bite</h3>{currentDetails.clinical['approx_dry_bite']}</Pill>
           <Pill><h3>Rate of Envenoming</h3>{currentDetails.clinical['general_rate_of_envenoming']}</Pill>
         </Columns>
-        <Br1/>
-        { getGallery() }
+
         <Br1/>
 
         {currentDetails.first_aid? //sometimes, there is no first aid

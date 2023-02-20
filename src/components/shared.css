@@ -96,6 +96,8 @@ resultsPillar {
   font-weight: normal;
   background: none;
   padding: 10px;
+  border: 1px solid var(--border);
+  position: relative;
 }
 
 .pill.tick-N, .pill.tick-Y, .pill.tick-U{
@@ -131,12 +133,37 @@ resultsPillar {
   background-image: none;
 }
 
-.pill[risk="High Risk"]{ background: var(--red); color:var(--white); }
-.pill[risk="Moderate Risk"]{ background: #ff6600; color:var(--white); }
-.pill[risk="Mild Risk"]{ background: #ff9900; }
-.pill[risk="Low Risk"]{ background: #bbbbee; }
-.pill[risk="No Risk"]{ background: #bbffbb; }
-.pill[risk="Unknown Risk"]{ background: white; }
+.pill[risk="High Risk"],riskKeyItem:nth-of-type(1){ background: #AE3232; }
+.pill[risk="Moderate Risk"],riskKeyItem:nth-of-type(2){ background: #e05600;  }
+.pill[risk="Mild Risk"],riskKeyItem:nth-of-type(3){ background: #ff9900; }
+.pill[risk="Low Risk"],riskKeyItem:nth-of-type(4){ background: #E6DB7D; }
+.pill[risk="No Risk"],riskKeyItem:nth-of-type(5){ background: white; }
+.pill[risk="Unknown Risk"],riskKeyItem:nth-of-type(6){ background: #f7d3ff; }
+
+.pill[risk="High Risk"] p, .pill[risk="Moderate Risk"] p,
+.pill[risk="High Risk"] h3, .pill[risk="Moderate Risk"] h3{
+  color:var(--white);
+}
+
+riskKey{
+  position: absolute;
+  width: 5px;
+  height: 100%;
+  background: white;
+  list-style-type: none;
+  top: 0px;
+  left: 0px;
+  display: flex;
+  flex-direction: column;
+  display: none;
+}
+
+riskKeyItem{
+  flex-grow: 1;
+  background: blue;
+}
+
+
 
 gridContainer{
   display:grid;
