@@ -148,8 +148,8 @@ const DiagnosticQuestionnaire = () => {
       <diagnosticQuestionWrapper>
         {
           necessaryQuestions
-            //.sort((qa, qb) => qa.response - qb.response)
-            //.filter((v) => v.response === 'U')
+            .sort((qa, qb) => qa.response - qb.response)
+            .filter((v) => v.response === 'U')
             .map((query) => {
 
             return [
@@ -160,7 +160,8 @@ const DiagnosticQuestionnaire = () => {
 
                 setQuestionQuery([...questionQuery]);
               }} />
-            ]})
+            ]
+          })
         }
       </diagnosticQuestionWrapper>
       <button onClick={clearResponses}>Restart Questionnaire</button>
