@@ -68,7 +68,7 @@ const OrganismPillar = ({ current, onBack }) => {
       if(!creatureDetails.clinical) creatureDetails.clinical = {};
       if(!creatureDetails.diagnosis) creatureDetails.diagnosis = {};
       if(!creatureDetails.geninfo) creatureDetails.geninfo = {};
-      if(!creatureDetails.taxonomy) creatureDetails.taxonomy = {};
+      if(!creatureDetails.taxonomy || !creatureDetails.taxonomy.genus) creatureDetails.taxonomy = creatureDetails.master;
       if(!creatureDetails.treatment) creatureDetails.treatment = {};
       if(!creatureDetails.venom) creatureDetails.venom = {};
 
