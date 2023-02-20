@@ -118,14 +118,14 @@ const OrganismPillar = ({ current, onBack }) => {
     </Pill>;
   }
 
-  const getGallery = () => {
+  const getGallery = ( justMap ) => {
 
     const g = [];
     const b = bucket[currentDetails.master.orgclass];
 
     if(currentDetails.master.map_image_large) g.push(b+currentDetails.master.map_image_large);
 
-    currentDetails.graphics.map( graphic => g.push(b+graphic.image) );
+    if(!justMap) currentDetails.graphics.map( graphic => g.push(b+graphic.image) );
     return <Gallery onImage={setImageExpand} gallery={g}/>;
   }
 
@@ -384,6 +384,8 @@ const OrganismPillar = ({ current, onBack }) => {
         }
         </Collapsible>
         <Collapsible header='Distribution'>
+        
+          {getGallery(true)}
           <Columns>
             {makePill('Region',currentDetails.master.region)}
             {makePill('Countries',currentDetails.master.countries)}
