@@ -559,6 +559,8 @@ imageExpandContainer{
 imageExpandContainer img{
   max-width: 90%;
   max-height: 90%;
+  min-width: 50%;
+  min-height: 50%;
   border: 5px solid var(--white);
   box-shadow: 0px 0px 2px var(--dark);
 }
