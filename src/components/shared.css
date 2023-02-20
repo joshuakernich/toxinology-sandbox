@@ -339,7 +339,7 @@ h1, h2, h3, h4, p{
   padding: 0px;
 }
 
-input, select, .dropdown{
+input[type=text], select, .dropdown{
   background: var(--opaque);
   border: 1px solid var(--opaque);
   border-top: none;
@@ -352,7 +352,7 @@ input, select, .dropdown{
   appearance: none;
 }
 
-select:first-of-type, input:first-of-type, .dropdown:first-of-type{
+select:first-of-type, .dropdown:first-of-type{
   border-top: 1px solid var(--opaque);
 }
 
@@ -549,6 +549,45 @@ imageExpandContainer:after{
 resultsTogglePanel{
   display: none;
   padding-bottom: 20px;
+}
+
+switchContainer{
+  display: flex;
+  background: var(--opaque);
+  border: 1px solid var(--opaque);
+  margin: 20px 0px;
+}
+
+switchContainer switchOption{
+  display: block;
+  position: relative;
+  flex-grow: 1;
+  border-left: 1px solid var(--opaque);
+}
+
+switchOption:first-of-type{
+  border-left: none;
+}
+
+switchOption input{
+  padding: 10px;
+  height: 50px;
+  background: none;
+  border: none;
+  border-top: none;
+
+  appearance: none;
+}
+
+
+switchOption label{
+  position: absolute;
+  top: 0px;
+  left: 0px;
+  right: 0px;
+  bottom: 0px;
+  padding: 20px;
+  text-align: center;
 }
 
 @media only screen and (max-width: 700px){

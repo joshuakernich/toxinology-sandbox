@@ -4,6 +4,7 @@ import Logo from './Logo';
 import ContentPillar from './ContentPillar';
 import { Br1, Br2 } from './Br';
 import { RadioGroup } from './Radio';
+import DiagnosticQuestionnaire from './DiagnosticQuestionnaire'
 
 const DiagnosticPillar = ({ toBack, current, onChange}) => {
 
@@ -36,6 +37,10 @@ const DiagnosticPillar = ({ toBack, current, onChange}) => {
   return <ContentPillar>
     <button onclick={toBack} class={style.back}>Back to Search</button>
     <Br1/>
+
+    <DiagnosticQuestionnaire/>
+
+    {/*
     <h1>Diagnostic Effects</h1>
     <h3>Select all that apply</h3>
     <Br2/>
@@ -45,6 +50,7 @@ const DiagnosticPillar = ({ toBack, current, onChange}) => {
       <Br2/>
       </>
     )}
+    */}
     
   </ContentPillar>
 };
