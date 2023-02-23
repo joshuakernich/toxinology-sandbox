@@ -273,36 +273,45 @@ const OrganismPillar = ({ current, onBack }) => {
   }  
 
   const getTreatment = () => {
-    const keys = [
-     
-      {h:'Adverse Antivenom Reaction Management',key:'adverse_av_reaction_mngt'},
+    const antivenom = [
+      {h:'Antivenom Therapy',key:'antivenom_therapy'},
       {h:'Antivenom Dosage',key:'antivenom_dosage'},
       {h:'Antivenom Reactions',key:'antivenom_reactions'},
-      {h:'Antivenom Therapy',key:'antivenom_therapy'},
+      {h:'Adverse Antivenom Reaction Management',key:'adverse_av_reaction_mngt'},
+      ]
+
+    const keys = [
+     
+      {h:'Immediate Effects Management',key:'immediate_effects_mngt'},
+      {h:'Approach to Management',key:'general_approach_to_mngt'},
+      {h:'Follow Up',key:'follow_up'},
+      {h:'Local Effects Management',key:'local_effects_mngt'},
+      {h:'Systemic Effects Management',key:'general_systemic_effects_mngt'},
+      
       
       {h:'Cardiotoxin Effects Management',key:'cardiotoxin_effects_mngt'},
       
       //{h:'First Aid Text',key:'first_aid_text'},
-      {h:'Follow Up',key:'follow_up'},
-      {h:'Approach to Management',key:'general_approach_to_mngt'},
-      {h:'Systemic Effects Management',key:'general_systemic_effects_mngt'},
+      
+      
+      
       {h:'Haematologic Effects Management',key:'haematologic_effects_mngt'},
       {h:'Haematologic Other Effects Management',key:'haematologic_other_effects_mngt'},
       
-      {h:'Immediate Effects Management',key:'immediate_effects_mngt'},
+      
       {h:'Important Laboratory Test',key:'important_laboratory_test'},
       
       //{h:'Key Diagnostic Features',key:'key_diagnostic_features'},
-      {h:'Local Effects Mngt',key:'local_effects_mngt'},
-      {h:'Myotoxic Effects Mngt',key:'myotoxic_effects_mngt'},
-      {h:'Necrotoxin Effects Mngt',key:'necrotoxin_effects_mngt'},
-      {h:'Neurotoxic Excitatory Effects Mngt',key:'neurotoxic_excitatory_effects_mngt'},
-      {h:'neurotoxic_other_effects_mngt',key:'neurotoxic_other_effects_mngt'},
-      {h:'neurotoxic_paralytic_effects_mngt',key:'neurotoxic_paralytic_effects_mngt'},
-      {h:'other_issues_in_trmt',key:'other_issues_in_trmt'},
-      {h:'other_specific_effects_mngt',key:'other_specific_effects_mngt'},
+      
+      {h:'Myotoxic Effects Management',key:'myotoxic_effects_mngt'},
+      {h:'Necrotoxin Effects Management',key:'necrotoxin_effects_mngt'},
+      {h:'Neurotoxic Excitatory Effects Management',key:'neurotoxic_excitatory_effects_mngt'},
+      {h:'Other Neurotoxic Effects Management',key:'neurotoxic_other_effects_mngt'},
+      {h:'Neurotoxic Paralytic Effects Management',key:'neurotoxic_paralytic_effects_mngt'},
+      {h:'Other Issues in Treatment',key:'other_issues_in_trmt'},
+      {h:'Other Specific Effects Management',key:'other_specific_effects_mngt'},
 
-      {h:'renal_effects_mngt',key:'renal_effects_mngt'},
+      {h:'Renal Effects Management',key:'renal_effects_mngt'},
     ]
 
     return <div>
@@ -318,6 +327,14 @@ const OrganismPillar = ({ current, onBack }) => {
         </>:undefined
       }
       
+      <h2>Antivenom</h2>
+      <Br2/>
+      <Columns>
+        {antivenom.map( key => makePill(key.h,currentDetails.treatment[key.key]))}
+      </Columns>
+      <Br1/>
+      <h2>Management in Detail</h2>
+      <Br2/>
       <Columns>
         {keys.map( key => makePill(key.h,currentDetails.treatment[key.key]))}
       </Columns>
