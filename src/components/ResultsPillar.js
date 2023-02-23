@@ -71,8 +71,8 @@ const ResultsPillar = ({setSearchHidden, isSearching, searchCriteria, results, r
     "sp":'spiders',
     "pm":'poisonous mushrooms',
     "pp":'poisonous plants',
-    "tv":'terrestrial verterbrates',
-    "ti":'terrestrial inverterbrates',
+    "tv":'land verterbrates',
+    "ti":'land inverterbrates',
     "mv":'marine verterbrates',
     "mi":'marine inverterbrates',
   }
@@ -91,6 +91,8 @@ const ResultsPillar = ({setSearchHidden, isSearching, searchCriteria, results, r
           {searchCriteria.keywords.text.length?' matching "'+searchCriteria.keywords.text+'"':undefined}
         </h3>
   }
+
+  console.log('searchCriteria',searchCriteria);
 
   if(!organism && isSearching){
     return <resultsPillar class={style.ghostResults}>
@@ -114,7 +116,7 @@ const ResultsPillar = ({setSearchHidden, isSearching, searchCriteria, results, r
     </resultsPillar>
   }
 
-  console.log('searchCriteria',searchCriteria);
+  
 
   return <resultsPillar>
     

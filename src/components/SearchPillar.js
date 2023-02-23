@@ -16,8 +16,8 @@ const ORGANISM_TYPES = [
   { key: "sc", t: 'Scorpion', i: '../assets/icons/icon-scorpion.svg' },
   { key: "mv", t: 'Marine Verterbrate', i: '../assets/icons/icon-fish.svg' },
   { key: "mi", t: 'Marine Inverterbrate', i: '../assets/icons/icon-octopus.svg' },
-  { key: "ti", t: 'Land Verterbrate', i: '../assets/icons/icon-lizard.svg' },
-  { key: "tv", t: 'Land Inverterbrate', i: '../assets/icons/icon-bee.svg' },
+  { key: "tv", t: 'Land Verterbrate', i: '../assets/icons/icon-lizard.svg' },
+  { key: "ti", t: 'Land Inverterbrate', i: '../assets/icons/icon-bee.svg' },
   { key: "pm", t: 'Poisonous Mushroom', i: '../assets/icons/icon-mushroom.svg' },
   { key: "pp", t: 'Poisonous Plant', i: '../assets/icons/icon-flower.svg' },
 ];
