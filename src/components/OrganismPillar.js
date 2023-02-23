@@ -282,7 +282,7 @@ const OrganismPillar = ({ current, onBack }) => {
       
       {h:'Cardiotoxin Effects Management',key:'cardiotoxin_effects_mngt'},
       
-      {h:'First Aid Text',key:'first_aid_text'},
+      //{h:'First Aid Text',key:'first_aid_text'},
       {h:'Follow Up',key:'follow_up'},
       {h:'Approach to Management',key:'general_approach_to_mngt'},
       {h:'Systemic Effects Management',key:'general_systemic_effects_mngt'},
@@ -356,11 +356,18 @@ const OrganismPillar = ({ current, onBack }) => {
 
         <Br1/>
 
-        {currentDetails.first_aid? //sometimes, there is no first aid
         <Collapsible header="First Aid">
+          {currentDetails.treatment.first_aid_text?
+          <>
+            <Callout>
+              {makeP(currentDetails.treatment.first_aid_text)}
+            </Callout>
+            <Br1/>
+          </>:undefined
+          }
           {makeP(currentDetails.first_aid.descr)}
           {makeList(currentDetails.first_aid.details)}
-        </Collapsible>:undefined}
+        </Collapsible>
         <Collapsible header="Further Treatment">
           {getTreatment()}
         </Collapsible>
