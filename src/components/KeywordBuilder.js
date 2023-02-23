@@ -38,8 +38,8 @@ const KeywordBuilder = (props) => {
 
   return <div class={style.keywordBuilder}>
     <input type='text' ref={inputRef} onInput={onInputChange}/>
-    <Br2/>
-    {list.map((keyword)=> <Pill>{keyword}</Pill>)}
+    {/*<Br2/>
+    {list.map((keyword)=> <Pill>{keyword}</Pill>)}*/}
   </div>
 };
 
