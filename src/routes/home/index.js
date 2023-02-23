@@ -16,6 +16,8 @@ const Home = () => {
 
   const [isSearchHidden, setSearchHidden] = useState(false);
   const [isSearching, setIsSearching] = useState(false);
+
+  const [currentSearchCriteria, setCurrentSearchCriteria] = useState({});
   const [searchResults, setSearchResults] = useState(undefined);
 
   useEffect(() => {
@@ -26,6 +28,8 @@ const Home = () => {
   const performSearch = async () => {
     // break down everything we have into something we can search for... Fun
     const currentSearch = {...searchCriteria.current};
+
+    setCurrentSearchCriteria(currentSearch);
     setIsSearching(true);
     
     console.log(`Performing Search`, currentSearch);
@@ -58,6 +62,7 @@ const Home = () => {
   };
 
   const onSearchChanged = (newSearchCriteria) => {
+
     searchCriteria.current = newSearchCriteria;
     searchCriteria.current.timeStamp = Date.now();
 
@@ -71,6 +76,8 @@ const Home = () => {
     }, SEARCH_POLL_DURATION);
   }
 
+  console.log('currentSearchCriteria',currentSearchCriteria);
+
 	return <div class={style.home}>
 		<SearchPillar 
       isSearchHidden={isSearchHidden} 
@@ -80,7 +87,7 @@ const Home = () => {
 		<ResultsPillar 
       isSearching={isSearching} 
       setSearchHidden={setSearchHidden} 
-      searchCriteria={searchCriteria.current}
+      searchCriteria={currentSearchCriteria}
       results={searchResults}>
       </ResultsPillar>
 	</div>
