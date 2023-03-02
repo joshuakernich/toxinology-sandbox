@@ -43,18 +43,16 @@ const Home = () => {
         ...currentSearch.organismTypes.map(type => ({ key: "orgclass", value: type})),
         ...currentSearch.locations.map(location => ({ key: "countries", value: location.toLowerCase()})),
         ...(currentSearch.keywords.matchingTerms || [])
-      ]
+      ];
+      
+      const newSearchResults = await API.advancedSearch(searchText, {matchingTerms});
 
-      if (searchText?.length || matchingTerms?.length) {
-        const newSearchResults = await API.advancedSearch(searchText, {matchingTerms});
+      // we're in a race condition, disregard this search, the criteria has changed.
+      if (searchCriteria.current.timeStamp != currentSearch.timeStamp) return;
 
-        // we're in a race condition, disregard this search, the criteria has changed.
-        if (searchCriteria.current.timeStamp != currentSearch.timeStamp) return;
-
-        // check if things have updated in this time.
-        setSearchResults(newSearchResults);
-        setIsSearching(false);
-      }
+      // check if things have updated in this time.
+      setSearchResults(newSearchResults);
+      setIsSearching(false);
     } catch (e) {
       console.error(`Search Failed, `, e);
       setIsSearching(false);
