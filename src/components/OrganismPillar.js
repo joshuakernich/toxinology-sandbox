@@ -156,8 +156,9 @@ const OrganismPillar = ({ current, onBack }) => {
   const makeList = (raw) => {
     if(!raw) return makeP(raw);
     const list = raw.split(/\n/g);
+    //check for entry length greater than 1 to filter out blank lines
     return <ol>
-      {list.map( entry => entry.length?<li>{ entry.substr(entry.indexOf('.')+1) }</li>:undefined)}
+      {list.map( entry => (entry.length > 1)?<li>{ entry.substr(entry.indexOf('.')+1) }</li>:undefined)}
     </ol>;
   }
 
@@ -216,6 +217,44 @@ const OrganismPillar = ({ current, onBack }) => {
         </Pill>
         )}
     </Columns>
+  }
+
+  const getVenom = () => {
+    return <>
+        <h2>Antivenom</h2>
+        <ol>
+          {currentDetails.antivenoms.map( v => <li>
+            <p>{v.name}</p>
+            <h3>{v.id} by {v.manufacturer}</h3>
+            <Br2/>
+            <p>{v.product_description}</p>
+          </li> )}
+        </ol>
+
+        <Br1/>
+        <h2>Venom Components</h2>
+        {makeList(currentDetails.venom.venom_components)}
+
+
+        {makeSection('Crude Venom',currentDetails.venom.crude_venom)}
+        {makeSection('Antivenom Studies',currentDetails.venom.antivenom_studies)}
+        {makeSection('Average Venom Quantity',currentDetails.venom.average_venom_qty)}
+        {makeSection('Maximum Venom Quantity',currentDetails.venom.maximum_venom_qty)}
+        {makeSection('Cardiotoxins',currentDetails.venom.cardiotoxins)}
+        {makeSection('Myotoxins',currentDetails.venom.myotoxins)}
+        {makeSection('Necrotoxins',currentDetails.venom.necrotoxins)}
+        {makeSection('Necrotoxins',currentDetails.venom.nephrotoxins)}
+        {makeSection('Other Toxins',currentDetails.venom.other_toxins)}
+        {makeSection('Neurotoxins Channel Toxins',currentDetails.venom.neurotoxins_channel_toxins)}
+        {makeSection('Other ld50 Estimates',currentDetails.venom.other_ld50_estimates)}
+        {makeSection('Preferred ld50 Estimate',currentDetails.venom.preferred_ld50_estimate)}
+        {makeSection('Other Studies',currentDetails.venom.other_studies)}
+        {makeSection('Component ld50',currentDetails.venom.component_ld50)}
+        {makeSection('Cross Reactivity',currentDetails.venom.cross_reactivity)}
+        {makeSection('Venom Activity',currentDetails.venom.venom_activity)}
+        {makeSection('Haematological Haemorrhagins',currentDetails.venom.haematological_haemorrhagins)}
+      </>
+
   }
 
   const getDiagnosis = () => {
@@ -422,37 +461,7 @@ const OrganismPillar = ({ current, onBack }) => {
           {makeSection('Habitat',currentDetails.geninfo.habitat)}
         </Collapsible>
         <Collapsible header="Venom">
-          <Columns>
-          {makePill('Crude Venom',currentDetails.venom.crude_venom)}
-          {makePill('Antivenom Studies',currentDetails.venom.antivenom_studies)}
-          {makePill('Average Venom Quantity',currentDetails.venom.average_venom_qty)}
-          {makePill('Maximum Venom Quantity',currentDetails.venom.maximum_venom_qty)}
-          {makePill('Cardiotoxins',currentDetails.venom.cardiotoxins)}
-          {makePill('Myotoxins',currentDetails.venom.myotoxins)}
-          {makePill('Necrotoxins',currentDetails.venom.necrotoxins)}
-          {makePill('Necrotoxins',currentDetails.venom.nephrotoxins)}
-          {makePill('Other Toxins',currentDetails.venom.other_toxins)}
-          {makePill('Neurotoxins Channel Toxins',currentDetails.venom.neurotoxins_channel_toxins)}
-          {makePill('Other ld50 Estimates',currentDetails.venom.other_ld50_estimates)}
-          {makePill('Preferred ld50 Estimate',currentDetails.venom.preferred_ld50_estimate)}
-          {makePill('Other Studies',currentDetails.venom.other_studies)}
-          {makePill('Component ld50',currentDetails.venom.component_ld50)}
-          {makePill('Cross Reactivity',currentDetails.venom.cross_reactivity)}
-          {makePill('Venom Activity',currentDetails.venom.venom_activity)}
-          {makePill('Haematological Haemorrhagins',currentDetails.venom.haematological_haemorrhagins)}
-          </Columns>
-          <Br1/>
-          <h2>Antivenom</h2>
-          <ol>
-            {currentDetails.antivenoms.map( v => <li>
-              <p><b>{v.name}</b></p>
-              <h3>{v.id} by {v.manufacturer}</h3>
-              <p>{v.product_description}</p>
-            </li> )}
-          </ol>
-
-          <Br1/>
-          {makeSection('Venom Components',currentDetails.venom.venom_components)}
+          {getVenom()}
         </Collapsible>
         <Collapsible header="Diagnosis">
           {getDiagnosis()}
