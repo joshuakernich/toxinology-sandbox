@@ -14,7 +14,7 @@ const ResultsPillar = ({setSearchHidden, isSearching, searchCriteria, results, r
 
   const [organism, setOrganism] = useState(sample);
   
-  console.log(isSearching);
+  console.log('results',results);
 
   // A list of strings
   const pills = useRef([]); 

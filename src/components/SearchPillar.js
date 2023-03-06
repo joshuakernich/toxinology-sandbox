@@ -24,8 +24,6 @@ const ORGANISM_TYPES = [
 
 const SearchPillar = ({ isSearchHidden, setSearchHidden, onChange }) => {
 
-  console.log('isSearchHidden',isSearchHidden);
-
   // PF: we need to keep track of the list/keyword/organisms between renders.
   // using refs here because the child elements seem to be handling their own stuff.
   // that's cool and all <3.

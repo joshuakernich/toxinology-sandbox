@@ -79,10 +79,12 @@ const OrganismPillar = ({ current, onBack }) => {
   }, [ current ]);
 
   const getTaxonomyPills = () => {
-    const taxonomy = ["kingdom", "phylum", "class", "order", "family", "subfamily", "genus", "species"];
+    const taxonomy = ["kingdom", "phylum", "class", "order", "family", "subfamily"];
+    const italicised = ["genus", "species"];
     return <>
       { taxonomy.map((key) => currentDetails.taxonomy[key] && <Pill class={key}><h3>{key}</h3>{currentDetails.taxonomy[key]}</Pill>) }
-      { currentDetails.master['subspecies']?<Pill><h3>subspecies</h3>{currentDetails.master['subspecies']}</Pill>:undefined }
+      { italicised.map((key) => currentDetails.taxonomy[key] && <Pill class={key}><h3>{key}</h3><i>{currentDetails.taxonomy[key]}</i></Pill>) }
+      { currentDetails.master['subspecies']?<Pill><h3>subspecies</h3><i>{currentDetails.master['subspecies']}</i></Pill>:undefined }
     </>;
   };
 
@@ -172,10 +174,10 @@ const OrganismPillar = ({ current, onBack }) => {
   }
 
   const getNames = () => {
-    const binomial = currentDetails.taxonomy.genus+' '+currentDetails.taxonomy.species;
+    const binomial = currentDetails.taxonomy.genus+' '+currentDetails.taxonomy.species+(currentDetails.taxonomy.subspecies?' '+currentDetails.taxonomy.subspecies:'');
     return <>
-      <h1>{currentDetails.master.common_names?currentDetails.master.common_names.replace(' , ',', '):binomial}</h1>
-      <h3>{binomial}</h3>
+      <h1>{currentDetails.master.common_names?currentDetails.master.common_names.replace(' , ',', '):<i>{binomial}</i>}</h1>
+      <h3><i>{binomial}</i></h3>
     </>
   }
 

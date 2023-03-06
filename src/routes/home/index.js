@@ -32,8 +32,6 @@ const Home = () => {
     setCurrentSearchCriteria(currentSearch);
     setIsSearching(true);
     
-    console.log(`Performing Search`, currentSearch);
-
     try {
       const searchTermsReduced = [
         currentSearch.keywords.text

@@ -42,7 +42,7 @@ const bucket =
 
 const Result = ({current={genus:'Thingo',species:'McThingo',common_names:'Thingamajig McThing'},onClick}) => {
 
-  const binomial = current.genus + ' ' +current.species;
+  const binomial = current.genus + ' ' +current.species + ' ' + (current.subspecies?current.subspecies:'');
   const name = current.common_names.indexOf(',')?current.common_names.split(',')[0]:current.common_names;
   const img = current.image?bucket[current.orgclass]+current.image:undefined
   const icon = ICONS[current.orgclass];
@@ -58,8 +58,8 @@ const Result = ({current={genus:'Thingo',species:'McThingo',common_names:'Thinga
     }
     
     <resultBody>
-      <h2>{name.length?name:binomial}</h2>
-      <h3>{binomial}</h3>
+      <h2>{name.length?name:<i>{binomial}</i>}</h2>
+      <h3><i>{binomial}</i></h3>
     </resultBody>
   </resultContainer>
 };
