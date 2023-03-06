@@ -40,6 +40,10 @@ scrollPillar{
   height: 100%;
 }
 
+scrollPillar[hidden]{
+  display: none;
+}
+
 searchPillar{
   display: block;
   background: var(--dark);

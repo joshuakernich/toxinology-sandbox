@@ -119,9 +119,7 @@ const ResultsPillar = ({setSearchHidden, isSearching, searchCriteria, results, r
   
 
   return <resultsPillar>
-    
-    { !organism ? 
-      <scrollPillar>
+      <scrollPillar hidden={organism?true:false}>
         <ContentPillar>
         <resultsTogglePanel>
           <button onclick={()=> setSearchHidden(false)} class={style.back}>Refine Search</button>
@@ -141,7 +139,7 @@ const ResultsPillar = ({setSearchHidden, isSearching, searchCriteria, results, r
         { isSearching?<LoadModal />:undefined }
       </ContentPillar>
     </scrollPillar>
-    : <OrganismPillar current={organism} onBack={showResultList} /> }
+    {organism?<OrganismPillar current={organism} onBack={showResultList} />:undefined}
   </resultsPillar>
 };
 
