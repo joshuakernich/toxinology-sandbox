@@ -422,6 +422,26 @@ const OrganismPillar = ({ current, onBack }) => {
           {makeSection('Habitat',currentDetails.geninfo.habitat)}
         </Collapsible>
         <Collapsible header="Venom">
+          <Columns>
+          {makePill('Crude Venom',currentDetails.venom.crude_venom)}
+          {makePill('Antivenom Studies',currentDetails.venom.antivenom_studies)}
+          {makePill('Average Venom Quantity',currentDetails.venom.average_venom_qty)}
+          {makePill('Maximum Venom Quantity',currentDetails.venom.maximum_venom_qty)}
+          {makePill('Cardiotoxins',currentDetails.venom.cardiotoxins)}
+          {makePill('Myotoxins',currentDetails.venom.myotoxins)}
+          {makePill('Necrotoxins',currentDetails.venom.necrotoxins)}
+          {makePill('Necrotoxins',currentDetails.venom.nephrotoxins)}
+          {makePill('Other Toxins',currentDetails.venom.other_toxins)}
+          {makePill('Neurotoxins Channel Toxins',currentDetails.venom.neurotoxins_channel_toxins)}
+          {makePill('Other ld50 Estimates',currentDetails.venom.other_ld50_estimates)}
+          {makePill('Preferred ld50 Estimate',currentDetails.venom.preferred_ld50_estimate)}
+          {makePill('Other Studies',currentDetails.venom.other_studies)}
+          {makePill('Component ld50',currentDetails.venom.component_ld50)}
+          {makePill('Cross Reactivity',currentDetails.venom.cross_reactivity)}
+          {makePill('Venom Activity',currentDetails.venom.venom_activity)}
+          {makePill('Haematological Haemorrhagins',currentDetails.venom.haematological_haemorrhagins)}
+          </Columns>
+          <Br1/>
           <h2>Antivenom</h2>
           <ol>
             {currentDetails.antivenoms.map( v => <li>
@@ -430,6 +450,9 @@ const OrganismPillar = ({ current, onBack }) => {
               <p>{v.product_description}</p>
             </li> )}
           </ol>
+
+          <Br1/>
+          {makeSection('Venom Components',currentDetails.venom.venom_components)}
         </Collapsible>
         <Collapsible header="Diagnosis">
           {getDiagnosis()}

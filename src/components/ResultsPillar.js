@@ -130,8 +130,8 @@ const ResultsPillar = ({setSearchHidden, isSearching, searchCriteria, results, r
         
         <Br1/>
 
-        { resultPills?.map(value => <Pill>{ value }</Pill>) }
-        <Br1/>
+        {/* resultPills?.map(value => <Pill>{ value }</Pill>) */}
+        
         
         <div class={style.resultlist}>
         { results?.exclusive?.map(result => <Result current={result} onClick={() => showResult(result)}></Result>) }
