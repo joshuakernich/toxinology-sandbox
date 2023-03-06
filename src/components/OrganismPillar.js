@@ -129,10 +129,10 @@ const OrganismPillar = ({ current, onBack }) => {
     return <Gallery onImage={setImageExpand} gallery={g}/>;
   }
 
-  const makePill = (header,text) => {
+  const makePill = (header,...par) => {
     return<Pill>
       <h3>{header}</h3>
-      <p>{text}</p>
+      { par.map( p => <p>{p}</p> ) }
     </Pill>
   }
 
@@ -396,13 +396,13 @@ const OrganismPillar = ({ current, onBack }) => {
           { currentDetails.master.orgclass == 'SN'?
             <>
             <Br1/>
-            {makeSection('Scales',currentDetails.taxonomy.head_scales)}
+            {makeSection('Head Scales',currentDetails.taxonomy.head_scales)}
             <Columns>
               {makePill('Adult Length',currentDetails.taxonomy.adult_length)}
               {makePill('Mid Body Scales',currentDetails.taxonomy.min_mid_body_rows+' > '+currentDetails.taxonomy.max_mid_body_rows+' (usually '+currentDetails.taxonomy.modal_mid_body_rows+')')}
-              {makePill('Subcaudal Scales',currentDetails.taxonomy.min_subcaudals+' > '+currentDetails.taxonomy.max_subcaudals)}
+              {makePill('Subcaudal Scales',currentDetails.taxonomy.min_subcaudals+' > '+currentDetails.taxonomy.max_subcaudals, currentDetails.taxonomy.anals_detail)}
               {makePill('Ventral Scales',currentDetails.taxonomy.min_ventrals+' > '+currentDetails.taxonomy.max_ventrals)}
-              {makePill('Anal Scales',currentDetails.taxonomy.anals_detail)}
+              {makePill('Anal Category',currentDetails.taxonomy.anals_category==1?'divided':'single')}
             </Columns>
             </> : undefined
         }
