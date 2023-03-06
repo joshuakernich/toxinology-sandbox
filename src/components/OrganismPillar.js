@@ -428,6 +428,8 @@ const OrganismPillar = ({ current, onBack }) => {
             {makeP(currentDetails.clinical.detail_prognosis)}
           </Callout>
           <Br1/>
+          {makeP(currentDetails.clinical.specific_clinical_effects)}
+          <Br1/>
           <Columns>
             {makePill('Children',currentDetails.clinical.children)}
             {makePill('Pregnancy',currentDetails.clinical.pregnancy)}
@@ -435,8 +437,6 @@ const OrganismPillar = ({ current, onBack }) => {
           </Columns>
           <Br1/>
           {getClinical()}
-          <Br1/>
-          {makeP(currentDetails.clinical.specific_clinical_effects)}
         </Collapsible>
         
         <Collapsible header='References'>
