@@ -22,7 +22,7 @@ const ORGANISM_TYPES = [
   { key: "pp", t: 'Poisonous Plant', i: '../assets/icons/icon-flower.svg' },
 ];
 
-const SearchPillar = ({ isSearchHidden, setSearchHidden, onChange }) => {
+const SearchPillar = ({ isSearchHidden, setSearchHidden, onChange, resultCount, isSearching }) => {
 
   // PF: we need to keep track of the list/keyword/organisms between renders.
   // using refs here because the child elements seem to be handling their own stuff.
@@ -125,7 +125,7 @@ const SearchPillar = ({ isSearchHidden, setSearchHidden, onChange }) => {
       {drill == 'labs' && <LabsPillar toBack={toBack}/>}
     </scrollPillar>
     <searchTogglePanel>
-      <button onclick={()=> setSearchHidden(true)} class={style.more}>Show Search Results</button>
+      <button onclick={()=> setSearchHidden(true)} class={style.more}>Show {resultCount && !isSearching?resultCount:'Search'} Results {isSearching?<littleLoadWheel/>:undefined}</button>
     </searchTogglePanel>
   </searchPillar>
 };

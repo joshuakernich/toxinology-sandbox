@@ -55,9 +55,7 @@ searchPillar{
   position: relative;
 }
 
-searchPillar[hidden]{
-  display: none;
-}
+
 
 searchTogglePanel{
   display: none;
@@ -449,6 +447,21 @@ loadWheel{
   background-size: 100%;
 }
 
+littleLoadWheel{
+  width: 15px;
+  height: 15px;
+  border-style: solid;
+  border-color: white;
+  border-width: 1px 0px 0px 1px;
+  display: inline-block;
+  animation-name: spin;
+  animation-iteration-count: infinite;
+  animation-duration: 0.5s;
+  animation-timing-function: linear;
+  border-radius: 100px;
+  margin-left: 10px;
+}
+
 collapsibleContainer{
   border-bottom: 1px solid var(--border);
   display: block;
@@ -654,5 +667,9 @@ homePillar{
 
   searchPillar scrollPillar{
     padding-bottom: 100px;
+  }
+
+  searchPillar[hidden]{
+    display: none;
   }
 }

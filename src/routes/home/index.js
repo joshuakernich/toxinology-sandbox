@@ -78,6 +78,8 @@ const Home = () => {
 		<SearchPillar 
       isSearchHidden={isSearchHidden} 
       setSearchHidden={setSearchHidden} 
+      resultCount={searchResults?searchResults.exclusiveCount:undefined}
+      isSearching={isSearching}
       onChange={onSearchChanged}>
       </SearchPillar>
 		<ResultsPillar 
