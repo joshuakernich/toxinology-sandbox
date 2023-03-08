@@ -626,7 +626,20 @@ switchOption label{
   text-align: center;
 }
 
+homePillar{
+  display: flex;
+}
+
 @media only screen and (max-width: 700px){
+
+  homePillar{
+    display: block;
+  }
+
+  searchPillar, resultsPillar{
+    width: 100vw;
+  }
+
   searchTogglePanel{
     display: block;
   }

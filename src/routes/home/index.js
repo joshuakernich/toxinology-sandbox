@@ -74,7 +74,7 @@ const Home = () => {
 
   console.log('currentSearchCriteria',currentSearchCriteria);
 
-	return <div class={style.home}>
+	return <homePillar>
 		<SearchPillar 
       isSearchHidden={isSearchHidden} 
       setSearchHidden={setSearchHidden} 
@@ -86,7 +86,7 @@ const Home = () => {
       searchCriteria={currentSearchCriteria}
       results={searchResults}>
       </ResultsPillar>
-	</div>
+	</homePillar>
 };
 
 export default Home;
