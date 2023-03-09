@@ -109,6 +109,7 @@ const SearchPillar = ({ isSearchHidden, setSearchHidden, onChange, onDiagnosticC
         <h2>Location</h2><Br2/>
         <LocationBuilder current={locationsRef.current} onChange={onLocationChange}/>
         <Br1/> 
+        <h2>Keywords</h2>
         <h3>Name, region, taxonomy, or other details</h3>
         <Br2/>
         <KeywordBuilder current={keywordsRef.current} onChange={onKeywordChange}/>

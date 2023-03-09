@@ -2,7 +2,9 @@ import { h, Component } from 'preact';
 import { Link } from "preact-router/match";
 import { useLayoutEffect, useState, useRef, useContext } from 'preact/hooks';
 import { sitemap } from "../libs/sitemap.js";
+import style from './shared.css';
 import SearchResults from '../components/SearchResultsContext.js';
+import { Br1, Br2 } from './Br';
 
 const DIAGNOSIS_ANSWERS_VALUES = {
   UNANSWERED: "U",
@@ -31,16 +33,17 @@ const DiagnosisQuestion = (props) => {
     props.onChange({key: props._key, response: nextValue});
   }
 
+
   const options = props.options || DEFAULT_OPTIONS;
 
-  return <diagnosticQuestionContainer>
+  return <diagnosticQuestionContainer answered={props.response != 'U'}>
     <diagnosticQuestionText>
       {props.text}
     </diagnosticQuestionText>
 
     <switchContainer className={options.length > 4 ? "vertical" : ""}>
       {options.map(op => [
-        <switchOption><input 
+        <switchOption checked={props.response == op.value}><input 
           type="radio" 
           name={`${props._key}-input`} 
           value={op.value}
@@ -113,15 +116,18 @@ const DiagnosticQuestionnaire = ({current, onChange}) => {
 
   return [
     <searchWrapper>
+      <h1>Diagnostic Questionnaire</h1>
+      <h3>Questions will appear one-by-one</h3>
+      <Br1/>
       <diagnosticQuestionWrapper>
         {
           filteredQuestions
             .sort((qa, qb) => qa.response - qb.response)
-            .filter((v) => v.response === 'U')
+            //.filter((v) => v.response === 'U')
             .map((query) => {
 
             return [
-              <DiagnosisQuestion {...query} index={query.index}  onChange={({key, response}) => {
+              <DiagnosisQuestion {...query} index={query.index}  response={query.response} onChange={({key, response}) => {
                 const question = questionQuery.find(question => question._key == key);
 
                 question.response = response;
@@ -132,7 +138,7 @@ const DiagnosticQuestionnaire = ({current, onChange}) => {
           })
         }
       </diagnosticQuestionWrapper>
-      <button onClick={clearResponses}>Restart Questionnaire</button>
+      <button class={style.restart} onClick={clearResponses}>Restart Questionnaire</button>
       {/*matches && <diagnosticMatchesWrapper>
         <diagnosticMatchesHeader>Found {matches.count} related results.</diagnosticMatchesHeader>
         <diagnosticMatchesContainer>{matches.sequences.map(v => [<a href={`/details/${v.key}`}>{v.key}</a>, ', '])}</diagnosticMatchesContainer>

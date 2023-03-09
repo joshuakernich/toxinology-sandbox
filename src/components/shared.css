@@ -275,6 +275,18 @@ button.back:before{
   top: -1px;
 }
 
+button.restart:before{
+  content: "";
+  display: inline-block;
+  width: 15px;
+  height: 15px;
+  position: relative;
+  margin-right: 10px;
+  opacity: 0.4;
+  background-image: url(../assets/icons/icon-refresh-ccw.svg);
+  background-size: 100%;
+}
+
 resultspillar button{
   background: var(--dark);
 }
@@ -624,8 +636,11 @@ switchOption input{
   background: none;
   border: none;
   border-top: none;
-
   appearance: none;
+}
+
+switchOption[checked]{
+  box-shadow: inset 0px -2px white;
 }
 
 
@@ -641,6 +656,30 @@ switchOption label{
 
 homePillar{
   display: flex;
+}
+
+@keyframes appear{
+  0%{
+    opacity: 0;
+    left: 100%;
+  }
+
+  100%{
+    opacity: 1;
+    left: 0%;
+  }
+}
+
+diagnosticQuestionContainer{
+  display: none;
+  
+}
+
+diagnosticQuestionContainer:first-of-type, diagnosticQuestionContainer[answered], diagnosticQuestionContainer[answered] + diagnosticQuestionContainer{
+  display: block;
+  position: relative;
+  animation-name: appear;
+  animation-duration: 0.5s;
 }
 
 @media only screen and (max-width: 700px){
