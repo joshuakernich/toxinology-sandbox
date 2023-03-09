@@ -1,8 +1,11 @@
-import { h } from 'preact';
+import { h, createContext } from 'preact';
 import style from './style.css';
 import SearchPillar from '../../components/SearchPillar';
 import ResultsPillar from '../../components/ResultsPillar';
 import API from '../../services/api';
+import { sitemap } from "../../libs/sitemap.js";
+
+import SearchResults from "../../components/SearchResultsContext";
 
 import { useState, useRef, useEffect } from 'preact/hooks';
 
@@ -19,6 +22,8 @@ const Home = () => {
 
   const [currentSearchCriteria, setCurrentSearchCriteria] = useState({});
   const [searchResults, setSearchResults] = useState(undefined);
+
+  const [diagnostics, setDiagnostics] = useState([]);
 
   useEffect(() => {
     // PF: uncomment this if you want to perform a search immediately on load
@@ -58,7 +63,6 @@ const Home = () => {
   };
 
   const onSearchChanged = (newSearchCriteria) => {
-
     searchCriteria.current = newSearchCriteria;
     searchCriteria.current.timeStamp = Date.now();
 
@@ -70,22 +74,64 @@ const Home = () => {
       // don't send any variables, we'll use what we've stored
       performSearch();
     }, SEARCH_POLL_DURATION);
-  }
+  };
+  
+  const onDiagnosticChange = (newDiagnostics) => {
+    // filter the results
+    setDiagnostics(newDiagnostics);
+  };
 
   console.log('currentSearchCriteria',currentSearchCriteria);
 
+  const filterResults = (unfilteredResults) => {
+    const answeredDiagnosisTrack = diagnostics.map(diagnosticQuestion => diagnosticQuestion.response).join('').replace(/u/gi, ".").replace(/\.*$/g, "")
+    const answeredDiagnosisTrackRegex = new RegExp(answeredDiagnosisTrack, "ig");
+
+    // work out how to filter results jfc
+    return unfilteredResults
+      .filter((organism) => {
+        const track = sitemap.diagnosis.tracks[organism.oid].q;
+
+        return track.match(answeredDiagnosisTrackRegex);
+      });
+  };
+
+  // filter the search
+  const getResults = (unfilteredResults) => {
+    if (!diagnostics || diagnostics.length == 0) return unfilteredResults;
+    
+    const diagnosticsDefinitions = diagnostics.filter(diagnosticQuestion => !["U", "."].includes(diagnosticQuestion.response));
+
+    if (diagnosticsDefinitions.length == 0) return unfilteredResults;
+    
+    const filteredExclusiveResults = filterResults(searchResults.exclusive);
+    const filteredUnexclusiveResults = filterResults(searchResults.unexclusive);
+
+    return {
+      exclusive: filteredExclusiveResults,
+      unexclusive: filteredUnexclusiveResults,
+      exclusiveCount: filteredExclusiveResults.length,
+      unexclusiveCount: filteredUnexclusiveResults.length
+    };
+  };
+
+  const filteredResults = getResults(searchResults);
+
 	return <homePillar>
-		<SearchPillar 
-      isSearchHidden={isSearchHidden} 
-      setSearchHidden={setSearchHidden} 
-      onChange={onSearchChanged}>
-      </SearchPillar>
-		<ResultsPillar 
-      isSearching={isSearching} 
-      setSearchHidden={setSearchHidden} 
-      searchCriteria={currentSearchCriteria}
-      results={searchResults}>
+    <SearchResults.Provider value={searchResults}>
+      <SearchPillar 
+        isSearchHidden={isSearchHidden} 
+        setSearchHidden={setSearchHidden} 
+        onChange={onSearchChanged}
+        onDiagnosticChange={onDiagnosticChange}>
+        </SearchPillar>
+      <ResultsPillar 
+        isSearching={isSearching} 
+        setSearchHidden={setSearchHidden} 
+        searchCriteria={currentSearchCriteria}
+        results={filteredResults}>
       </ResultsPillar>
+    </SearchResults.Provider>
 	</homePillar>
 };
 

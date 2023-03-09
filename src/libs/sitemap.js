@@ -67,7 +67,7 @@ let sitemapPromise = fetch(`${API_URL}/assets/sitemap.json`)
     
     // expand the tracks
     // the first question is about animals
-    const questionCount = sitemap.diagnosis.questions.length - 1;
+    const questionCount = sitemap.diagnosis.questions.length;
     const trackKeys = Object.keys(sitemap.diagnosis.tracks);
 
     trackKeys.forEach(key => {

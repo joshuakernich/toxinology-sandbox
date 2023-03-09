@@ -1,4 +1,4 @@
-export const API_URL = `http://54.253.37.47:80`;
+export const API_URL = `http://localhost:80`;
 export const REGION_KEY = "region";
 export const COUNTRY_KEY = "countries";
 export const COMMON_NAME_KEY = "common_names";

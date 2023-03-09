@@ -1,7 +1,8 @@
 import { h, Component } from 'preact';
 import { Link } from "preact-router/match";
-import { useState, useLayoutEffect } from 'preact/hooks';
+import { useLayoutEffect, useState, useRef, useContext } from 'preact/hooks';
 import { sitemap } from "../libs/sitemap.js";
+import SearchResults from '../components/SearchResultsContext.js';
 
 const DIAGNOSIS_ANSWERS_VALUES = {
   UNANSWERED: "U",
@@ -52,102 +53,69 @@ const DiagnosisQuestion = (props) => {
   </diagnosticQuestionContainer>;
 }
 
-const DiagnosticQuestionnaire = () => {
-  const [questionQuery, setQuestionQuery] = useState([]);
-  const [countryRegion, setCountryRegion] = useState("");
+const DiagnosticQuestionnaire = ({current, onChange}) => {
+  const searchResults = useContext(SearchResults);
+  const [questionQuery, setQuestionQuery] = useState(current);
 
-  const clearResponses = () => {
-    const nextQuestionQuery = sitemap.diagnosis.questions.map((question, index) => ({
+  const clearResponses = (invokeChange = true) => {
+    const nextQuestionQuery = sitemap.diagnosis.questions.map((question, index) => {
       // key is a protected keyword
-      _key: question.key,
-      index,
-      text: question.text,
-      options: question.options,
-      response: DIAGNOSIS_ANSWERS_VALUES.UNANSWERED
-    }));
+      const currentResponse = (!invokeChange && current && current[index]?.response) || DIAGNOSIS_ANSWERS_VALUES.UNANSWERED;
+
+      return {
+        _key: question.key,
+        index,
+        text: question.text,
+        options: question.options,
+        response: currentResponse
+      };
+    });
 
     setQuestionQuery(nextQuestionQuery);
-    setCountryRegion("");
+
+    if (!invokeChange) return;
+
+    onChange([]);
   }
 
   useLayoutEffect(() => {
     // write out the question query
-    clearResponses();
+    console.log('layout effect');
+    clearResponses(false);
+    console.log(current);
     // todo make the query respond to url
 
     // only run once
   }, []);
+  
+  const updateQuestionQueries = (values) => {
+    current = [];
 
-  // lets check how many responses there might be...
-  const matchingOrgType = questionQuery.length && questionQuery[0].response && questionQuery[0].options.find(o => o.value == questionQuery[0].response);
-  const matchingCode = questionQuery
-  // set all unanswered to unknown.
-    .filter(question => !question.options)
-    .map(question => question.response == DIAGNOSIS_ANSWERS_VALUES.UNANSWERED ? DIAGNOSIS_ANSWERS_VALUES.UNKNOWN : question.response)
-    .reduce((s, v, i) => s += v, "");
-  const matchingCodeTruncated = matchingCode.replace(/\.*$/g,"");
+    onChange(values);
+    setQuestionQuery(values);
+  };
 
-  const getMatchingSequenceForLength = (length, exclusiveNo = false) => {
-    const slicedMatchingCode = matchingCode.slice(0, length);
-    const wildcardedMatchingCode = slicedMatchingCode.replace(/\.*$/g,"").replace(/(Y|N)/g,"($1|\\\.)");
-    const matchingRegEx = new RegExp(`^${wildcardedMatchingCode}`, "g");
+  const allResults = [...searchResults.exclusive, ...searchResults.unexclusive];
 
-    // filter the tracks by the country selected
-    const trackKeys = Object.keys(sitemap.diagnosis.tracks);
+  // TODO: CLEAN CODE REUSE!
+  const answeredDiagnosisTrack = questionQuery.map(diagnosticQuestion => diagnosticQuestion.response).join('').replace(/u/gi, ".").replace(/\.*$/g, "");
+  const answeredDiagnosisTrackRegex = new RegExp(answeredDiagnosisTrack, "ig");
 
-    const matchingSequences = trackKeys
-      .filter(k => matchingOrgType ? matchingOrgType.values.includes(k.substring(0, 2)) : true)
-      .map((i) => {
-        const track = sitemap.diagnosis.tracks[i];
-        const value = track.q;
+  const possibleOrganismTracks = allResults
+    .map(organism => sitemap.diagnosis.tracks[organism.oid].q)
+    .filter(track => track.match(answeredDiagnosisTrackRegex));
 
-        const trackCountries = track.c.map(ci => sitemap.countries[ci]);
-        const trackRegions = track.r.map(ri => sitemap.regions[ri]);
-
-        const isInCountryRegion = !countryRegion || 
-          trackCountries.find(c => c.includes(countryRegion)) || 
-          trackRegions.find(r => r.includes(countryRegion));
-
-        if (!!isInCountryRegion && value.match(matchingRegEx)) {
-          if (countryRegion) console.log(trackCountries);
-          return {
-            key: i,
-            value: value
-          };
-        }
-      })
-      .filter(v => v);
-
-    return {code: slicedMatchingCode, count: matchingSequences.length, sequences: matchingSequences};
-  }
-
-  const getQuestionNecessity = (_questionIndex) => {
-    const questionIndex = _questionIndex - 1;
-    if (questionIndex < 0) return false;
-
-    // populate the rest of the complete matching code so we can test it
-    if (![DIAGNOSIS_ANSWERS_VALUES.UNKNOWN].includes(matchingCode[questionIndex])) return false;
-
-    const possibleSequences = getMatchingSequenceForLength(Math.max(matchingCodeTruncated.length, questionIndex));
-    
-    const options = possibleSequences.sequences.map(s => s.value.charAt(questionIndex)).filter((v, i, a) => v && a.indexOf(v) == i);
-
-    return !(options.includes(DIAGNOSIS_ANSWERS_VALUES.YES)) || options.length < 2;
-  }
-
-  const unnecessayQuestions = questionQuery.filter(q => getQuestionNecessity(q.index));
-  const necessaryQuestions = questionQuery.filter(q => !getQuestionNecessity(q.index));
-
-  const matches = getMatchingSequenceForLength(matchingCode.length);
-
-  matches.sequences.length = Math.min(matches.count, 12);
+  // we want to see only questions where a Y or N answer exists
+  const filteredQuestions = questionQuery
+    .filter(question => {
+      return possibleOrganismTracks.find(track => ['Y', 'N'].includes(track[question.index]))
+    });
 
   return [
-    
     <searchWrapper>
       <diagnosticQuestionWrapper>
         {
-          necessaryQuestions
+          filteredQuestions
             .sort((qa, qb) => qa.response - qb.response)
             .filter((v) => v.response === 'U')
             .map((query) => {
@@ -158,7 +126,7 @@ const DiagnosticQuestionnaire = () => {
 
                 question.response = response;
 
-                setQuestionQuery([...questionQuery]);
+                updateQuestionQueries([...questionQuery]);
               }} />
             ]
           })

@@ -22,7 +22,7 @@ const ORGANISM_TYPES = [
   { key: "pp", t: 'Poisonous Plant', i: '../assets/icons/icon-flower.svg' },
 ];
 
-const SearchPillar = ({ isSearchHidden, setSearchHidden, onChange }) => {
+const SearchPillar = ({ isSearchHidden, setSearchHidden, onChange, onDiagnosticChange }) => {
 
   // PF: we need to keep track of the list/keyword/organisms between renders.
   // using refs here because the child elements seem to be handling their own stuff.
@@ -32,24 +32,25 @@ const SearchPillar = ({ isSearchHidden, setSearchHidden, onChange }) => {
   const organismTypesRef = useRef({});
 
   // PF TODO: implement search criteria
-  const diagnosticTypesRef = useRef({});
+  const diagnosticTypesRef = useRef([]);
 
-  const [drill,setDrill] = useState('root');
+  const [drill, setDrill] = useState('root');
 
   const toBack = () => {
     setDrill('root');
   }
 
   const toDiagnostic = () => {
-    setDrill('diagnostic')
+    setDrill('diagnostic');
   }
 
   const toLabs = () => {
-    setDrill('labs')
+    setDrill('labs');
   }
 
   // ping the server to get results back as we type stuff in.
   const onUpdate = () => {
+    console.trace('onupdate invoked')
     // we've updated stuff, so lets tell the parent element we've updated stuff.
     const convertOrganismTypesToEnum = (organismTypes) => {
       return Object.keys(organismTypes)
@@ -63,8 +64,7 @@ const SearchPillar = ({ isSearchHidden, setSearchHidden, onChange }) => {
     onChange({
       locations: locationsRef.current,
       keywords: keywordsRef.current,
-      organismTypes: organismTypes,
-      diagnosticTypes: diagnosticTypesRef.current
+      organismTypes: organismTypes
     });
   }
 
@@ -95,9 +95,7 @@ const SearchPillar = ({ isSearchHidden, setSearchHidden, onChange }) => {
   const onDiagnosticTypesChange = (newDiagnosticTypes) => {
     diagnosticTypesRef.current = newDiagnosticTypes;
 
-    console.log(`diagnosticTypes Changed`, diagnosticTypesRef.current);
-
-    onUpdate();
+    onDiagnosticChange(diagnosticTypesRef.current);
   }
 
   return <searchPillar hidden={isSearchHidden}>
@@ -107,8 +105,7 @@ const SearchPillar = ({ isSearchHidden, setSearchHidden, onChange }) => {
         <Br1/>
         <h2>Location</h2><Br2/>
         <LocationBuilder current={locationsRef.current} onChange={onLocationChange}/>
-        <Br1/>
-        <h2>Keywords</h2>
+        <Br1/> 
         <h3>Name, region, taxonomy, or other details</h3>
         <Br2/>
         <KeywordBuilder current={keywordsRef.current} onChange={onKeywordChange}/>
