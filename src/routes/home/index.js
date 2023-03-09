@@ -120,6 +120,7 @@ const Home = () => {
 	return <homePillar>
     <SearchResults.Provider value={searchResults}>
       <SearchPillar 
+        isSearching={isSearching} 
         isSearchHidden={isSearchHidden} 
         setSearchHidden={setSearchHidden} 
         onChange={onSearchChanged}

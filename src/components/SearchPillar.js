@@ -8,7 +8,8 @@ import LocationBuilder from './LocationBuilder';
 import KeywordBuilder from './KeywordBuilder';
 import {RadioGroup} from './Radio';
 import { Br1, Br2 } from './Br';
-import { useState, useRef } from 'preact/hooks';
+import { useState, useRef, useContext } from 'preact/hooks';
+import SearchResults from './SearchResultsContext';
 
 const ORGANISM_TYPES = [
   { key: "sn", t: 'Snake', i: '../assets/icons/icon-snake.svg' },
@@ -22,8 +23,8 @@ const ORGANISM_TYPES = [
   { key: "pp", t: 'Poisonous Plant', i: '../assets/icons/icon-flower.svg' },
 ];
 
-const SearchPillar = ({ isSearchHidden, setSearchHidden, onChange, onDiagnosticChange }) => {
-
+const SearchPillar = ({ isSearchHidden, setSearchHidden, onChange, onDiagnosticChange, isSearching }) => {
+  const searchResults = useContext(SearchResults);
   // PF: we need to keep track of the list/keyword/organisms between renders.
   // using refs here because the child elements seem to be handling their own stuff.
   // that's cool and all <3.
@@ -98,6 +99,8 @@ const SearchPillar = ({ isSearchHidden, setSearchHidden, onChange, onDiagnosticC
     onDiagnosticChange(diagnosticTypesRef.current);
   }
 
+  const resultCount = searchResults && (searchResults.exclusiveCount + searchResults.unexclusiveCount);
+
   return <searchPillar hidden={isSearchHidden}>
     <scrollPillar>
       {drill == 'root' ? ( <ContentPillar>
@@ -122,7 +125,7 @@ const SearchPillar = ({ isSearchHidden, setSearchHidden, onChange, onDiagnosticC
       {drill == 'labs' && <LabsPillar toBack={toBack}/>}
     </scrollPillar>
     <searchTogglePanel>
-      <button onclick={()=> setSearchHidden(true)} class={style.more}>Show Search Results</button>
+      <button onclick={()=> setSearchHidden(true)} class={style.more}>Show {resultCount && !isSearching?resultCount:'Search'} Results {isSearching?<littleLoadWheel/>:undefined}</button>
     </searchTogglePanel>
   </searchPillar>
 };
