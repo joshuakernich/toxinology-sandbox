@@ -275,6 +275,10 @@ button.back:before{
   top: -1px;
 }
 
+button.restart{
+  background: rgba(0, 0, 0, 0.1);
+}
+
 button.restart:before{
   content: "";
   display: inline-block;
@@ -282,7 +286,6 @@ button.restart:before{
   height: 15px;
   position: relative;
   margin-right: 10px;
-  opacity: 0.4;
   background-image: url(../assets/icons/icon-refresh-ccw.svg);
   background-size: 100%;
 }

@@ -23,7 +23,7 @@ const ORGANISM_TYPES = [
   { key: "pp", t: 'Poisonous Plant', i: '../assets/icons/icon-flower.svg' },
 ];
 
-const SearchPillar = ({ isSearchHidden, setSearchHidden, onChange, onDiagnosticChange, isSearching }) => {
+const SearchPillar = ({ isSearchHidden, setSearchHidden, diagnostics, onChange, onDiagnosticChange, isSearching }) => {
   const searchResults = useContext(SearchResults);
   // PF: we need to keep track of the list/keyword/organisms between renders.
   // using refs here because the child elements seem to be handling their own stuff.
@@ -101,6 +101,8 @@ const SearchPillar = ({ isSearchHidden, setSearchHidden, onChange, onDiagnosticC
 
   const resultCount = searchResults && (searchResults.exclusiveCount + searchResults.unexclusiveCount);
 
+  const diagnosticCount = diagnostics.filter(diagnosticQuestion => !["U", "."].includes(diagnosticQuestion.response)).length;
+
   return <searchPillar hidden={isSearchHidden}>
     <scrollPillar>
       {drill == 'root' ? ( <ContentPillar>
@@ -120,7 +122,7 @@ const SearchPillar = ({ isSearchHidden, setSearchHidden, onChange, onDiagnosticC
         <RadioGroup type='grid' o={ORGANISM_TYPES} current={organismTypesRef.current} onChange={onOrganismTypeChange}/>
         <Br1/>
         <h2>Diagnostic Effects</h2><Br2/>
-        <button onclick={toDiagnostic} class={style.more}>None Observed</button>
+        <button onclick={toDiagnostic} class={style.more}>{diagnosticCount?diagnosticCount + ' effect'+(diagnosticCount>1?'s':'')+' observed':'None Observed'}</button>
       </ContentPillar>):undefined}
       {drill == 'diagnostic' && <DiagnosticPillar current={diagnosticTypesRef.current} onChange={onDiagnosticTypesChange} toBack={toBack}/>}
       {drill == 'labs' && <LabsPillar toBack={toBack}/>}

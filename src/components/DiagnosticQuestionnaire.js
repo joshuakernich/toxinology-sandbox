@@ -86,6 +86,7 @@ const DiagnosticQuestionnaire = ({current, onChange}) => {
     console.log('layout effect');
     clearResponses(false);
     console.log(current);
+
     // todo make the query respond to url
 
     // only run once
@@ -138,7 +139,7 @@ const DiagnosticQuestionnaire = ({current, onChange}) => {
           })
         }
       </diagnosticQuestionWrapper>
-      <button class={style.restart} onClick={clearResponses}>Restart Questionnaire</button>
+      <button class={style.restart} onClick={clearResponses}>Clear Responses</button>
       {/*matches && <diagnosticMatchesWrapper>
         <diagnosticMatchesHeader>Found {matches.count} related results.</diagnosticMatchesHeader>
         <diagnosticMatchesContainer>{matches.sequences.map(v => [<a href={`/details/${v.key}`}>{v.key}</a>, ', '])}</diagnosticMatchesContainer>
