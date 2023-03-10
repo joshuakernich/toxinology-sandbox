@@ -221,23 +221,12 @@ const OrganismPillar = ({ current, onBack }) => {
 
   const getVenom = () => {
     return <>
-        <h2>Antivenom</h2>
-        <ol>
-          {currentDetails.antivenoms.map( v => <li>
-            <p>{v.name}</p>
-            <h3>{v.id} by {v.manufacturer}</h3>
-            <Br2/>
-            <p>{v.product_description}</p>
-          </li> )}
-        </ol>
-
-        <Br1/>
+        
         <h2>Venom Components</h2>
         {makeList(currentDetails.venom.venom_components)}
 
 
         {makeSection('Crude Venom',currentDetails.venom.crude_venom)}
-        {makeSection('Antivenom Studies',currentDetails.venom.antivenom_studies)}
         {makeSection('Average Venom Quantity',currentDetails.venom.average_venom_qty)}
         {makeSection('Maximum Venom Quantity',currentDetails.venom.maximum_venom_qty)}
         {makeSection('Cardiotoxins',currentDetails.venom.cardiotoxins)}
@@ -313,13 +302,37 @@ const OrganismPillar = ({ current, onBack }) => {
     </div>
   }  
 
-  const getTreatment = () => {
+  const getAntivenom = () => {
     const antivenom = [
       {h:'Antivenom Therapy',key:'antivenom_therapy'},
       {h:'Antivenom Dosage',key:'antivenom_dosage'},
       {h:'Antivenom Reactions',key:'antivenom_reactions'},
       {h:'Adverse Antivenom Reaction Management',key:'adverse_av_reaction_mngt'},
       ]
+
+    return <>
+      <h2>Known Antivenoms</h2>
+      <ol>
+        {currentDetails.antivenoms.map( v => <li>
+          <p>{v.name}</p>
+          <h3>{v.id} by {v.manufacturer}</h3>
+          <Br2/>
+          <p>{v.product_description}</p>
+        </li> )}
+      </ol>
+
+      <Br1/>
+      <Columns>
+        {antivenom.map( key => makePill(key.h,currentDetails.treatment[key.key]))}
+      </Columns>
+
+      <Br1/>
+      {makeSection('Antivenom Studies',currentDetails.venom.antivenom_studies)}
+    </>
+  }
+
+  const getTreatment = () => {
+    
 
     const keys = [
      
@@ -368,11 +381,7 @@ const OrganismPillar = ({ current, onBack }) => {
         </>:undefined
       }
       
-      <h2>Antivenom</h2>
-      <Br2/>
-      <Columns>
-        {antivenom.map( key => makePill(key.h,currentDetails.treatment[key.key]))}
-      </Columns>
+      
       <Br1/>
       <h2>Management in Detail</h2>
       <Br2/>
@@ -433,7 +442,7 @@ const OrganismPillar = ({ current, onBack }) => {
           {getTreatment()}
         </Collapsible>
         <Collapsible header="Antivenom">
-          {getVenom()}
+          {getAntivenom()}
         </Collapsible>
         <Collapsible header='Clinical Effects'>
           <Callout>
@@ -450,7 +459,7 @@ const OrganismPillar = ({ current, onBack }) => {
           <Br1/>
           {getClinical()}
         </Collapsible>
-        
+
 
         <Collapsible header="Description">
           {makeP(currentDetails.taxonomy.general_shape)}
