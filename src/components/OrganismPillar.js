@@ -426,9 +426,32 @@ const OrganismPillar = ({ current, onBack }) => {
           {makeP(currentDetails.first_aid.descr)}
           {makeList(currentDetails.first_aid.details)}
         </Collapsible>
+        <Collapsible header="Diagnosis">
+          {getDiagnosis()}
+        </Collapsible>
         <Collapsible header="Further Treatment">
           {getTreatment()}
         </Collapsible>
+        <Collapsible header="Antivenom">
+          {getVenom()}
+        </Collapsible>
+        <Collapsible header='Clinical Effects'>
+          <Callout>
+            {makeP(currentDetails.clinical.detail_prognosis)}
+          </Callout>
+          <Br1/>
+          {makeP(currentDetails.clinical.specific_clinical_effects)}
+          <Br1/>
+          <Columns>
+            {makePill('Children',currentDetails.clinical.children)}
+            {makePill('Pregnancy',currentDetails.clinical.pregnancy)}
+            {makePill('Elderly',currentDetails.clinical.elderly)}
+          </Columns>
+          <Br1/>
+          {getClinical()}
+        </Collapsible>
+        
+
         <Collapsible header="Description">
           {makeP(currentDetails.taxonomy.general_shape)}
           <Br1/>
@@ -463,24 +486,8 @@ const OrganismPillar = ({ current, onBack }) => {
         <Collapsible header="Venom">
           {getVenom()}
         </Collapsible>
-        <Collapsible header="Diagnosis">
-          {getDiagnosis()}
-        </Collapsible>
-        <Collapsible header='Clinical Effects'>
-          <Callout>
-            {makeP(currentDetails.clinical.detail_prognosis)}
-          </Callout>
-          <Br1/>
-          {makeP(currentDetails.clinical.specific_clinical_effects)}
-          <Br1/>
-          <Columns>
-            {makePill('Children',currentDetails.clinical.children)}
-            {makePill('Pregnancy',currentDetails.clinical.pregnancy)}
-            {makePill('Elderly',currentDetails.clinical.elderly)}
-          </Columns>
-          <Br1/>
-          {getClinical()}
-        </Collapsible>
+        
+        
         
         <Collapsible header='References'>
           {makeP(currentDetails.taxonomy.ref)}
