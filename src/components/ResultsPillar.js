@@ -13,6 +13,7 @@ const ResultsPillar = ({setSearchHidden, isSearching, searchCriteria, results, r
   const sample = undefined;
 
   const [organism, setOrganism] = useState(sample);
+  const [displayMode, setDisplayMode] = useState('grid');
   
   console.log('results',results);
 
@@ -126,16 +127,25 @@ const ResultsPillar = ({setSearchHidden, isSearching, searchCriteria, results, r
         </resultsTogglePanel>
         {results && <h1>{results.exclusiveCount} Results</h1>}
 
+        
+
         {getSearchCriteria()}
+
+        <displayModeOptions>
+          <button onclick={()=> setDisplayMode('grid')}><img width={15} src='../assets/icons/icon-grid.svg'/></button>
+          <button onclick={()=> setDisplayMode('list')}><img width={15} src='../assets/icons/icon-list.svg'/></button>
+        </displayModeOptions>
+        
         
         <Br1/>
 
         {/* resultPills?.map(value => <Pill>{ value }</Pill>) */}
         
         
-        <div class={style.resultlist}>
+        <resultList mode={displayMode}>
+
         { results?.exclusive?.map(result => <Result current={result} onClick={() => showResult(result)}></Result>) }
-        </div>
+        </resultList>
         { isSearching?<LoadModal />:undefined }
       </ContentPillar>
     </scrollPillar>
