@@ -40,7 +40,7 @@ const bucket =
   'MI':'http://www.toxinology.com/images/marine_life/',
 }
 
-const Result = ({current={genus:'Thingo',species:'McThingo',common_names:'Thingamajig McThing'},onClick}) => {
+const Result = ({current={image:'blah',genus:'Thingo',species:'McThingo',common_names:'Thingamajig McThing'},onClick}) => {
 
   const binomial = current.genus + ' ' +current.species + ' ' + (current.subspecies?current.subspecies:'');
   const name = current.common_names.indexOf(',')?current.common_names.split(',')[0]:current.common_names;

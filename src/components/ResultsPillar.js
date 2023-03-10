@@ -101,8 +101,7 @@ const ResultsPillar = ({setSearchHidden, isSearching, searchCriteria, results, r
         <h1><span>Updating Results...</span></h1>
         {getSearchCriteria()}
         <Br1/>
-        <Br1/>
-        <div class={style.resultlist}>
+        <resultList mode={displayMode}>
           <Result/>
           <Result/>
           <Result/>
@@ -112,7 +111,7 @@ const ResultsPillar = ({setSearchHidden, isSearching, searchCriteria, results, r
           <Result/>
           <Result/>
           <Result/>
-        </div>
+        </resultList>
       </ContentPillar>
     </resultsPillar>
   }

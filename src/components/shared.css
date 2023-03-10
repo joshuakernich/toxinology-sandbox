@@ -320,7 +320,7 @@ resultlist resultContainer resultImage{
   width: 100%;
   height: 100px;
   display: block;
-  background-color: #555;
+  background-color: #ddd;
   position: relative;
 }
 
