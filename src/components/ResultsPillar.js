@@ -125,17 +125,18 @@ const ResultsPillar = ({setSearchHidden, isSearching, searchCriteria, results, r
         <resultsTogglePanel>
           <button onclick={()=> setSearchHidden(false)} class={style.back}>Refine Search</button>
         </resultsTogglePanel>
-        {results && <h1>{results.exclusiveCount} Results</h1>}
+        <div style={{'position':'relative'}}>
+          {results && <h1>{results.exclusiveCount} Results</h1>}
 
-        
+          
 
-        {getSearchCriteria()}
+          {getSearchCriteria()}
 
-        <displayModeOptions>
-          <button onclick={()=> setDisplayMode('grid')}><img width={15} src='../assets/icons/icon-grid.svg'/></button>
-          <button onclick={()=> setDisplayMode('list')}><img width={15} src='../assets/icons/icon-list.svg'/></button>
-        </displayModeOptions>
-        
+          <displayModeOptions>
+            <button onclick={()=> setDisplayMode('grid')}><img width={15} src='../assets/icons/icon-grid.svg'/></button>
+            <button onclick={()=> setDisplayMode('list')}><img width={15} src='../assets/icons/icon-list.svg'/></button>
+          </displayModeOptions>
+        </div>
         
         <Br1/>
 

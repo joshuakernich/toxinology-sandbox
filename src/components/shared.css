@@ -575,9 +575,7 @@ displayModeOptions{
   top: 0px;
   right: 0px;
   white-space: nowrap;
-  margin: 20px;
   border: 1px solid var(--border);
-  border-radius: 5px;
 }
 
 displayModeOptions button{
