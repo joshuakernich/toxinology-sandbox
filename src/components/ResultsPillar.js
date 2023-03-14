@@ -93,8 +93,6 @@ const ResultsPillar = ({setSearchHidden, isSearching, searchCriteria, results, r
         </h3>
   }
 
-  console.log('searchCriteria',searchCriteria);
-
   if(!organism && isSearching){
     return <resultsPillar class={style.ghostResults}>
       <ContentPillar>
@@ -130,6 +128,17 @@ const ResultsPillar = ({setSearchHidden, isSearching, searchCriteria, results, r
           
 
           {getSearchCriteria()}
+
+          <Br1/>
+          <filterList>
+            { Object.keys(NAMES).map( key => <Pill>{NAMES[key]}</Pill> ) }
+            <Pill>High Risk</Pill>
+            <Pill>Moderate Risk</Pill>
+            <Pill>Mild Risk</Pill>
+            <Pill>Low Risk</Pill>
+            <Pill>No Risk</Pill>
+            <Pill>Unknown Risk</Pill>
+          </filterList>
 
           <displayModeOptions>
             <button onclick={()=> setDisplayMode('grid')}><img width={15} src='../assets/icons/icon-grid.svg'/></button>
