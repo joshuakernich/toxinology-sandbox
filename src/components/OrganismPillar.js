@@ -479,9 +479,9 @@ const OrganismPillar = ({ current, onBack }) => {
             <Gallery onImage={setImageExpand} gallery={['../assets/diagrams/scales-midbody.jpeg','../assets/diagrams/body-scales.jpeg']}/>
             <Columns>
               
-              {makePill('Mid Body Scales',currentDetails.taxonomy.min_mid_body_rows+' > '+currentDetails.taxonomy.max_mid_body_rows+' (usually '+currentDetails.taxonomy.modal_mid_body_rows+')')}
-              {makePill('Subcaudal Scales',currentDetails.taxonomy.min_subcaudals+' > '+currentDetails.taxonomy.max_subcaudals, currentDetails.taxonomy.anals_detail)}
-              {makePill('Ventral Scales',currentDetails.taxonomy.min_ventrals+' > '+currentDetails.taxonomy.max_ventrals)}
+              {makePill('Mid Body Scales',currentDetails.taxonomy.min_mid_body_rows+' ≥ '+currentDetails.taxonomy.max_mid_body_rows+' (usually '+currentDetails.taxonomy.modal_mid_body_rows+')')}
+              {makePill('Subcaudal Scales',currentDetails.taxonomy.min_subcaudals+' ≥ '+currentDetails.taxonomy.max_subcaudals, currentDetails.taxonomy.anals_detail)}
+              {makePill('Ventral Scales',currentDetails.taxonomy.min_ventrals+' ≥ '+currentDetails.taxonomy.max_ventrals)}
               {makePill('Anal Category',currentDetails.taxonomy.anals_category==1?'divided':'single')}
             </Columns>
             </> : undefined
