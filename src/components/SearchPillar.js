@@ -116,11 +116,12 @@ const SearchPillar = ({ isSearchHidden, setSearchHidden, diagnostics, onChange, 
         <Br2/>
         <KeywordBuilder current={keywordsRef.current} onChange={onKeywordChange}/>
         <Br1/>
-        <h2>Organism Type</h2>
+        
+        {/*<h2>Organism Type</h2>
         <h3>Include all possibilities</h3>
         <Br2/>
         <RadioGroup type='grid' o={ORGANISM_TYPES} current={organismTypesRef.current} onChange={onOrganismTypeChange}/>
-        <Br1/>
+        <Br1/>*/}
         <h2>Diagnostic Effects</h2><Br2/>
         <button onclick={toDiagnostic} class={style.more}>{diagnosticCount?diagnosticCount + ' effect'+(diagnosticCount>1?'s':'')+' observed':'None Observed'}</button>
       </ContentPillar>):undefined}
