@@ -114,11 +114,11 @@ const ResultsPillar = ({setSearchHidden, isSearching, searchCriteria, results, r
           <Br2/>
           <filterList>
             { ORG_KEY.map( (o,i) => 
-              <Pill 
+              orgTypeCounts[i]?<Pill 
               selected={orgTypeFilters[i]} 
               onClick={()=> toggleOrgFilter(o)}>
               {orgTypeCounts[i]} {ORG_NAME[i]}
-              </Pill>
+              </Pill>:undefined
                ) }
             { orgTypeFilters.indexOf(true) > -1 ?<Pill type='clear' onClick={clearOrgFilters}>Clear Filters</Pill>:undefined }
           </filterList>
