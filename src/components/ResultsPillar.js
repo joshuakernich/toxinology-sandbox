@@ -40,6 +40,7 @@ const ResultsPillar = ({setSearchHidden, isSearching, searchCriteria, results, r
       const joinedResults = [...results.exclusive, ...results.unexclusive];
       
       // PF TODO: find out what pills to show?
+      // TODO: Count how many of each organisms and each risk level. Show any pills above zero.
     };
 
     // the only time this should update is when we're updating results
@@ -141,8 +142,8 @@ const ResultsPillar = ({setSearchHidden, isSearching, searchCriteria, results, r
           </filterList>
 
           <displayModeOptions>
-            <button onclick={()=> setDisplayMode('grid')}><img width={15} src='../assets/icons/icon-grid.svg'/></button>
-            <button onclick={()=> setDisplayMode('list')}><img width={15} src='../assets/icons/icon-list.svg'/></button>
+            <button selected={displayMode=='grid'} onclick={()=> setDisplayMode('grid')}><img width={15} src='../assets/icons/icon-grid.svg'/></button>
+            <button selected={displayMode=='list'} onclick={()=> setDisplayMode('list')}><img width={15} src='../assets/icons/icon-list.svg'/></button>
           </displayModeOptions>
         </div>
         

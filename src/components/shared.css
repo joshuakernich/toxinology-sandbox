@@ -596,6 +596,11 @@ displayModeOptions button:first-of-type{
   border: none;
 }
 
+displayModeOptions button[selected]{
+  
+  background: var(--white);
+}
+
 .ghostResults h1 span{
   opacity: 0.5;
 }
