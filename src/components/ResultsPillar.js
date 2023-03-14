@@ -57,12 +57,13 @@ const ResultsPillar = ({setSearchHidden, isSearching, searchCriteria, results, r
 
   const toggleOrgFilter = (key)=>{
     orgTypeFilters[ORG_KEY.indexOf(key)] = !orgTypeFilters[ORG_KEY.indexOf(key)];
-    setOrgTypeFilters(orgTypeFilters.concat());
+    setOrgTypeFilters(orgTypeFilters);
     refilter();
   }
 
   const clearOrgFilters = ()=>{
-    setOrgTypeFilters([]);
+    orgTypeFilters.length = 0;
+    setOrgTypeFilters(orgTypeFilters);
     refilter();
   }
   
