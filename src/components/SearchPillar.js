@@ -122,8 +122,10 @@ const SearchPillar = ({ isSearchHidden, setSearchHidden, diagnostics, onChange, 
         <Br2/>
         <RadioGroup type='grid' o={ORGANISM_TYPES} current={organismTypesRef.current} onChange={onOrganismTypeChange}/>
         <Br1/>*/}
-        <h2>Diagnostic Effects</h2><Br2/>
-        <button onclick={toDiagnostic} class={style.more}>{diagnosticCount?diagnosticCount + ' effect'+(diagnosticCount>1?'s':'')+' observed':'None Observed'}</button>
+        <h2>Diagnostic Questionnaire</h2>
+        <h3>For unknown organisms with observed effects</h3>
+        <Br2/>
+        <button onclick={toDiagnostic} class={style.more}>{diagnosticCount?diagnosticCount + ' effect'+(diagnosticCount>1?'s':'')+' observed':'No Effects Observed'}</button>
       </ContentPillar>):undefined}
       {drill == 'diagnostic' && <DiagnosticPillar current={diagnosticTypesRef.current} onChange={onDiagnosticTypesChange} toBack={toBack}/>}
       {drill == 'labs' && <LabsPillar toBack={toBack}/>}
