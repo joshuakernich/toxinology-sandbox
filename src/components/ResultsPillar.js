@@ -129,7 +129,7 @@ const ResultsPillar = ({setSearchHidden, isSearching, searchCriteria, results, r
 
           {getSearchCriteria()}
 
-          <Br1/>
+          <Br2/>
           <filterList>
             { Object.keys(NAMES).map( key => <Pill>{NAMES[key]}</Pill> ) }
             <Pill>High Risk</Pill>
@@ -146,7 +146,7 @@ const ResultsPillar = ({setSearchHidden, isSearching, searchCriteria, results, r
           </displayModeOptions>
         </div>
         
-        <Br1/>
+        <Br2/>
 
         {/* resultPills?.map(value => <Pill>{ value }</Pill>) */}
         
