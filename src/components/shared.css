@@ -1,3 +1,7 @@
+:root {
+  --screen-height: 100%;
+}
+
 @font-face {
   font-family: HeaderFont;
   src: url(../assets/fonts/Oswald-Bold.ttf);
@@ -50,7 +54,7 @@ searchPillar{
   background: var(--dark);
   color: var(--light);
   width: 350px;
-  height: 100vh;
+  height: var(--screen-height);
   overflow: hidden;
   
   position: relative;
@@ -74,7 +78,7 @@ resultsPillar {
   background: var(--light);
   color: var(--dark);
   flex: 1;
-  height: 100vh;
+  height: var(--screen-height);
   position: relative;
 }
 
@@ -651,7 +655,7 @@ imageExpandContainer{
   top: 0px;
   left: 0px;
   right: 0px;
-  height: 100vh;
+  height: var(--screen-height);
   background: rgba(241, 250, 238,0.85);
   display: flex;
   align-items: center;
@@ -764,7 +768,7 @@ diagnosticQuestionContainer:first-of-type, diagnosticQuestionContainer[answered]
   homePillar{
     display: block;
 
-    height: 100vh;
+    height: var(--screen-height);
   }
 
   searchPillar, resultsPillar{

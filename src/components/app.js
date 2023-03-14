@@ -8,6 +8,11 @@ import { getSitemap } from '../libs/sitemap';
 import Home from '../routes/home';
 import Profile from '../routes/profile';
 
+const handleResize = () => {
+	const doc = document.documentElement;
+	doc.style.setProperty('--screen-height', `${window.innerHeight}px`);
+};
+
 const App = () => {
   useLayoutEffect(async () => {
 		try {
@@ -17,6 +22,10 @@ const App = () => {
 		} catch (e) {
 			console.error(`Sitemap Error, try to continue`, e);
 		}
+
+		// we need to set the screen-height var
+		window.addEventListener("resize", handleResize);
+		handleResize();
   },[]);
 	
 	return <div id="app">	
