@@ -14,47 +14,22 @@ const ResultsPillar = ({setSearchHidden, isSearching, searchCriteria, results, r
 
   const [organism, setOrganism] = useState(sample);
   const [displayMode, setDisplayMode] = useState('grid');
-  
-  console.log('results',results);
 
-  // A list of strings
-  const pills = useRef([]); 
-  // PF: this doesn't need to be a state, we will update the 
-  // pills whenever results are changed. It does need to be a 
-  // ref to maintain it between renders. 
+  const [resultsFiltered, setResultsFiltered] = useState([]);
+  const [orgTypeCounts, setOrgTypeCounts] = useState([]);
+  const [orgTypeFilters, setOrgTypeFilters] = useState([]);
 
-  // This is the current state of the pills. We need this to invoke 
-  // a re-render. We could combine this with the pills.
-  const [pillFilter, setPillFilter] = useState([]);
-  // PF: I choose not to because managing display data and state 
-  // data is problematic
+  const ORG_KEY = ["SN","SC","SP","PM","PP","TV","TI","MV","MI"]
+  const ORG_NAME = ['snakes','scorpions','spiders','mushrooms','plants','land verterbrates','land inverterbrates','marine verterbrates','marine inverterbrates']
 
   useLayoutEffect(() => {
-    // PF TODO: have to have discussion with JK. To decide how we 
-    // display both of these lists, it's a complex problem.
-    const getKeywordsFromResults = () => {
-      if (!results) return [];
+    if(!results) return;
 
-      // this may be a different state from the results declared in a
-      // higher level context
-      const joinedResults = [...results.exclusive, ...results.unexclusive];
-      
-      // PF TODO: find out what pills to show?
-      // TODO: Count how many of each organisms and each risk level. Show any pills above zero.
-    };
-
-    // the only time this should update is when we're updating results
-    const newPills = getKeywordsFromResults();
+    ORG_KEY.map((o,i) => orgTypeCounts[i]=0 );
+    results.exclusive.map( result => orgTypeCounts[ORG_KEY.indexOf(result.orgclass)]++ );
+    setOrgTypeCounts(orgTypeCounts.concat());
+    refilter();
     
-    const isDifferent = !!pills.current.find((pill, index) => pill != newPills[index]);
-
-    // check if the current and the new are different
-    if (isDifferent) {
-      pills.current = newPills;
-
-      // set the pill filter to empty, whenever the results change?
-      setPillFilter([]);
-    }
   }, [results]);
 
   const joinedResults = results && [...results.exclusive];
@@ -67,31 +42,43 @@ const ResultsPillar = ({setSearchHidden, isSearching, searchCriteria, results, r
     setOrganism(result);
   }
 
-  const NAMES = {
-    "sn":'snakes',
-    "sc":'scorpions',
-    "sp":'spiders',
-    "pm":'poisonous mushrooms',
-    "pp":'poisonous plants',
-    "tv":'land verterbrates',
-    "ti":'land inverterbrates',
-    "mv":'marine verterbrates',
-    "mi":'marine inverterbrates',
+  const refilter = () =>{
+
+    if( orgTypeFilters.indexOf(true) > -1 ){
+      const filtered = [];
+      results.exclusive.map(r => {
+        if( orgTypeFilters[ORG_KEY.indexOf(r.orgclass)]) filtered.push(r);
+      });
+      setResultsFiltered(filtered);
+    } else {
+      setResultsFiltered(results.exclusive);
+    }
   }
 
+  const toggleOrgFilter = (key)=>{
+    orgTypeFilters[ORG_KEY.indexOf(key)] = !orgTypeFilters[ORG_KEY.indexOf(key)];
+    setOrgTypeFilters(orgTypeFilters.concat());
+    refilter();
+  }
+
+  const clearOrgFilters = ()=>{
+    setOrgTypeFilters([]);
+    refilter();
+  }
+  
   const getSearchCriteria = () =>{
 
     if(!searchCriteria.keywords) return undefined;
 
     var orgs = [];
-    searchCriteria.organismTypes.map( type => orgs.push( NAMES[type] ));
+    searchCriteria.organismTypes.map( type => orgs.push( ORG_NAME[ORG_KEY.indexOf(type)] ));
 
     return<h3>
-          for{' '}
-          {searchCriteria.organismTypes.length?orgs.join(', '):'all organisms'}{' '}
-          {searchCriteria.locations.length?'in '+searchCriteria.locations.join(', '):'Worldwide'}
-          {searchCriteria.keywords.text.length?' matching "'+searchCriteria.keywords.text+'"':undefined}
-        </h3>
+      for{' '}
+      {searchCriteria.organismTypes.length?orgs.join(', '):'all organisms'}{' '}
+      {searchCriteria.locations.length?'in '+searchCriteria.locations.join(', '):'Worldwide'}
+      {searchCriteria.keywords.text.length?' matching "'+searchCriteria.keywords.text+'"':undefined}
+    </h3>
   }
 
   if(!organism && isSearching){
@@ -115,8 +102,6 @@ const ResultsPillar = ({setSearchHidden, isSearching, searchCriteria, results, r
     </resultsPillar>
   }
 
-  
-
   return <resultsPillar>
       <scrollPillar hidden={organism?true:false}>
         <ContentPillar>
@@ -125,20 +110,17 @@ const ResultsPillar = ({setSearchHidden, isSearching, searchCriteria, results, r
         </resultsTogglePanel>
         <div style={{'position':'relative'}}>
           {results && <h1>{results.exclusiveCount} Results</h1>}
-
-          
-
           {getSearchCriteria()}
-
           <Br2/>
           <filterList>
-            { Object.keys(NAMES).map( key => <Pill>{NAMES[key]}</Pill> ) }
-            <Pill>High Risk</Pill>
-            <Pill>Moderate Risk</Pill>
-            <Pill>Mild Risk</Pill>
-            <Pill>Low Risk</Pill>
-            <Pill>No Risk</Pill>
-            <Pill>Unknown Risk</Pill>
+            { ORG_KEY.map( (o,i) => 
+              <Pill 
+              selected={orgTypeFilters[i]} 
+              onClick={()=> toggleOrgFilter(o)}>
+              {orgTypeCounts[i]} {ORG_NAME[i]}
+              </Pill>
+               ) }
+            { orgTypeFilters.indexOf(true) > -1 ?<Pill type='clear' onClick={clearOrgFilters}>Clear Filters</Pill>:undefined }
           </filterList>
 
           <displayModeOptions>
@@ -146,15 +128,9 @@ const ResultsPillar = ({setSearchHidden, isSearching, searchCriteria, results, r
             <button selected={displayMode=='list'} onclick={()=> setDisplayMode('list')}><img width={15} src='../assets/icons/icon-list.svg'/></button>
           </displayModeOptions>
         </div>
-        
         <Br2/>
-
-        {/* resultPills?.map(value => <Pill>{ value }</Pill>) */}
-        
-        
         <resultList mode={displayMode}>
-
-        { results?.exclusive?.map(result => <Result current={result} onClick={() => showResult(result)}></Result>) }
+        { resultsFiltered?.map(result => <Result current={result} onClick={() => showResult(result)}></Result>) }
         </resultList>
         { isSearching?<LoadModal />:undefined }
       </ContentPillar>

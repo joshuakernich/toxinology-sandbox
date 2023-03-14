@@ -150,6 +150,17 @@ resultsPillar {
   color:var(--white);
 }
 
+.pill.clear{
+  background: none;
+  border-color: var(--red);
+  color: var(--red);
+}
+
+.pill[selected]{
+  background: var(--dark);
+  color: var(--light);
+}
+
 riskKey{
   position: absolute;
   width: 5px;
@@ -232,6 +243,7 @@ columnContainer[columns="2"]{
 filterList .pill{
   font-size: 0.7em;
   opacity: 0.7;
+  cursor: pointer;
 }
 
 button{
