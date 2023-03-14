@@ -462,16 +462,23 @@ const OrganismPillar = ({ current, onBack }) => {
 
 
         <Collapsible header="Description">
+          <Columns>{makePill('Adult Length',currentDetails.taxonomy.adult_length)}</Columns>
+          <Br2/>
           {makeP(currentDetails.taxonomy.general_shape)}
           <Br1/>
-          {makeP(currentDetails.taxonomy.coloration_markings)}
+          {makeSection('Coloration & Markings',currentDetails.taxonomy.coloration_markings)}
           
           { currentDetails.master.orgclass == 'SN'?
             <>
+            
+            <h2>Head Scales</h2><Br2/>
+            <Gallery onImage={setImageExpand} gallery={['../assets/diagrams/head-scales-iso.jpeg','../assets/diagrams/head-scales-side.png','../assets/diagrams/head-scales-top.png']}/>
+            {makeP(currentDetails.taxonomy.head_scales)}
             <Br1/>
-            {makeSection('Head Scales',currentDetails.taxonomy.head_scales)}
+            <h2>Body Scales</h2><Br2/>
+            <Gallery onImage={setImageExpand} gallery={['../assets/diagrams/scales-midbody.jpeg','../assets/diagrams/body-scales.jpeg']}/>
             <Columns>
-              {makePill('Adult Length',currentDetails.taxonomy.adult_length)}
+              
               {makePill('Mid Body Scales',currentDetails.taxonomy.min_mid_body_rows+' > '+currentDetails.taxonomy.max_mid_body_rows+' (usually '+currentDetails.taxonomy.modal_mid_body_rows+')')}
               {makePill('Subcaudal Scales',currentDetails.taxonomy.min_subcaudals+' > '+currentDetails.taxonomy.max_subcaudals, currentDetails.taxonomy.anals_detail)}
               {makePill('Ventral Scales',currentDetails.taxonomy.min_ventrals+' > '+currentDetails.taxonomy.max_ventrals)}

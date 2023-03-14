@@ -2,13 +2,13 @@ import { h } from 'preact';
 import style from './shared.css';
 
 const GalleryImage = ({img,onImage}) => (
-  <img onclick={()=> onImage(img)} class={style.galleryimage} src={img} height='150'/>
+  <img class={style.galleryImage} onclick={()=> onImage(img)} src={img} height='150'/>
 )
 
 const Gallery = ({gallery,onImage}) => (
-  <div class={style.gallery}>
+  <galleryContainer>
     { gallery?.map(img => <GalleryImage onImage={onImage} img={img}/>) }
-  </div>
+  </galleryContainer>
 );
 
 export default Gallery;
