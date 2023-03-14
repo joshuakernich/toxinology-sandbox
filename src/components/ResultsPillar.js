@@ -121,7 +121,7 @@ const ResultsPillar = ({setSearchHidden, isSearching, searchCriteria, results, r
               {orgTypeCounts[i]} {ORG_NAME[i]}
               </Pill>:undefined
                ) }
-            {(results && results.exclusive.length && orgTypeFilters.indexOf(true) > -1) ?<Pill type='clear' onClick={clearOrgFilters}>Clear Filters</Pill>:undefined }
+            {orgTypeFilters.indexOf(true) > -1?<Pill type='clear' onClick={clearOrgFilters}>Clear Filters</Pill>:undefined }
           </filterList>
 
           <displayModeOptions>
