@@ -114,6 +114,27 @@ const DiagnosticQuestionnaire = ({current, onChange}) => {
     .filter(question => {
       return possibleOrganismTracks.find(track => ['Y', 'N'].includes(track[question.index]))
     });
+  const getOrganismCountWithResults = (question) => {
+    return possibleOrganismTracks.filter(track => ['Y', 'N'].includes(track[question.index])).length;
+  };
+  const answeredQuestions = questionQuery.filter((q) => q.response);
+  const unansweredQuestions = filteredQuestions
+    .filter((q) => !q.response)
+    .sort((qa, qb) => {
+      return getOrganismCountWithResults(qa) - getOrganismCountWithResults(qb);
+    });
+
+  const renderQuestion = (question) => {
+    return <DiagnosisQuestion {...question} index={question.index}  response={question.response} onChange={({key, response}) => {
+      const question = questionQuery.find(question => question._key == key);
+
+      question.response = response;
+
+      updateQuestionQueries([...questionQuery]);
+    }} />
+  }
+
+  // TODO: on question change, clear the next questions
 
   return [
     <searchWrapper>
@@ -122,21 +143,10 @@ const DiagnosticQuestionnaire = ({current, onChange}) => {
       <Br1/>
       <diagnosticQuestionWrapper>
         {
-          filteredQuestions
-            .sort((qa, qb) => qa.response - qb.response)
-            //.filter((v) => v.response === 'U')
-            .map((query) => {
-
-            return [
-              <DiagnosisQuestion {...query} index={query.index}  response={query.response} onChange={({key, response}) => {
-                const question = questionQuery.find(question => question._key == key);
-
-                question.response = response;
-
-                updateQuestionQueries([...questionQuery]);
-              }} />
-            ]
-          })
+          answeredQuestions.map(renderQuestion)
+        }
+        {
+          unansweredQuestions.map(renderQuestion)
         }
       </diagnosticQuestionWrapper>
       <button class={style.restart} onClick={clearResponses}>Clear Responses</button>
