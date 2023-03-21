@@ -39,6 +39,24 @@ const Grid = ({...props}) => {
   </gridContainer>
 }
 
+export const getRiskCategory = (di) => {
+
+  // where t is the upper threshold
+  const categories = [
+    {t:-1, d:'Unknown Risk'},
+    {t:0, d:'No Risk'},
+    {t:20, d:'Low Risk'},
+    {t:40, d:'Mild Risk'},
+    {t:70, d:'Moderate Risk'},
+    {t:100, d:'High Risk'},
+  ]
+
+  let iCat = 0;
+  while(di>categories[iCat].t) iCat++;
+
+  return categories[iCat];
+}
+ 
 const OrganismPillar = ({ current, onBack }) => {
 
   const [currentDetails, setCurrentDetails] = useState(undefined);
@@ -90,32 +108,14 @@ const OrganismPillar = ({ current, onBack }) => {
 
   const getRiskPill = () => {
 
-    // t represents the upper threshold
-    const categories = [
-      {t:0, d:'Unknown Risk'},
-      {t:1, d:'No Risk'},
-      {t:20, d:'Low Risk'},
-      {t:40, d:'Mild Risk'},
-      {t:70, d:'Moderate Risk'},
-      {t:100, d:'High Risk'},
-    ]
-
     const raw = currentDetails.clinical.dangerousness_index;
     const di = parseInt(raw?raw.substring(2,raw.indexOf('.')):-1);
 
-    let iCat = 0;
-    while( di >= categories[iCat].t ) iCat++;
+    const category = getRiskCategory(di);
 
-    return <Pill risk={categories[iCat].d} type={'risk'}>
-      <riskKey>
-        <riskKeyItem/>
-        <riskKeyItem/>
-        <riskKeyItem/>
-        <riskKeyItem/>
-        <riskKeyItem/>
-      </riskKey>
+    return <Pill risk={category.d} type={'risk'}>
       <h3>{currentDetails.master.venomous_or_poisonous}</h3>
-      <p>{categories[iCat].d}</p>
+      <p>{category.d}</p>
       <p>{currentDetails.clinical.dangerousness}</p>
     </Pill>;
   }

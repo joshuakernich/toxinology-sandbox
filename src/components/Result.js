@@ -2,6 +2,7 @@ import { h } from 'preact';
 import style from './shared.css';
 import Image from './Image';
 import { Br2 } from './Br';
+import { getRiskCategory } from './OrganismPillar'
 
 const ICONS = {
   "SN":'../assets/icons/icon-snake.svg',
@@ -47,6 +48,13 @@ const Result = ({current={image:'blah',genus:'Thingo',species:'McThingo',common_
   const img = current.image?bucket[current.orgclass]+current.image:undefined
   const icon = ICONS[current.orgclass];
 
+  const di = current.dangerousness_index
+  const dangerousness = di?di.substring(2,di.indexOf('.')):-1;
+
+  const category = getRiskCategory(dangerousness);
+
+  console.log(dangerousness,category.d);
+
   return <resultContainer onClick={onClick}>
     <resultImage>
       { img?
@@ -62,6 +70,7 @@ const Result = ({current={image:'blah',genus:'Thingo',species:'McThingo',common_
       <h2>{name.length?name:<i>{binomial}</i>}</h2>
       <h3><i>{binomial}</i></h3>
     </resultBody>
+    <riskBadge class={style.risk} risk={category.d}><p>{category.d}</p></riskBadge>
   </resultContainer>
 };
 

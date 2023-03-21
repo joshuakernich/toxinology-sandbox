@@ -14,6 +14,7 @@ const ResultsPillar = ({setSearchHidden, isSearching, searchCriteria, results, r
 
   const [organism, setOrganism] = useState(sample);
   const [displayMode, setDisplayMode] = useState('grid');
+  const [sortMode, setSortMode] = useState('highlights');
 
   const [resultsFiltered, setResultsFiltered] = useState([]);
   const [orgTypeCounts, setOrgTypeCounts] = useState([]);
@@ -103,6 +104,8 @@ const ResultsPillar = ({setSearchHidden, isSearching, searchCriteria, results, r
     </resultsPillar>
   }
 
+  
+
   return <resultsPillar>
       <scrollPillar hidden={organism?true:false}>
         <ContentPillar>
@@ -110,8 +113,23 @@ const ResultsPillar = ({setSearchHidden, isSearching, searchCriteria, results, r
           <button onclick={()=> setSearchHidden(false)} class={style.back}>Refine Search</button>
         </resultsTogglePanel>
         <div style={{'position':'relative'}}>
-          {results && <h1>{results.exclusiveCount} Results</h1>}
-          {getSearchCriteria()}
+          <resultsHeader>
+            <resultsHeaderDetails>
+              {results && <h1>{results.exclusiveCount} Results</h1>}
+              {getSearchCriteria()}
+            </resultsHeaderDetails>
+            <displayViewOptions>
+              <displayModeOptions>
+                <button selected={sortMode=='highlights'} onclick={()=> setSortMode('highlights')}>HIGHLIGHTS</button>
+                <button selected={sortMode=='risk'} onclick={()=> setSortMode('risk')}>RISK</button>
+                <button selected={sortMode=='abc'} onclick={()=> setSortMode('abc')}>ABC</button>
+              </displayModeOptions>
+              <displayModeOptions>
+                <button selected={displayMode=='grid'} onclick={()=> setDisplayMode('grid')}><img width={15} src='../assets/icons/icon-grid.svg'/></button>
+                <button selected={displayMode=='list'} onclick={()=> setDisplayMode('list')}><img width={15} src='../assets/icons/icon-list.svg'/></button>
+              </displayModeOptions>
+            </displayViewOptions>
+          </resultsHeader>
           <Br2/>
           <filterList>
             { ORG_KEY.map( (o,i) => 
@@ -124,10 +142,7 @@ const ResultsPillar = ({setSearchHidden, isSearching, searchCriteria, results, r
             {orgTypeFilters.indexOf(true) > -1?<Pill type='clear' onClick={clearOrgFilters}>Clear Filters</Pill>:undefined }
           </filterList>
 
-          <displayModeOptions>
-            <button selected={displayMode=='grid'} onclick={()=> setDisplayMode('grid')}><img width={15} src='../assets/icons/icon-grid.svg'/></button>
-            <button selected={displayMode=='list'} onclick={()=> setDisplayMode('list')}><img width={15} src='../assets/icons/icon-list.svg'/></button>
-          </displayModeOptions>
+          
         </div>
         <Br2/>
         <resultList mode={displayMode}>
