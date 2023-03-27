@@ -5,15 +5,15 @@ import { Br2 } from './Br';
 import { getRiskCategory } from './OrganismPillar'
 
 const ICONS = {
-  "SN":'../assets/icons/icon-snake.svg',
-  "SC":'../assets/icons/icon-scorpion.svg',
-  "SP":'../assets/icons/icon-spider.svg',
-  "PM":'../assets/icons/icon-mushroom.svg',
-  "PP":'../assets/icons/icon-flower.svg',
-  "TV":'../assets/icons/icon-lizard.svg',
-  "TI":'../assets/icons/icon-bee.svg',
-  "MV":'../assets/icons/icon-fish.svg',
-  "MI":'../assets/icons/icon-octopus.svg',
+  "SN":'../assets/icons/light/icon-snake.svg',
+  "SC":'../assets/icons/light/icon-scorpion.svg',
+  "SP":'../assets/icons/light/icon-spider.svg',
+  "PM":'../assets/icons/light/icon-mushroom.svg',
+  "PP":'../assets/icons/light/icon-flower.svg',
+  "TV":'../assets/icons/light/icon-lizard.svg',
+  "TI":'../assets/icons/light/icon-bee.svg',
+  "MV":'../assets/icons/light/icon-fish.svg',
+  "MI":'../assets/icons/light/icon-octopus.svg',
 }
 
 const ALT = {
@@ -48,12 +48,9 @@ const Result = ({current={image:'blah',genus:'Thingo',species:'McThingo',common_
   const img = current.image?bucket[current.orgclass]+current.image:undefined
   const icon = ICONS[current.orgclass];
 
-  const di = current.dangerousness_index
+  const di = current.dangerousness_index;
   const dangerousness = di?di.substring(2,di.indexOf('.')):-1;
-
   const category = getRiskCategory(dangerousness);
-
-  console.log(dangerousness,category.d);
 
   return <resultContainer onClick={onClick}>
     <resultImage>

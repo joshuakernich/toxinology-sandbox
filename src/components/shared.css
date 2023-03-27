@@ -32,7 +32,7 @@ body{
   --border: rgba(0,0,0,0.2);
   --white: rgba(255,255,255,1);
   --opaque: rgba(255,255,255,0.07);
-  --red: #E63946;
+  --red: #AE3232;
   font-family: BodyFont;
   overflow: hidden;
 }
@@ -148,7 +148,7 @@ resultsPillar {
   background-position: 5px 2px;
   background-repeat: no-repeat;
   padding-left: 30px;
-  font-weight: bold;
+  font-weight: normal;
 }
 
 .pill[category='SN']{ background-image: url(../assets/icons/dark/icon-snake.svg); }
@@ -160,6 +160,16 @@ resultsPillar {
 .pill[category='MI']{ background-image: url(../assets/icons/dark/icon-octopus.svg); }
 .pill[category='TV']{ background-image: url(../assets/icons/dark/icon-lizard.svg); }
 .pill[category='TI']{ background-image: url(../assets/icons/dark/icon-bee.svg); }
+
+.pill[selected][category='SN']{ background-image: url(../assets/icons/light/icon-snake.svg); }
+.pill[selected][category='SC']{ background-image: url(../assets/icons/light/icon-scorpion.svg); }
+.pill[selected][category='SP']{ background-image: url(../assets/icons/light/icon-spider.svg); }
+.pill[selected][category='PM']{ background-image: url(../assets/icons/light/icon-mushroom.svg); }
+.pill[selected][category='PP']{ background-image: url(../assets/icons/light/icon-flower.svg); }
+.pill[selected][category='MV']{ background-image: url(../assets/icons/light/icon-fish.svg); }
+.pill[selected][category='MI']{ background-image: url(../assets/icons/light/icon-octopus.svg); }
+.pill[selected][category='TV']{ background-image: url(../assets/icons/light/icon-lizard.svg); }
+.pill[selected][category='TI']{ background-image: url(../assets/icons/light/icon-bee.svg); }
 
 riskBadge{
   display: inline-block;
@@ -187,13 +197,14 @@ riskBadge{
 }
 
 .pill.clear{
-  background: none;
+  background: var(--red);
   border-color: var(--red);
-  color: var(--red);
+  color: var(--white);
+  font-weight: bold;
 }
 
 .pill[selected]{
-  background: var(--dark);
+  background-color: var(--dark);
   color: var(--light);
 }
 
@@ -280,7 +291,7 @@ columnContainer[columns="2"]{
 
 filterList .pill{
   font-size: 0.7em;
-  opacity: 0.7;
+  
   cursor: pointer;
 }
 
@@ -693,6 +704,10 @@ displayModeOptions button[selected]{
   color: transparent;
   
   opacity: 0;
+}
+
+.ghostResults riskBadge{
+  display: none;
 }
 
 calloutCountainer{
