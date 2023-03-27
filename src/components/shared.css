@@ -142,6 +142,25 @@ resultsPillar {
   background-image: none;
 }
 
+.pill[category]{
+  background-image: url(../assets/icons/dark/icon-octopus.svg);
+  background-size: 20px;
+  background-position: 5px 2px;
+  background-repeat: no-repeat;
+  padding-left: 30px;
+  font-weight: bold;
+}
+
+.pill[category='SN']{ background-image: url(../assets/icons/dark/icon-snake.svg); }
+.pill[category='SC']{ background-image: url(../assets/icons/dark/icon-scorpion.svg); }
+.pill[category='SP']{ background-image: url(../assets/icons/dark/icon-spider.svg); }
+.pill[category='PM']{ background-image: url(../assets/icons/dark/icon-mushroom.svg); }
+.pill[category='PP']{ background-image: url(../assets/icons/dark/icon-flower.svg); }
+.pill[category='MV']{ background-image: url(../assets/icons/dark/icon-fish.svg); }
+.pill[category='MI']{ background-image: url(../assets/icons/dark/icon-octopus.svg); }
+.pill[category='TV']{ background-image: url(../assets/icons/dark/icon-lizard.svg); }
+.pill[category='TI']{ background-image: url(../assets/icons/dark/icon-bee.svg); }
+
 riskBadge{
   display: inline-block;
   position: absolute;

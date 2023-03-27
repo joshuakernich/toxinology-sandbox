@@ -23,6 +23,8 @@ const ResultsPillar = ({setSearchHidden, isSearching, searchCriteria, results, r
   const ORG_KEY = ["SN","SC","SP","PM","PP","TV","TI","MV","MI"]
   const ORG_NAME = ['snakes','scorpions','spiders','mushrooms','plants','land verterbrates','land inverterbrates','marine verterbrates','marine inverterbrates']
 
+  
+
   useLayoutEffect(() => {
     if(!results) return;
 
@@ -104,8 +106,6 @@ const ResultsPillar = ({setSearchHidden, isSearching, searchCriteria, results, r
     </resultsPillar>
   }
 
-  
-
   return <resultsPillar>
       <scrollPillar hidden={organism?true:false}>
         <ContentPillar>
@@ -119,11 +119,12 @@ const ResultsPillar = ({setSearchHidden, isSearching, searchCriteria, results, r
               {getSearchCriteria()}
             </resultsHeaderDetails>
             <displayViewOptions>
-              <displayModeOptions>
-                <button selected={sortMode=='highlights'} onclick={()=> setSortMode('highlights')}>HIGHLIGHTS</button>
-                <button selected={sortMode=='risk'} onclick={()=> setSortMode('risk')}>RISK</button>
-                <button selected={sortMode=='abc'} onclick={()=> setSortMode('abc')}>ABC</button>
-              </displayModeOptions>
+              Sort by
+              <select>
+                <option selected={sortMode=='highlights'} onclick={()=> setSortMode('highlights')}>Highlights</option>
+                <option selected={sortMode=='risk'} onclick={()=> setSortMode('risk')}>Risk</option>
+                <option selected={sortMode=='abc'} onclick={()=> setSortMode('abc')}>Alphabetical</option>
+              </select>
               <displayModeOptions>
                 <button selected={displayMode=='grid'} onclick={()=> setDisplayMode('grid')}><img width={15} src='../assets/icons/icon-grid.svg'/></button>
                 <button selected={displayMode=='list'} onclick={()=> setDisplayMode('list')}><img width={15} src='../assets/icons/icon-list.svg'/></button>
@@ -135,7 +136,9 @@ const ResultsPillar = ({setSearchHidden, isSearching, searchCriteria, results, r
             { ORG_KEY.map( (o,i) => 
               (orgTypeFilters[i] || orgTypeCounts[i])?<Pill 
               selected={orgTypeFilters[i]} 
+              category={ORG_KEY[i]}
               onClick={()=> toggleOrgFilter(o)}>
+
               {orgTypeCounts[i]} {ORG_NAME[i]}
               </Pill>:undefined
                ) }
