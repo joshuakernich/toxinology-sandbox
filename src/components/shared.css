@@ -151,6 +151,23 @@ resultsPillar {
   font-weight: normal;
 }
 
+sortSelect{
+  display: inline-block;
+  position: relative;
+}
+
+sortSelect select{
+  display: inline-block;
+  width: auto;
+  text-decoration: underline;
+  padding-left: 0px;
+  position: relative;
+}
+
+sortSelect:after{
+  content: "↓";
+}
+
 .pill[category='SN']{ background-image: url(../assets/icons/dark/icon-snake.svg); }
 .pill[category='SC']{ background-image: url(../assets/icons/dark/icon-scorpion.svg); }
 .pill[category='SP']{ background-image: url(../assets/icons/dark/icon-spider.svg); }

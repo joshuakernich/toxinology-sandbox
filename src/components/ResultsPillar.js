@@ -23,7 +23,7 @@ const ResultsPillar = ({setSearchHidden, isSearching, searchCriteria, results, r
   const ORG_KEY = ["SN","SC","SP","PM","PP","TV","TI","MV","MI"]
   const ORG_NAME = ['snakes','scorpions','spiders','mushrooms','plants','land verterbrates','land inverterbrates','marine verterbrates','marine inverterbrates']
 
-  
+
 
   useLayoutEffect(() => {
     if(!results) return;
@@ -119,12 +119,7 @@ const ResultsPillar = ({setSearchHidden, isSearching, searchCriteria, results, r
               {getSearchCriteria()}
             </resultsHeaderDetails>
             <displayViewOptions>
-              Sort by
-              <select>
-                <option selected={sortMode=='highlights'} onclick={()=> setSortMode('highlights')}>Highlights</option>
-                <option selected={sortMode=='risk'} onclick={()=> setSortMode('risk')}>Risk</option>
-                <option selected={sortMode=='abc'} onclick={()=> setSortMode('abc')}>Alphabetical</option>
-              </select>
+              
               <displayModeOptions>
                 <button selected={displayMode=='grid'} onclick={()=> setDisplayMode('grid')}><img width={15} src='../assets/icons/icon-grid.svg'/></button>
                 <button selected={displayMode=='list'} onclick={()=> setDisplayMode('list')}><img width={15} src='../assets/icons/icon-list.svg'/></button>
@@ -148,6 +143,14 @@ const ResultsPillar = ({setSearchHidden, isSearching, searchCriteria, results, r
           
         </div>
         <Br2/>
+        <sortSelect>
+          {'Sort by '}
+          <select onChange={(e)=> setSortMode(e.target.value)} value={sortMode}>
+            <option value='highlights'>Highlights</option>
+            <option value='risk'>Risk</option>
+            <option value='alphabetical'>Alphabetical</option>
+          </select>
+        </sortSelect>
         <resultList mode={displayMode}>
         { resultsFiltered?.map(result => <Result current={result} onClick={() => showResult(result)}></Result>) }
         </resultList>
