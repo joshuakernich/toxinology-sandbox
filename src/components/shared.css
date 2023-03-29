@@ -733,6 +733,12 @@ calloutCountainer{
   display: block;
 }
 
+calloutCountainer[type='disclaimer']{
+  border-color: var(--red);
+  color: #ff7777;
+  font-size: 0.7em;
+}
+
 imageExpandContainer{
   display: block;
   position: absolute;

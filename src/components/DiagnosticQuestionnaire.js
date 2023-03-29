@@ -140,7 +140,12 @@ const DiagnosticQuestionnaire = ({current, onChange}) => {
     <searchWrapper>
       <h1>Diagnostic Questionnaire</h1>
       <h3>Questions will appear one-by-one</h3>
-      <Br1/>
+      <Br2/>
+      <calloutCountainer type='disclaimer'>
+        <strong>NOTE: </strong>
+        Results are indicative only and should not be relied on to include or exclude any organisms.
+      </calloutCountainer>
+      <Br2/>
       <diagnosticQuestionWrapper>
         {
           answeredQuestions.map(renderQuestion)
