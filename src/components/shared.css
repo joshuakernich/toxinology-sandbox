@@ -844,7 +844,9 @@ diagnosticQuestionContainer{
   
 }
 
-diagnosticQuestionContainer:first-of-type, diagnosticQuestionContainer[answered], diagnosticQuestionContainer[answered] + diagnosticQuestionContainer{
+diagnosticQuestionWrapper[viable] diagnosticQuestionContainer:first-of-type, 
+diagnosticQuestionContainer[answered], 
+diagnosticQuestionWrapper[viable] diagnosticQuestionContainer[answered] + diagnosticQuestionContainer{
   display: block;
   position: relative;
   animation-name: appear;

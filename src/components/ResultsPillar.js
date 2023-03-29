@@ -8,7 +8,7 @@ import Result from './Result';
 import { Br1, Br2 } from './Br';
 import { useLayoutEffect, useState, useRef } from 'preact/hooks';
 
-const ResultsPillar = ({setSearchHidden, isSearching, searchCriteria, results, resultPills, toBack}) => {
+const ResultsPillar = ({setSearchHidden, isSearching, searchCriteria, diagnostics, results, resultPills, toBack}) => {
 
   const sample = undefined;
 
@@ -22,8 +22,6 @@ const ResultsPillar = ({setSearchHidden, isSearching, searchCriteria, results, r
 
   const ORG_KEY = ["SN","SC","SP","PM","PP","TV","TI","MV","MI"]
   const ORG_NAME = ['snakes','scorpions','spiders','mushrooms','plants','land verterbrates','land inverterbrates','marine verterbrates','marine inverterbrates']
-
-
 
   useLayoutEffect(() => {
     if(!results) return;
@@ -76,12 +74,14 @@ const ResultsPillar = ({setSearchHidden, isSearching, searchCriteria, results, r
 
     var orgs = [];
     searchCriteria.organismTypes.map( type => orgs.push( ORG_NAME[ORG_KEY.indexOf(type)] ));
+    const countDiagnostic = diagnostics.filter(diagnosticQuestion => !["U", "."].includes(diagnosticQuestion.response)).length;
 
     return<h3>
       for{' '}
       {searchCriteria.organismTypes.length?orgs.join(', '):'all organisms'}{' '}
       {searchCriteria.locations.length?'in '+searchCriteria.locations.join(', '):'Worldwide'}
       {searchCriteria.keywords.text.length?' matching "'+searchCriteria.keywords.text+'"':undefined}
+      {countDiagnostic?' with '+countDiagnostic+' specified diagnostic effects':undefined}
     </h3>
   }
 

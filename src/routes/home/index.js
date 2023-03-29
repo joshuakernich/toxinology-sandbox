@@ -131,6 +131,7 @@ const Home = () => {
         isSearching={isSearching} 
         setSearchHidden={setSearchHidden} 
         searchCriteria={currentSearchCriteria}
+        diagnostics={diagnostics}
         results={filteredResults}>
       </ResultsPillar>
     </SearchResults.Provider>

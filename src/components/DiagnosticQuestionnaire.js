@@ -135,7 +135,6 @@ const DiagnosticQuestionnaire = ({current, onChange}) => {
   }
 
   // TODO: on question change, clear the next questions
-
   return [
     <searchWrapper>
       <h1>Diagnostic Questionnaire</h1>
@@ -146,7 +145,7 @@ const DiagnosticQuestionnaire = ({current, onChange}) => {
         Results are indicative only and should not be relied on to include or exclude any organisms.
       </calloutCountainer>
       <Br2/>
-      <diagnosticQuestionWrapper>
+      <diagnosticQuestionWrapper viable={possibleOrganismTracks.length>0}>
         {
           answeredQuestions.map(renderQuestion)
         }
@@ -154,6 +153,14 @@ const DiagnosticQuestionnaire = ({current, onChange}) => {
           unansweredQuestions.map(renderQuestion)
         }
       </diagnosticQuestionWrapper>
+      {possibleOrganismTracks.length?'':
+        <>
+        <calloutCountainer type='disclaimer'>
+          Oops! There are no organisms that seem to match this diagnostic criteria. Please review your selections, or widen the search criteria.
+        </calloutCountainer>
+        <Br2/>
+        </>
+      }
       <button class={style.restart} onClick={clearResponses}>Clear Responses</button>
       {/*matches && <diagnosticMatchesWrapper>
         <diagnosticMatchesHeader>Found {matches.count} related results.</diagnosticMatchesHeader>
