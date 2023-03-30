@@ -630,6 +630,26 @@ collapsibleContainer[open=true]{
   padding-bottom: 20px;
 }
 
+collapsibleContainer[empty]{
+  pointer-events: none;
+}
+
+collapsibleContainer[empty] h1{
+  color: var(--border);
+}
+
+collapsibleContainer[empty] h1:after{
+  content: "NO DATA";
+  transform: rotate(0deg);
+  width: auto;
+  height: auto;
+  border-width: 0px 0px 0px 0px;
+  font-size: 0.5em;
+  right: 5px;
+  top: 18px;
+  font-weight: bold;
+}
+
 organismPillar{
   position: relative;
   display: block;

@@ -21,7 +21,7 @@ const Collapsible = ({header,...props}) =>{
     setOpen(!open);
   }
 
-  return <collapsibleContainer open={open}>
+  return <collapsibleContainer empty={props.empty} open={open}>
     <h1 onclick={toggle}>{header}</h1>
     {open?<><Br2/>{props.children}</>:undefined}
   </collapsibleContainer>
@@ -128,7 +128,13 @@ const OrganismPillar = ({ current, onBack }) => {
     if(currentDetails.master.map_image_large) g.push(b+currentDetails.master.map_image_large);
 
     if(!justMap) currentDetails.graphics.map( graphic => g.push(b+graphic.image) );
-    return <Gallery onImage={setImageExpand} gallery={g}/>;
+
+    if(!g.length) return undefined;
+
+    return <>
+    <Gallery onImage={setImageExpand} gallery={g}/>
+    <Br1/>
+    </>;
   }
 
   const makePill = (header,...par) => {
@@ -139,6 +145,9 @@ const OrganismPillar = ({ current, onBack }) => {
   }
 
   const makeSection = (header,raw) => {
+
+    if(!raw) return undefined;
+
     return<>
       <h2>{header}</h2>
       <Br2/>
@@ -182,7 +191,7 @@ const OrganismPillar = ({ current, onBack }) => {
     </>
   }
 
-  const getClinical = () => {
+  const getClinicalColumns = () => {
 
     const keys = [
       {h:'Cardiotoxicity',        key:'general_cardiotoxicity'},
@@ -207,6 +216,8 @@ const OrganismPillar = ({ current, onBack }) => {
       {h:'Other',                 key:'general_other', key2:'detail_other'},
     ]
 
+    if(!currentDetails.clinical.general_local_effects) return undefined;
+
     //key2 may or may not be useful
     return <Columns>
       {keys.map( key => 
@@ -220,7 +231,13 @@ const OrganismPillar = ({ current, onBack }) => {
   }
 
   const getVenom = () => {
-    return <>
+
+    const header = currentDetails.master.venomous_or_poisonous == 'Venomous'?'Venom':'Toxin';
+
+    if( !currentDetails.venom.venom_components && 
+      !currentDetails.venom.crude_venom) return <Collapsible header={header} empty/>
+
+    return <Collapsible header={header}>
         
         <h2>Venom Components</h2>
         {makeList(currentDetails.venom.venom_components)}
@@ -242,7 +259,7 @@ const OrganismPillar = ({ current, onBack }) => {
         {makeSection('Cross Reactivity',currentDetails.venom.cross_reactivity)}
         {makeSection('Venom Activity',currentDetails.venom.venom_activity)}
         {makeSection('Haematological Haemorrhagins',currentDetails.venom.haematological_haemorrhagins)}
-      </>
+      </Collapsible>
 
   }
 
@@ -287,22 +304,38 @@ const OrganismPillar = ({ current, onBack }) => {
       {h:'Wcc',key:'wcc'},
     ]
 
-    return <div>
-      <Callout>
-      {makeP(currentDetails.treatment.key_diagnostic_features)}
-      </Callout>
-      <Br1/>
+    if(!currentDetails.treatment.key_diagnostic_features && 
+      !currentDetails.diagnosis.general_system ){
+      return <Collapsible header="Diagnosis" empty/>
+    }
+
+    return <Collapsible header="Diagnosis">
+      {
+        currentDetails.treatment.key_diagnostic_features?
+        <><Callout>
+        {makeP(currentDetails.treatment.key_diagnostic_features)}
+        </Callout>
+        <Br1/></>:undefined
+      }
       <Columns>
         {keys.map( key => <Pill type={'tick-'+currentDetails.diagnosis[key.key]}>{key.h}</Pill>)}
       </Columns>
-      <Br1/>
-      <Columns>
-        {keysLab.map( key => makePill(key.h,currentDetails.treatment[key.key]))}
-      </Columns>
-    </div>
+      {
+        currentDetails.treatment.abs_lymph?
+        <>
+        <Br1/>
+        <Columns>
+          {keysLab.map( key => makePill(key.h,currentDetails.treatment[key.key]))}
+        </Columns>
+        </>:undefined
+      }
+    </Collapsible>
   }  
 
   const getAntivenom = () => {
+
+    const header = currentDetails.master.venomous_or_poisonous == 'Venomous'?'Antivenom':'Antitoxin';
+
     const antivenom = [
       {h:'Antivenom Therapy',key:'antivenom_therapy'},
       {h:'Antivenom Dosage',key:'antivenom_dosage'},
@@ -310,7 +343,13 @@ const OrganismPillar = ({ current, onBack }) => {
       {h:'Adverse Antivenom Reaction Management',key:'adverse_av_reaction_mngt'},
       ]
 
-    return <>
+    if(!currentDetails.antivenoms.length &&
+      !currentDetails.treatment.antivenom_therapy &&
+      !currentDetails.venom.antivenom_studies){
+      return <Collapsible header={header} empty/>
+    }
+
+    return <Collapsible header={header}>
       <h2>Known Antivenoms</h2>
       <ol>
         {currentDetails.antivenoms.map( v => <li>
@@ -328,7 +367,7 @@ const OrganismPillar = ({ current, onBack }) => {
 
       <Br1/>
       {makeSection('Antivenom Studies',currentDetails.venom.antivenom_studies)}
-    </>
+    </Collapsible>
   }
 
   const getTreatment = () => {
@@ -368,7 +407,11 @@ const OrganismPillar = ({ current, onBack }) => {
       {h:'Renal Effects Management',key:'renal_effects_mngt'},
     ]
 
-    return <div>
+    if(!currentDetails.treatment.treatment_key){
+      return <Collapsible header="Further Treatment" empty/>
+    }
+
+    return <Collapsible header="Further Treatment">
       <Callout>
         {makeP(currentDetails.treatment.treatment_key)}
       </Callout>
@@ -389,7 +432,132 @@ const OrganismPillar = ({ current, onBack }) => {
         {keys.map( key => makePill(key.h,currentDetails.treatment[key.key]))}
       </Columns>
       <Br1/>
-    </div>
+    </Collapsible>
+  }
+
+  const getFirstAid = () => {
+
+    if(!currentDetails.treatment.first_aid_text && !currentDetails.first_aid.descr && !currentDetails.first_aid.details){
+      return <Collapsible header="First Aid" empty/>
+    }
+
+    return <Collapsible header="First Aid">
+          {currentDetails.treatment.first_aid_text?
+          <>
+            <Callout>
+              {makeP(currentDetails.treatment.first_aid_text)}
+            </Callout>
+            <Br1/>
+          </>:undefined
+          }
+          {makeP(currentDetails.first_aid.descr)}
+          {makeList(currentDetails.first_aid.details)}
+        </Collapsible>
+  }
+
+  const getClinicalEffects = () => {
+   return <Collapsible header='Clinical Effects'>
+      {
+        currentDetails.clinical.detail_prognosis?
+        <>
+          <Callout>
+          {makeP(currentDetails.clinical.detail_prognosis)}
+          </Callout>
+        <Br1/>
+        </>:undefined
+      }
+      
+      {
+        currentDetails.clinical.specific_clinical_effects?
+        <>
+        {makeP(currentDetails.clinical.specific_clinical_effects)}
+        <Br1/>
+        </>:undefined
+      }
+      
+      <Columns>
+        {makePill('Children',currentDetails.clinical.children)}
+        {makePill('Pregnancy',currentDetails.clinical.pregnancy)}
+        {makePill('Elderly',currentDetails.clinical.elderly)}
+      </Columns>
+      <Br1/>
+      {getClinicalColumns()}
+    </Collapsible>
+  }
+
+  const getDescription = () => {
+
+    if( !currentDetails.taxonomy.adult_length &&
+      !currentDetails.taxonomy.general_shape &&
+      !currentDetails.taxonomy.coloration_markings) return <Collapsible header="Description" empty/>
+
+    return <Collapsible header="Description">
+      <Columns>{makePill('Adult Length',currentDetails.taxonomy.adult_length)}</Columns>
+      <Br2/>
+      {makeP(currentDetails.taxonomy.general_shape)}
+      <Br1/>
+      {makeSection('Coloration & Markings',currentDetails.taxonomy.coloration_markings)}
+      
+      { currentDetails.master.orgclass == 'SN'?
+        <>
+        
+        <h2>Head Scales</h2><Br2/>
+        <Gallery onImage={setImageExpand} gallery={['../assets/diagrams/head-scales-iso.jpeg','../assets/diagrams/head-scales-side.png','../assets/diagrams/head-scales-top.png']}/>
+        {makeP(currentDetails.taxonomy.head_scales)}
+        <Br1/>
+        <h2>Body Scales</h2><Br2/>
+        <Gallery onImage={setImageExpand} gallery={['../assets/diagrams/scales-midbody.jpeg','../assets/diagrams/body-scales.jpeg']}/>
+        <Columns>
+          
+          {makePill('Mid Body Scales',currentDetails.taxonomy.min_mid_body_rows+' ≥ '+currentDetails.taxonomy.max_mid_body_rows+' (usually '+currentDetails.taxonomy.modal_mid_body_rows+')')}
+          {makePill('Subcaudal Scales',currentDetails.taxonomy.min_subcaudals+' ≥ '+currentDetails.taxonomy.max_subcaudals, currentDetails.taxonomy.anals_detail)}
+          {makePill('Ventral Scales',currentDetails.taxonomy.min_ventrals+' ≥ '+currentDetails.taxonomy.max_ventrals)}
+          {makePill('Anal Category',currentDetails.taxonomy.anals_category==1?'divided':'single')}
+        </Columns>
+        </> : undefined
+    }
+    </Collapsible>
+  }
+
+  const getDistributon = () => {
+    return <Collapsible header='Distribution'>
+      {getGallery(true)}
+      <Columns columns={2}>
+        {makePill('Region',currentDetails.master.region)}
+        {makePill('Countries',currentDetails.master.countries)}
+      </Columns>
+      <Br1/>
+      {makeP(currentDetails.master.distribution)}
+      <Br1/>
+      {makeSection('Habitat',currentDetails.geninfo.habitat)}
+    </Collapsible>
+  }
+
+  const getReferences = () => {
+
+    if(!currentDetails.taxonomy.ref) return <Collapsible header='References' empty/>
+
+    return <Collapsible header='References'>
+          {makeP(currentDetails.taxonomy.ref)}
+          <Br1/>
+          {makePill('Status Notes',currentDetails.taxonomy.status_notes)}
+          <Br1/>
+        </Collapsible>
+  }
+
+  const getRisk = () => {
+    return <Columns columns={2}>
+        { getRiskPill() }
+
+        {
+          currentDetails.clinical['approx_dry_bite']?
+          <>
+          <Pill><h3>Dry Bite</h3>{currentDetails.clinical['approx_dry_bite']}</Pill>
+          <Pill><h3>Rate of Envenoming</h3>{currentDetails.clinical['general_rate_of_envenoming']}</Pill>
+          </>:undefined
+        }
+
+      </Columns>   
   }
 
   return <organismPillar>
@@ -408,116 +576,19 @@ const OrganismPillar = ({ current, onBack }) => {
         { getNames() }
         <Br2/>
         { getTaxonomyPills() }
-        
-        
         <Br1/>
         { getGallery() }
-        
+        { getRisk() }
         <Br1/>
-
-        <Columns columns={2}>
-          { getRiskPill() }
-
-          {
-            currentDetails.clinical['approx_dry_bite']?
-            <>
-            <Pill><h3>Dry Bite</h3>{currentDetails.clinical['approx_dry_bite']}</Pill>
-            <Pill><h3>Rate of Envenoming</h3>{currentDetails.clinical['general_rate_of_envenoming']}</Pill>
-            </>:undefined
-          }
-
-        </Columns>
-
-        <Br1/>
-
-        <Collapsible header="First Aid">
-          {currentDetails.treatment.first_aid_text?
-          <>
-            <Callout>
-              {makeP(currentDetails.treatment.first_aid_text)}
-            </Callout>
-            <Br1/>
-          </>:undefined
-          }
-          {makeP(currentDetails.first_aid.descr)}
-          {makeList(currentDetails.first_aid.details)}
-        </Collapsible>
-        <Collapsible header="Diagnosis">
-          {getDiagnosis()}
-        </Collapsible>
-        <Collapsible header="Further Treatment">
-          {getTreatment()}
-        </Collapsible>
-        <Collapsible header="Antivenom">
-          {getAntivenom()}
-        </Collapsible>
-        <Collapsible header='Clinical Effects'>
-          <Callout>
-            {makeP(currentDetails.clinical.detail_prognosis)}
-          </Callout>
-          <Br1/>
-          {makeP(currentDetails.clinical.specific_clinical_effects)}
-          <Br1/>
-          <Columns>
-            {makePill('Children',currentDetails.clinical.children)}
-            {makePill('Pregnancy',currentDetails.clinical.pregnancy)}
-            {makePill('Elderly',currentDetails.clinical.elderly)}
-          </Columns>
-          <Br1/>
-          {getClinical()}
-        </Collapsible>
-
-
-        <Collapsible header="Description">
-          <Columns>{makePill('Adult Length',currentDetails.taxonomy.adult_length)}</Columns>
-          <Br2/>
-          {makeP(currentDetails.taxonomy.general_shape)}
-          <Br1/>
-          {makeSection('Coloration & Markings',currentDetails.taxonomy.coloration_markings)}
-          
-          { currentDetails.master.orgclass == 'SN'?
-            <>
-            
-            <h2>Head Scales</h2><Br2/>
-            <Gallery onImage={setImageExpand} gallery={['../assets/diagrams/head-scales-iso.jpeg','../assets/diagrams/head-scales-side.png','../assets/diagrams/head-scales-top.png']}/>
-            {makeP(currentDetails.taxonomy.head_scales)}
-            <Br1/>
-            <h2>Body Scales</h2><Br2/>
-            <Gallery onImage={setImageExpand} gallery={['../assets/diagrams/scales-midbody.jpeg','../assets/diagrams/body-scales.jpeg']}/>
-            <Columns>
-              
-              {makePill('Mid Body Scales',currentDetails.taxonomy.min_mid_body_rows+' ≥ '+currentDetails.taxonomy.max_mid_body_rows+' (usually '+currentDetails.taxonomy.modal_mid_body_rows+')')}
-              {makePill('Subcaudal Scales',currentDetails.taxonomy.min_subcaudals+' ≥ '+currentDetails.taxonomy.max_subcaudals, currentDetails.taxonomy.anals_detail)}
-              {makePill('Ventral Scales',currentDetails.taxonomy.min_ventrals+' ≥ '+currentDetails.taxonomy.max_ventrals)}
-              {makePill('Anal Category',currentDetails.taxonomy.anals_category==1?'divided':'single')}
-            </Columns>
-            </> : undefined
-        }
-        </Collapsible>
-        <Collapsible header='Distribution'>
-        
-          {getGallery(true)}
-          <Columns columns={2}>
-            {makePill('Region',currentDetails.master.region)}
-            {makePill('Countries',currentDetails.master.countries)}
-          </Columns>
-          <Br1/>
-          {makeP(currentDetails.master.distribution)}
-          <Br1/>
-          {makeSection('Habitat',currentDetails.geninfo.habitat)}
-        </Collapsible>
-        <Collapsible header="Venom">
-          {getVenom()}
-        </Collapsible>
-        
-        
-        
-        <Collapsible header='References'>
-          {makeP(currentDetails.taxonomy.ref)}
-          <Br1/>
-          {makePill('Status Notes',currentDetails.taxonomy.status_notes)}
-          <Br1/>
-        </Collapsible>
+        {getFirstAid()}
+        {getDiagnosis()}
+        {getTreatment()}
+        {getAntivenom()}
+        {getClinicalEffects()}
+        {getDescription()}
+        {getDistributon()}
+        {getVenom()}
+        {getReferences()}
       </ContentPillar>
     }
     </scrollPillar>
