@@ -56,6 +56,10 @@ export const getRiskCategory = (di) => {
 
   return categories[iCat];
 }
+
+export const getRiskIndex = (diRAW) =>{
+  return diRAW?diRAW.substring(2,diRAW.indexOf('.')):-1;
+}
  
 const OrganismPillar = ({ current, onBack }) => {
 

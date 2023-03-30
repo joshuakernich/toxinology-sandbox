@@ -7,6 +7,9 @@ import Pill from './Pill';
 import Result from './Result';
 import { Br1, Br2 } from './Br';
 import { useLayoutEffect, useState, useRef } from 'preact/hooks';
+import { getNames } from './Result'
+import { getRiskIndex } from './OrganismPillar'
+
 
 const ResultsPillar = ({setSearchHidden, isSearching, searchCriteria, diagnostics, results, resultPills, toBack}) => {
 
@@ -14,7 +17,7 @@ const ResultsPillar = ({setSearchHidden, isSearching, searchCriteria, diagnostic
 
   const [organism, setOrganism] = useState(sample);
   const [displayMode, setDisplayMode] = useState('grid');
-  const [sortMode, setSortMode] = useState('highlights');
+  const [sortMode, setSortMode] = useState('relevant');
 
   const [resultsFiltered, setResultsFiltered] = useState([]);
   const [orgTypeCounts, setOrgTypeCounts] = useState([]);
@@ -27,7 +30,11 @@ const ResultsPillar = ({setSearchHidden, isSearching, searchCriteria, diagnostic
     if(!results) return;
 
     ORG_KEY.map((o,i) => orgTypeCounts[i]=0 );
-    results.exclusive.map( result => orgTypeCounts[ORG_KEY.indexOf(result.orgclass)]++ );
+    results.exclusive.map( result => {
+      result.di = getRiskIndex(result.dangerousness_index);
+      result.names = getNames(result);
+      orgTypeCounts[ORG_KEY.indexOf(result.orgclass)]++ 
+    });
     setOrgTypeCounts(orgTypeCounts.concat());
     refilter();
     
@@ -106,6 +113,39 @@ const ResultsPillar = ({setSearchHidden, isSearching, searchCriteria, diagnostic
     </resultsPillar>
   }
 
+  const sortOnHighlights = (a,b)=>{
+    if(a.datalength>b.datalength) return -1;
+    if(b.datalength>a.datalength) return 1;
+    return 0;
+  }
+
+  const sortOnName = (a,b)=>{
+    const an = a.names.sortable.toUpperCase();
+    const bn = b.names.sortable.toUpperCase();
+    if(an>bn) return 1;
+    if(bn>an) return -1;
+    return 0;
+  }
+
+  const sortOnTaxonomy = (a,b)=>{
+    const an = a.names.binomial.toUpperCase();
+    const bn = b.names.binomial.toUpperCase();
+    if(an>bn) return 1;
+    if(bn>an) return -1;
+    return 0;
+  }
+
+  const sortOnRisk = (a,b) =>{
+    if(a.di>b.di) return -1;
+    if(b.di>a.di) return 1;
+    return sortOnName(a,b);
+  }
+
+  if(sortMode == 'relevant') resultsFiltered.sort( sortOnHighlights );
+  if(sortMode == 'name') resultsFiltered.sort( sortOnName );
+  if(sortMode == 'risk') resultsFiltered.sort( sortOnRisk );
+  if(sortMode == 'taxonomy') resultsFiltered.sort( sortOnTaxonomy );
+
   return <resultsPillar>
       <scrollPillar hidden={organism?true:false}>
         <ContentPillar>
@@ -146,9 +186,10 @@ const ResultsPillar = ({setSearchHidden, isSearching, searchCriteria, diagnostic
         <sortSelect>
           {'Sort by '}
           <select onChange={(e)=> setSortMode(e.target.value)} value={sortMode}>
-            <option value='highlights'>Highlights</option>
+            <option value='relevant'>Relevant</option>
             <option value='risk'>Risk</option>
-            <option value='alphabetical'>Alphabetical</option>
+            <option value='name'>Name</option>
+            <option value='taxonomy'>Taxonomy</option>
           </select>
         </sortSelect>
         <resultList mode={displayMode}>

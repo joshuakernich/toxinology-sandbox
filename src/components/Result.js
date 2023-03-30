@@ -41,16 +41,24 @@ const bucket =
   'MI':'http://www.toxinology.com/images/marine_life/',
 }
 
+export const getNames = (current) =>{
+  const binomial = current.genus + ' ' +current.species + ' ' + (current.subspecies?current.subspecies:'');
+  const common = current.common_names.indexOf(',')?current.common_names.split(',')[0]:current.common_names;
+  const title = common?common:binomial;
+  
+  // sortable name strips out any subspecies prefix
+  const sortable = (title.indexOf('(') == 0)?title.substr(title.indexOf(') ')+2):title;
+  
+  return {common:common,binomial:binomial,title:title,sortable:sortable};
+}
+
 const Result = ({current={image:'blah',genus:'Thingo',species:'McThingo',common_names:'Thingamajig McThing'},onClick}) => {
 
-  const binomial = current.genus + ' ' +current.species + ' ' + (current.subspecies?current.subspecies:'');
-  const name = current.common_names.indexOf(',')?current.common_names.split(',')[0]:current.common_names;
+  const names = getNames(current);
   const img = current.image?bucket[current.orgclass]+current.image:undefined
   const icon = ICONS[current.orgclass];
 
-  const di = current.dangerousness_index;
-  const dangerousness = di?di.substring(2,di.indexOf('.')):-1;
-  const category = getRiskCategory(dangerousness);
+  const category = getRiskCategory( current.di );
 
   return <resultContainer onClick={onClick}>
     <resultImage>
@@ -64,8 +72,8 @@ const Result = ({current={image:'blah',genus:'Thingo',species:'McThingo',common_
       }
     </resultImage>
     <resultBody>
-      <h2>{name.length?name:<i>{binomial}</i>}</h2>
-      <h3><i>{binomial}</i></h3>
+      <h2>{names.name?names.title:<i>{names.title}</i>}</h2>
+      <h3><i>{names.binomial}</i></h3>
     </resultBody>
     <riskBadge class={style.risk} risk={category.d}><p>{category.d}</p></riskBadge>
   </resultContainer>
