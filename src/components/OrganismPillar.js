@@ -569,6 +569,15 @@ const OrganismPillar = ({ current, onBack }) => {
       </Columns>   
   }
 
+  const getCaseStudies = () => {
+
+    if(!currentDetails.caseStudy) return <Collapsible header='Case Studies' empty/>
+
+    return <Collapsible header='Case Studies'>
+      {makeP(currentDetails.caseStudy.case_summary)}
+    </Collapsible>
+  }
+
   return <organismPillar>
     <scrollPillar>
 
@@ -597,6 +606,7 @@ const OrganismPillar = ({ current, onBack }) => {
         {getDescription()}
         {getDistributon()}
         {getVenom()}
+        {getCaseStudies()}
         {getReferences()}
       </ContentPillar>
     }
