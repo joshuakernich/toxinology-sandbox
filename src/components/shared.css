@@ -873,7 +873,11 @@ diagnosticQuestionWrapper[viable] diagnosticQuestionContainer[answered] + diagno
   animation-duration: 0.5s;
 }
 
-
+.beta{
+  opacity: 0.4;
+  font-size: 0.5em;
+  margin-left: 5px;
+}
 
 
 @media only screen and (max-width: 700px){
