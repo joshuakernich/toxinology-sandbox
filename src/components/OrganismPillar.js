@@ -456,6 +456,15 @@ const OrganismPillar = ({ current, onBack }) => {
   }
 
   const getClinicalEffects = () => {
+
+
+  if( !currentDetails.clinical.detail_prognosis && 
+      !currentDetails.clinical.specific_clinical_effects &&
+      !currentDetails.clinical.children && 
+      !currentDetails.clinical.pregnancy && 
+      !currentDetails.clinical.elderly
+    ) return <Collapsible header='Clinical Effects' empty/>
+
    return <Collapsible header='Clinical Effects'>
       {
         currentDetails.clinical.detail_prognosis?
