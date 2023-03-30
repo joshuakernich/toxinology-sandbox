@@ -83,10 +83,7 @@ const DiagnosticQuestionnaire = ({current, onChange}) => {
 
   useLayoutEffect(() => {
     // write out the question query
-    console.log('layout effect');
     clearResponses(false);
-    console.log(current);
-
     // todo make the query respond to url
 
     // only run once

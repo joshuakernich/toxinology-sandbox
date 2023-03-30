@@ -417,8 +417,15 @@ const OrganismPillar = ({ current, onBack }) => {
 
         <Columns columns={2}>
           { getRiskPill() }
-          <Pill><h3>Dry Bite</h3>{currentDetails.clinical['approx_dry_bite']}</Pill>
-          <Pill><h3>Rate of Envenoming</h3>{currentDetails.clinical['general_rate_of_envenoming']}</Pill>
+
+          {
+            currentDetails.clinical['approx_dry_bite']?
+            <>
+            <Pill><h3>Dry Bite</h3>{currentDetails.clinical['approx_dry_bite']}</Pill>
+            <Pill><h3>Rate of Envenoming</h3>{currentDetails.clinical['general_rate_of_envenoming']}</Pill>
+            </>:undefined
+          }
+
         </Columns>
 
         <Br1/>
