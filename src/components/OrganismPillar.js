@@ -205,7 +205,7 @@ const OrganismPillar = ({ current, onBack }) => {
       {h:'Necrosis',              key:'general_local_necrosis',key2:'detail_necrosis'},
       {h:'Myotoxicity',           key:'general_myotoxicity'},
       {h:'Neurotoxic Paralysis',  key:'general_neurotoxic_paralysis'},
-      {h:'Rate of Envenoming',    key:'general_rate_of_envenoming'},
+      //{h:'Rate of Envenoming',    key:'general_rate_of_envenoming'},
       {h:'Renal Damage',          key:'general_renal_damage'},
       {h:'Untreated Lethality',   key:'general_untreated_lethality_rate'},
       {h:'Venom Anticoagulants',  key:'general_venom_anticoagulants'},
@@ -522,12 +522,14 @@ const OrganismPillar = ({ current, onBack }) => {
         </>:undefined
       }
       
+      <h2>Special Risk Groups</h2><Br2/>
       <Columns>
         {makePill('Children',currentDetails.clinical.children)}
         {makePill('Pregnancy',currentDetails.clinical.pregnancy)}
         {makePill('Elderly',currentDetails.clinical.elderly)}
       </Columns>
       <Br1/>
+      <h2>Specific Effects Relating to Body Systems or Venom Types</h2><Br2/>
       {getClinicalColumns()}
     </Collapsible>
   }
