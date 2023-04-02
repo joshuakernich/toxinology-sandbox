@@ -388,6 +388,11 @@ const OrganismPillar = ({ current, onBack }) => {
     }
 
     return <Collapsible header={header}>
+     <Columns>
+        {antivenom.map( key => makePill(key.h,currentDetails.treatment[key.key]))}
+      </Columns>
+
+      <Br1/>
       <h2>Known Antivenoms</h2>
       <h3>NOTE: Order of antivenoms is not indicitive of preference.</h3>
       <ul>
@@ -398,11 +403,7 @@ const OrganismPillar = ({ current, onBack }) => {
           <p>{v.product_description}</p>
         </li> )}
       </ul>
-
-      <Br1/>
-      <Columns>
-        {antivenom.map( key => makePill(key.h,currentDetails.treatment[key.key]))}
-      </Columns>
+      
 
       <Br1/>
       {makeSection('Antivenom Studies',currentDetails.venom.antivenom_studies)}
