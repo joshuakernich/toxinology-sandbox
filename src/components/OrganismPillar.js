@@ -551,7 +551,14 @@ const OrganismPillar = ({ current, onBack }) => {
         <>
         
         <h2>Head Scales</h2><Br2/>
-        <Gallery onImage={setImageExpand} gallery={['../assets/diagrams/head-scales-iso.jpeg','../assets/diagrams/head-scales-side.png','../assets/diagrams/head-scales-top.png']}/>
+        { currentDetails.taxonomy.family == 'Viperidae'?
+        <Gallery onImage={setImageExpand} gallery={['../assets/diagrams/head-scales-iso.jpeg']}/>:undefined
+        }
+
+        { currentDetails.taxonomy.family == 'Elapidae'?
+        <Gallery onImage={setImageExpand} gallery={['../assets/diagrams/head-scales-side.png']}/>:undefined
+        }
+
         {makeP(currentDetails.taxonomy.head_scales)}
         <Br1/>
         <h2>Body Scales</h2><Br2/>
