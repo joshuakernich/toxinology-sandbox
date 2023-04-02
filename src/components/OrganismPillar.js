@@ -292,20 +292,20 @@ const OrganismPillar = ({ current, onBack }) => {
     ]
 
     const keysLab = [
-      {h:'Abs Lymph',key:'abs_lymph'},
-      {h:'Apao2',key:'apao2'},
-      {h:'Aptt',key:'aptt'},
-      {h:'CK',key:'ck'},
+      {h:'Absolute Lymphopenia',key:'abs_lymph'},
+      {h:'aPaO2',key:'apao2'},
+      {h:'aPTT',key:'aptt'},
+      {h:'Creatine Kinase (CK)',key:'ck'},
       {h:'Creatinine',key:'creatinine'},
-      {h:'Fdpxdp',key:'fdpxdp'},
+      {h:'FDP/XDP/D-dimer',key:'fdpxdp'},
       {h:'Fibrinogen',key:'fibrinogen'},
-      {h:'HB',key:'hb'},
-      {h:'K',key:'k'},
+      {h:'Haemoglobin (Hb)',key:'hb'},
+      {h:'Potassium (K)',key:'k'},
       {h:'Platelets',key:'platelets'},
-      {h:'PT INR',key:'pt_inr'},
+      {h:'PT/INR',key:'pt_inr'},
       {h:'Urea',key:'urea'},
-      {h:'Wbct',key:'wbct'},
-      {h:'Wcc',key:'wcc'},
+      {h:'Whole Blood Clotting Time',key:'wbct'},
+      {h:'White Cell Count (WCC)',key:'wcc'},
     ]
 
     if(!currentDetails.treatment.key_diagnostic_features && 
@@ -446,10 +446,10 @@ const OrganismPillar = ({ current, onBack }) => {
     ]
 
     if(!currentDetails.treatment.treatment_key){
-      return <Collapsible header="Further Treatment" empty/>
+      return <Collapsible header="Medical Treatment" empty/>
     }
 
-    return <Collapsible header="Further Treatment">
+    return <Collapsible header="Medical Treatment">
       <Callout>
         {makeP(currentDetails.treatment.treatment_key)}
       </Callout>
