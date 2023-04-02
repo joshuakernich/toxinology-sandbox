@@ -389,14 +389,15 @@ const OrganismPillar = ({ current, onBack }) => {
 
     return <Collapsible header={header}>
       <h2>Known Antivenoms</h2>
-      <ol>
+      <h3>NOTE: Order of antivenoms is not indicitive of preference.</h3>
+      <ul>
         {currentDetails.antivenoms.map( v => <li>
           <p>{v.name}</p>
           <h3>{v.id} by {v.manufacturer}</h3>
           <Br2/>
           <p>{v.product_description}</p>
         </li> )}
-      </ol>
+      </ul>
 
       <Br1/>
       <Columns>
