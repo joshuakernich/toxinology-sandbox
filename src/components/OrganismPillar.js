@@ -270,25 +270,25 @@ const OrganismPillar = ({ current, onBack }) => {
   const getDiagnosis = () => {
 
     const keys = [
-      {h:'Cardiotoxin',               key:'cardiotoxin'},
-      {h:'Haemostasis and Bleeding',  key:'haemostasis_and_bleeding'},
-      {h:'Haematologic Red Blood Cell',          key:'haematologic_rbc'},
-      {h:'Haematologic White Blook Cell',        key:'haematologic_wbc'},
-      {h:'Haematologic Platelet',     key:'haematologic_platelet'},
-      {h:'Myotoxic',                  key:'myotoxic'},
-      {h:'Neurotoxic Paralytic',      key:'neurotoxic_paralytic'},
-      {h:'Neurotoxic Excitatory',     key:'neurotoxic_excitatory'},
-      {h:'Dermatological',            key:'dermatological'},
-      {h:'Localised',                 key:'localised'},
-      {h:'Necrotoxin',                key:'necrotoxin'},
-      {h:'Cardiovascular',            key:'cardiovascular'},
-      {h:'Respiratory',               key:'respiratory'},
-      {h:'Angio Oedema or Allergic',  key:'angio_oedema_or_allergic'},
+      {h:'Direct Cardiotoxin Effect',            key:'cardiotoxin'},
+      {h:'Abnormal Haemostasis and Bleeding',    key:'haemostasis_and_bleeding'},
+      {h:'Effects on Red Blood Cells (potentially including haemolysis)',          key:'haematologic_rbc'},
+      {h:'Effects on White Blood Cells (notably Leukocytosis and/or Lymphopenia)',        key:'haematologic_wbc'},
+      {h:'Effects on Platelets (increase, decrease, change in platelet aggregation)',     key:'haematologic_platelet'},
+      {h:'Myotoxic (local or systemic muscle damage)',                  key:'myotoxic'},
+      {h:'Paralytic Neurotoxicity',      key:'neurotoxic_paralytic'},
+      {h:'Excitatory Neurotoxicity',     key:'neurotoxic_excitatory'},
+      {h:'Dermatological Effects',            key:'dermatological'},
+      {h:'Localised Effects at bite/string/contact location',                 key:'localised'},
+      {h:'Primary Necrotoxicity at bite/sting/contact location',                key:'necrotoxin'},
+      {h:'Cardiovascular Effects',            key:'cardiovascular'},
+      {h:'Respiratory Effects',               key:'respiratory'},
+      {h:'Angio Oedema or Major Allergic Reaction',  key:'angio_oedema_or_allergic'},
       {h:'Venom Spit Ophthalmia',     key:'venom_spit_ophthalmia'},
       {h:'Anterior Pituitary Haemorrhage', key:'anterior_pituitary_haemorrhage'},
       {h:'Other',                     key:'other'},
-      {h:'General System',            key:'general_system'},
-      {h:'Renal',                     key:'renal'},
+      {h:'Non-specific General System Effects',            key:'general_system'},
+      {h:'Renal Effects (primary or secondary)',                     key:'renal'},
     ]
 
     const keysLab = [
@@ -313,6 +313,14 @@ const OrganismPillar = ({ current, onBack }) => {
       return <Collapsible header="Diagnosis" empty/>
     }
 
+    const YNU = {
+      'Y':'Probable',
+      'N':'Unlikely',
+      'U':'Possilble',
+    }
+
+
+
     return <Collapsible header="Diagnosis">
       {
         currentDetails.treatment.key_diagnostic_features?
@@ -321,13 +329,39 @@ const OrganismPillar = ({ current, onBack }) => {
         </Callout>
         <Br1/></>:undefined
       }
-      <Columns>
-        {keys.map( key => <Pill type={'tick-'+currentDetails.diagnosis[key.key]}>{key.h}</Pill>)}
-      </Columns>
+
+      { keys.filter( key => currentDetails.diagnosis[key.key] == 'Y').length?
+      <>
+        <h2>Likely Effects</h2>
+        <ul>
+        { keys.filter( key => currentDetails.diagnosis[key.key] == 'Y').map( key => <li>{key.h}</li> ) }
+        </ul><Br2/>
+      </>:undefined
+      }
+
+      {keys.filter( key => currentDetails.diagnosis[key.key] == 'U').length?
+      <>
+        <h2>Possible Effects</h2>
+        <ul>
+        { keys.filter( key => currentDetails.diagnosis[key.key] == 'U').map( key => <li>{key.h}</li> ) }
+        </ul><Br2/>
+      </>:undefined
+      }
+
+      {keys.filter( key => currentDetails.diagnosis[key.key] == 'N').length?
+      <>
+        <h2>Effects Unlikely to be observed</h2>
+        <ul>
+        { keys.filter( key => currentDetails.diagnosis[key.key] == 'N').map( key => <li>{key.h}</li> ) }
+        </ul>
+      </>:undefined
+      }
+
       {
         currentDetails.treatment.abs_lymph?
         <>
         <Br1/>
+        <h2>Lab Results</h2><Br2/>
         <Columns>
           {keysLab.map( key => makePill(key.h,currentDetails.treatment[key.key]))}
         </Columns>
