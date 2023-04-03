@@ -142,9 +142,11 @@ const OrganismPillar = ({ current, onBack }) => {
   }
 
   const makePill = (header,...par) => {
+
+
     return<Pill>
       <h3>{header}</h3>
-      { par.map( p => <p>{p}</p> ) }
+      { par.map( p => p?<p>{p}</p>:<p>No Data</p> ) }
     </Pill>
   }
 
@@ -381,6 +383,31 @@ const OrganismPillar = ({ current, onBack }) => {
       {h:'Adverse Antivenom Reaction Management',key:'adverse_av_reaction_mngt'},
       ]
 
+    const keysMajor = [
+      {h:'Description',key:'product_description'},
+      {h:'Comments',key:'comments'},
+      {h:'Recommended Dose',key:'recommended_dose'},
+      {h:'Source Species',key:'source_species'},
+      {h:'Coverage Species',key:'coverage_species'},
+      {h:'Storage Type',key:'storage_type'},
+
+    ]
+
+    const keysMinor = [
+      {h:"type",key:"type"},
+      {h:"Status", key:"status"},
+      {h:"Immunisation Host", key:"immunisation_host"},
+      {h:"Administration Route", key:"administration_route"},
+      {h:"Volume", key:"volume"},
+      {h:"Initial Dose", key:"initial_dose_mnfr"},
+      {h:"Local Cost", key:"local_cost"},
+      {h:"Storage Life", key:"storage_life"},
+      {h:"Language on Label", key:"languages_on_label"},
+      {h:"Related Information", key:"related_information"},
+      //{h:"", key:"aaa_old_key"},
+      {h:"References", key:"ref"},
+    ]
+
     if(!currentDetails.antivenoms.length &&
       !currentDetails.treatment.antivenom_therapy &&
       !currentDetails.venom.antivenom_studies){
@@ -400,7 +427,18 @@ const OrganismPillar = ({ current, onBack }) => {
           <p>{v.name}</p>
           <h3>{v.id} by {v.manufacturer}</h3>
           <Br2/>
-          <p>{v.product_description}</p>
+
+          {keysMajor.map( key => <>
+            <h3>{key.h}</h3>
+            <p>{v[key.key]}</p>
+            <Br2/>
+            </>
+          )}
+          
+          <Columns>
+          {keysMinor.map( key => makePill(key.h,v[key.key]))}
+          </Columns>
+          
         </li> )}
       </ul>
       
