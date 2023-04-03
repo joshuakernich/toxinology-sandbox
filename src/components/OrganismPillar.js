@@ -142,8 +142,6 @@ const OrganismPillar = ({ current, onBack }) => {
   }
 
   const makePill = (header,...par) => {
-
-
     return<Pill>
       <h3>{header}</h3>
       { par.map( p => p?<p>{p}</p>:<p>No Data</p> ) }
@@ -612,6 +610,16 @@ const OrganismPillar = ({ current, onBack }) => {
         </Columns>
         </> : undefined
     }
+
+    {makeSection('Biological Organism Type',currentDetails.geninfo.organism_type_biology)}
+    {makeSection('Breeding',currentDetails.geninfo.breeding)}
+    {makeSection('Dentition',currentDetails.geninfo.dentition)}
+    {makeSection('Habits',currentDetails.geninfo.habits)}
+    {makeSection('Hemipenis',currentDetails.geninfo.hemipenis)}
+    {makeSection('Juveniles',currentDetails.geninfo.juveniles)}
+    {makeSection('Lethality',currentDetails.geninfo.lethality)}
+    {makeSection('Prey',currentDetails.geninfo.prey)}
+    {makeSection('Sexual Dimorphism',currentDetails.geninfo.sexual_dimorphism)}
     </Collapsible>
   }
 
