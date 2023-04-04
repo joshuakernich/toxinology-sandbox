@@ -58,6 +58,7 @@ const DiagnosisQuestion = (props) => {
 
 const DiagnosticQuestionnaire = ({current, onChange}) => {
   const searchResults = useContext(SearchResults);
+  const [exposureRoute, setExposureRoute] = useState();
   const [questionQuery, setQuestionQuery] = useState(current);
 
   const clearResponses = (invokeChange = true) => {
@@ -74,6 +75,7 @@ const DiagnosticQuestionnaire = ({current, onChange}) => {
       };
     });
 
+    setExposureRoute()
     setQuestionQuery(nextQuestionQuery);
 
     if (!invokeChange) return;
@@ -129,7 +131,7 @@ const DiagnosticQuestionnaire = ({current, onChange}) => {
 
       updateQuestionQueries([...questionQuery]);
     }} />
-  }
+  };
 
   // TODO: on question change, clear the next questions
   return [
