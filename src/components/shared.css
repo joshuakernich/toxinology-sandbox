@@ -362,7 +362,7 @@ button.back:before{
 }
 
 button.restart{
-  background: rgba(0, 0, 0, 0.1);
+  background: var(--opaque);
 }
 
 button.restart:before{
@@ -757,6 +757,8 @@ calloutCountainer[type='disclaimer']{
   border-color: var(--red);
   color: #ff7777;
   font-size: 0.7em;
+  background: rgba(0, 0, 0, 0.1);
+  color: var(--white);
 }
 
 imageExpandContainer{
