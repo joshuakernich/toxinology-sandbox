@@ -523,19 +523,36 @@ selectContainer {
   display: block;
 }
 
+selectContainer:after {
+  content: "";
+  display: block;
+  width: 8px;
+  height: 8px;
+
+  border-width: 0px 1px 1px 0px;
+  transform: rotate(45deg);
+  position: absolute;
+  right: 45px;
+  top: 15px;
+  border-color: white;
+  border-style: solid;
+}
+
 selectCancel {
   display: block;
   position: absolute;
   background: url(../assets/icons/icon-cross-white.svg);
-  background-size: contain;
+  background-size: 12px;
   background-position: center;
+  background-repeat: no-repeat;
   cursor:pointer;
-  width: 16px;
-  height: 16px;
-  top: 50%;
-  right: 5px;
-  transform: translate(-50%, -50%);
-  opacity: 0.3;
+  width: 30px;
+  
+  top: 1px;
+  right: 1px;
+  bottom: 0px;
+  border-left: 1px solid var(--opaque);
+  background-color: var(--dark);
 }
 
 @keyframes spin{
