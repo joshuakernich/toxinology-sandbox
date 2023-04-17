@@ -468,11 +468,7 @@ galleryContainer:after{
   top: 0px;
 }
 
-.galleryImage{
-  margin-right: 5px;
-  border: 1px solid var(--border);
-  background: white;
-}
+
 
 .br1{
   height: 30px;
@@ -559,10 +555,12 @@ galleryImage{
   display: inline-block;
   position: relative;
   overflow: hidden;
+  border: 1px solid var(--border);
+  margin-right: 5px;
+  line-height: 0;
 }
 
 captionContainer{
-  background: rgba(255,255,255,0.5);
   
   
   color: var(--dark);
@@ -571,6 +569,8 @@ captionContainer{
   font-size: 0.6em;
   white-space: normal;
   transition: 0.1s all;
+  line-height: 1;
+  pointer-events: none;
 }
 
 galleryImage captionContainer{
@@ -581,6 +581,8 @@ galleryImage captionContainer{
   right: 0px;
   padding: 10px;
   backdrop-filter: blur(5px);
+  box-sizing: border-box;
+  background: rgba(255,255,255,0.5);
 }
 
 galleryImage:hover captionContainer{
