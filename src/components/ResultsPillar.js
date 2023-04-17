@@ -24,7 +24,9 @@ const ResultsPillar = ({setSearchHidden, isSearching, searchCriteria, diagnostic
   const [orgTypeFilters, setOrgTypeFilters] = useState([]);
 
   const ORG_KEY = ["SN","SC","SP","PM","PP","TV","TI","MV","MI"]
-  const ORG_NAME = ['snakes','scorpions','spiders','mushrooms','plants','land verterbrates','land inverterbrates','marine verterbrates','marine inverterbrates']
+  const ORG_MAP = [0,1,2,3,3,4,4,5,5]
+  const ORG_CONSOLIDATED = ["SN","SC","SP","PM","TI","MI"]
+  const ORG_NAME = ['snakes','scorpions','spiders','plants & mushrooms','other land','other aquatic']
 
   useLayoutEffect(() => {
     if(!results) return;
@@ -33,7 +35,7 @@ const ResultsPillar = ({setSearchHidden, isSearching, searchCriteria, diagnostic
     results.exclusive.map( result => {
       result.di = getRiskIndex(result.dangerousness_index);
       result.names = getNames(result);
-      orgTypeCounts[ORG_KEY.indexOf(result.orgclass)]++ 
+      orgTypeCounts[ORG_MAP[ORG_KEY.indexOf(result.orgclass)]]++ 
     });
     setOrgTypeCounts(orgTypeCounts.concat());
     refilter();
@@ -55,7 +57,7 @@ const ResultsPillar = ({setSearchHidden, isSearching, searchCriteria, diagnostic
     if( orgTypeFilters.indexOf(true) > -1 ){
       const filtered = [];
       results.exclusive.map(r => {
-        if( orgTypeFilters[ORG_KEY.indexOf(r.orgclass)]) filtered.push(r);
+        if( orgTypeFilters[ORG_MAP[ORG_KEY.indexOf(r.orgclass)]]) filtered.push(r);
       });
       setResultsFiltered(filtered);
     } else {
@@ -64,7 +66,8 @@ const ResultsPillar = ({setSearchHidden, isSearching, searchCriteria, diagnostic
   }
 
   const toggleOrgFilter = (key)=>{
-    orgTypeFilters[ORG_KEY.indexOf(key)] = !orgTypeFilters[ORG_KEY.indexOf(key)];
+
+    orgTypeFilters[ORG_CONSOLIDATED.indexOf(key)] = !orgTypeFilters[ORG_CONSOLIDATED.indexOf(key)];
     setOrgTypeFilters(orgTypeFilters);
     refilter();
   }
@@ -168,10 +171,10 @@ const ResultsPillar = ({setSearchHidden, isSearching, searchCriteria, diagnostic
           </resultsHeader>
           <Br2/>
           <filterList>
-            { ORG_KEY.map( (o,i) => 
+            { ORG_CONSOLIDATED.map( (o,i) => 
               (orgTypeFilters[i] || orgTypeCounts[i])?<Pill 
               selected={orgTypeFilters[i]} 
-              category={ORG_KEY[i]}
+              category={ORG_CONSOLIDATED[i]}
               onClick={()=> toggleOrgFilter(o)}>
 
               {orgTypeCounts[i]} {ORG_NAME[i]}
