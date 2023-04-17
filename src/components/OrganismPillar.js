@@ -129,9 +129,9 @@ const OrganismPillar = ({ current, onBack }) => {
     const g = [];
     const b = bucket[currentDetails.master.orgclass];
 
-    if(currentDetails.master.map_image_large) g.push(b+currentDetails.master.map_image_large);
+    if(currentDetails.master.map_image_large) g.push({caption:'species map',url:b+currentDetails.master.map_image_large});
 
-    if(!justMap) currentDetails.graphics.map( graphic => g.push(b+graphic.image) );
+    if(!justMap) currentDetails.graphics.map( graphic => g.push({caption:graphic.image_caption,url:b+graphic.image}) );
 
     if(!g.length) return undefined;
 
@@ -708,7 +708,8 @@ const OrganismPillar = ({ current, onBack }) => {
     </scrollPillar>
     { imgExpand ?
       <imageExpandContainer onclick={()=> setImageExpand(undefined)}>
-        <img src={imgExpand}/>
+        <img src={imgExpand.url}></img>
+        <captionContainer>{imgExpand.caption}</captionContainer>
       </imageExpandContainer>:undefined
     }
   </organismPillar>

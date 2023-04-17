@@ -2,7 +2,11 @@ import { h } from 'preact';
 import style from './shared.css';
 
 const GalleryImage = ({img,onImage}) => (
-  <img class={style.galleryImage} onclick={()=> onImage(img)} src={img} height='150'/>
+
+  <galleryImage>
+    <img class={style.galleryImage} onclick={()=> onImage(img)} src={img.url} height='150'/>
+    <captionContainer>{img.caption}</captionContainer>
+  </galleryImage>
 )
 
 const Gallery = ({gallery,onImage}) => (
