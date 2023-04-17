@@ -4,6 +4,7 @@ import { useLayoutEffect, useState, useRef, useContext } from 'preact/hooks';
 import { sitemap } from "../libs/sitemap.js";
 import style from './shared.css';
 import SearchResults from '../components/SearchResultsContext.js';
+import LocationBuilder from './LocationBuilder';
 import { Br1, Br2 } from './Br';
 
 const DIAGNOSIS_ANSWERS_VALUES = {
@@ -56,7 +57,7 @@ const DiagnosisQuestion = (props) => {
   </diagnosticQuestionContainer>;
 }
 
-const DiagnosticQuestionnaire = ({current, onChange}) => {
+const DiagnosticQuestionnaire = ({current, onChange, locationsRef, onLocationChange}) => {
   const searchResults = useContext(SearchResults);
   const [exposureRoute, setExposureRoute] = useState();
   const [questionQuery, setQuestionQuery] = useState(current);
@@ -143,6 +144,8 @@ const DiagnosticQuestionnaire = ({current, onChange}) => {
         <strong>NOTE: </strong>
         Results are indicative only and should not be relied on to include or exclude any organisms.
       </calloutCountainer>
+      <Br2/>
+      <LocationBuilder current={locationsRef.current} onChange={onLocationChange}/>
       <Br2/>
       <diagnosticQuestionWrapper viable={possibleOrganismTracks.length>0}>
         {

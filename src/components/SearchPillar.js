@@ -11,6 +11,13 @@ import { Br1, Br2 } from './Br';
 import { useState, useRef, useContext } from 'preact/hooks';
 import SearchResults from './SearchResultsContext';
 
+const { countries, zones } = require("moment-timezone/data/meta/latest.json");
+const timeZoneToCountry = {};
+
+Object.keys(zones).forEach(z => {
+  timeZoneToCountry[z] = countries[zones[z].countries[0]].name;
+});
+
 const ORGANISM_TYPES = [
   { key: "sn", t: 'Snake', i: '../assets/icons/icon-snake.svg' },
   { key: "sp", t: 'Spider', i: '../assets/icons/icon-spider.svg' },
@@ -28,7 +35,11 @@ const SearchPillar = ({ isSearchHidden, setSearchHidden, diagnostics, onChange, 
   // PF: we need to keep track of the list/keyword/organisms between renders.
   // using refs here because the child elements seem to be handling their own stuff.
   // that's cool and all <3.
-  const locationsRef = useRef(['Australia']);
+
+  const whereAmI = timeZoneToCountry[Intl.DateTimeFormat().resolvedOptions().timeZone];
+
+
+  const locationsRef = useRef([whereAmI]);
   const keywordsRef = useRef({text: "", matchingTerms: []});
   const organismTypesRef = useRef({});
 
@@ -127,7 +138,7 @@ const SearchPillar = ({ isSearchHidden, setSearchHidden, diagnostics, onChange, 
         <Br2/>
         <button onclick={toDiagnostic} class={style.more}>{diagnosticCount?diagnosticCount + ' effect'+(diagnosticCount>1?'s':'')+' observed':'No Effects Observed'}</button>
       </ContentPillar>):undefined}
-      {drill == 'diagnostic' && <DiagnosticPillar current={diagnosticTypesRef.current} onChange={onDiagnosticTypesChange} toBack={toBack}/>}
+      {drill == 'diagnostic' && <DiagnosticPillar locationsRef={locationsRef} onLocationChange={onLocationChange} current={diagnosticTypesRef.current} onChange={onDiagnosticTypesChange} toBack={toBack}/>}
       {drill == 'labs' && <LabsPillar toBack={toBack}/>}
     </scrollPillar>
     <searchTogglePanel>
