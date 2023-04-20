@@ -625,6 +625,7 @@ const OrganismPillar = ({ current, onBack }) => {
     {makeSection('Lethality',currentDetails.geninfo.lethality)}
     {makeSection('Prey',currentDetails.geninfo.prey)}
     {makeSection('Sexual Dimorphism',currentDetails.geninfo.sexual_dimorphism)}
+    {makeSection('Taxonomy Synonomy',currentDetails.taxonomy.synonomy)}
     </Collapsible>
   }
 
