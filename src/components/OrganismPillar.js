@@ -630,8 +630,16 @@ const OrganismPillar = ({ current, onBack }) => {
   }
 
   const getDistributon = () => {
+
+    const g = [];
+    const b = bucket[currentDetails.master.orgclass];
+
+    if(currentDetails.taxonomy.family_map) g.push({caption:'family map',url:b+currentDetails.taxonomy.family_map});
+    if(currentDetails.taxonomy.genus_map) g.push({caption:'genus map',url:b+currentDetails.taxonomy.genus_map});
+    if(currentDetails.master.map_image_large) g.push({caption:'species map',url:b+currentDetails.master.map_image_large});
+
     return <Collapsible header='Distribution'>
-      {getGallery(true)}
+      <Gallery onImage={setImageExpand} gallery={g}></Gallery>
       <Columns columns={2}>
         {makePill('Region',currentDetails.master.region)}
         {makePill('Countries',currentDetails.master.countries)}
