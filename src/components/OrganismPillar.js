@@ -590,17 +590,22 @@ const OrganismPillar = ({ current, onBack }) => {
         
         <h2>Head Scales</h2><Br2/>
         { currentDetails.taxonomy.family == 'Viperidae'?
-        <Gallery onImage={setImageExpand} gallery={['../assets/diagrams/head-scales-iso.jpeg']}/>:undefined
+        <Gallery onImage={setImageExpand} gallery={[{url:'../assets/diagrams/head-scales-iso.jpeg'}]}/>:undefined
         }
 
         { currentDetails.taxonomy.family == 'Elapidae'?
-        <Gallery onImage={setImageExpand} gallery={['../assets/diagrams/head-scales-side.png']}/>:undefined
+        <Gallery onImage={setImageExpand} gallery={[
+          {url:'../assets/diagrams/head-scales-side.png'}
+          ]}/>:undefined
         }
 
         {makeP(currentDetails.taxonomy.head_scales)}
         <Br1/>
         <h2>Body Scales</h2><Br2/>
-        <Gallery onImage={setImageExpand} gallery={['../assets/diagrams/scales-midbody.jpeg','../assets/diagrams/body-scales.jpeg']}/>
+        <Gallery onImage={setImageExpand} gallery={[
+          {url:'../assets/diagrams/scales-midbody.jpeg'},
+          {url:'../assets/diagrams/body-scales.jpeg'}
+          ]}/>
         <Columns>
           
           {makePill('Mid Body Scales',currentDetails.taxonomy.min_mid_body_rows+' ≥ '+currentDetails.taxonomy.max_mid_body_rows+' (usually '+currentDetails.taxonomy.modal_mid_body_rows+')')}

@@ -5,7 +5,7 @@ const GalleryImage = ({img,onImage}) => (
 
   <galleryImage>
     <img onclick={()=> onImage(img)} src={img.url} height='150'/>
-    <captionContainer>{img.caption}</captionContainer>
+    {img.caption?<captionContainer>{img.caption}</captionContainer>:undefined}
   </galleryImage>
 )
 
