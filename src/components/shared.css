@@ -912,6 +912,8 @@ switchContainer switchOption{
   position: relative;
   flex-grow: 1;
   border-left: 1px solid var(--opaque);
+  text-align: center;
+  padding: 15px 5px;
 }
 
 switchOption:first-of-type{
@@ -925,6 +927,7 @@ switchOption input{
   border: none;
   border-top: none;
   appearance: none;
+  display: none;
 }
 
 switchOption[checked]{
@@ -933,12 +936,6 @@ switchOption[checked]{
 
 
 switchOption label{
-  position: absolute;
-  top: 0px;
-  left: 0px;
-  right: 0px;
-  bottom: 0px;
-  padding: 20px;
   text-align: center;
 }
 
