@@ -124,6 +124,7 @@ const OrganismPillar = ({ current, onBack }) => {
     </Pill>;
   }
 
+
   const getGallery = ( justMap ) => {
 
     const g = [];
@@ -320,8 +321,17 @@ const OrganismPillar = ({ current, onBack }) => {
     }
 
 
+    const g = [];
+    const b = bucket[currentDetails.master.orgclass];
+
+    currentDetails.graphics.map( graphic =>{
+      if(graphic.image_caption.match(/(bite|string)/i)) g.push({caption:graphic.image_caption,url:b+graphic.image}) 
+    });
 
     return <Collapsible header="Diagnosis">
+
+      { g.length?<Gallery gallery={g}></Gallery>:undefined }
+
       {
         currentDetails.treatment.key_diagnostic_features?
         <><Callout>
