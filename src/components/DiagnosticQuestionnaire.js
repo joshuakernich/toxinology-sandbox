@@ -58,12 +58,30 @@ const DiagnosisQuestion = (props) => {
 }
 
 const DiagnosticQuestionnaire = ({current, onChange, locationsRef, onLocationChange}) => {
+
   const searchResults = useContext(SearchResults);
+  const [okayDisclaimer, setOkayDisclaimer] = useState(false);
+  const [okayLocation, setOkayLocation] = useState(false);
   const [exposureRoute, setExposureRoute] = useState();
   const [questionQuery, setQuestionQuery] = useState(current);
 
   const clearResponses = (invokeChange = true) => {
-    const nextQuestionQuery = sitemap.diagnosis.questions.map((question, index) => {
+    if(!sitemap.diagnosis) return;
+
+    setExposureRoute()
+    setOkayLocation(false);
+    startQuestions(invokeChange);
+
+    if (!invokeChange) return;
+
+    onChange([]);
+  }
+
+
+
+  const startQuestions =(invokeChange = true)=>{
+
+     const nextQuestionQuery = sitemap.diagnosis.questions.map((question, index) => {
       // key is a protected keyword
       const currentResponse = (!invokeChange && current && current[index]?.response) || DIAGNOSIS_ANSWERS_VALUES.UNANSWERED;
 
@@ -76,12 +94,7 @@ const DiagnosticQuestionnaire = ({current, onChange, locationsRef, onLocationCha
       };
     });
 
-    setExposureRoute()
     setQuestionQuery(nextQuestionQuery);
-
-    if (!invokeChange) return;
-
-    onChange([]);
   }
 
   useLayoutEffect(() => {
@@ -99,7 +112,7 @@ const DiagnosticQuestionnaire = ({current, onChange, locationsRef, onLocationCha
     setQuestionQuery(values);
   };
 
-  const allResults = [...searchResults.exclusive, ...searchResults.unexclusive];
+  const allResults = searchResults?[...searchResults.exclusive, ...searchResults.unexclusive]:[];
 
   // TODO: CLEAN CODE REUSE!
   const answeredDiagnosisTrack = questionQuery.map(diagnosticQuestion => diagnosticQuestion.response).join('').replace(/u/gi, ".").replace(/\.*$/g, "");
@@ -135,15 +148,33 @@ const DiagnosticQuestionnaire = ({current, onChange, locationsRef, onLocationCha
   };
 
   // TODO: on question change, clear the next questions
-  return [
-    <searchWrapper>
+
+  if(!okayDisclaimer) return <diagnosticWrapper>
       <h1>Diagnostic Questionnaire</h1>
-      <h3>Questions will appear one-by-one</h3>
       <Br2/>
-      <calloutCountainer type='disclaimer'>
-        <strong>NOTE: </strong>
-        Results are indicative only and should not be relied on to include or exclude any organisms.
-      </calloutCountainer>
+      <strong>NOTE: </strong>Results are indicative only and should not be relied on to include or exclude any organisms.
+      <Br2/>
+      <button onClick={()=>setOkayDisclaimer(true)} class={style.confirm}>Acknowledge</button>
+    </diagnosticWrapper>
+
+  if(!okayLocation) return <diagnosticWrapper>
+      <h1>Diagnostic Questionnaire</h1>
+      <Br2/>
+      Where did the exposure occur?
+      <Br2/>
+      <LocationBuilder current={locationsRef.current} onChange={onLocationChange}/>
+      <Br2/>
+      <button onClick={()=>{
+        setOkayLocation(true);
+        startQuestions();
+      }} class={style.confirm}>Confirm Location</button>
+    </diagnosticWrapper>
+
+  return [
+    <diagnosticWrapper>
+      <h1>Diagnostic Questionnaire</h1>
+      <Br2/>
+      Where did the exposure occur?
       <Br2/>
       <LocationBuilder current={locationsRef.current} onChange={onLocationChange}/>
       <Br2/>
@@ -168,7 +199,7 @@ const DiagnosticQuestionnaire = ({current, onChange, locationsRef, onLocationCha
         <diagnosticMatchesHeader>Found {matches.count} related results.</diagnosticMatchesHeader>
         <diagnosticMatchesContainer>{matches.sequences.map(v => [<a href={`/details/${v.key}`}>{v.key}</a>, ', '])}</diagnosticMatchesContainer>
       </diagnosticMatchesWrapper>*/}
-    </searchWrapper>
+    </diagnosticWrapper>
   ]
 };
 

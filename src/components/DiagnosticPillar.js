@@ -6,14 +6,15 @@ import { Br1, Br2 } from './Br';
 import { RadioGroup } from './Radio';
 import DiagnosticQuestionnaire from './DiagnosticQuestionnaire'
 
-const DiagnosticPillar = ({ current, toBack, onChange, locationsRef, onLocationChange }) => {
+const DiagnosticPillar = ({ active, current, toBack, onChange, locationsRef, onLocationChange }) => {
 
-  return <ContentPillar>
-    <button onclick={toBack} class={style.back}>Back to Search</button>
-    <Br1/>
-
-    <DiagnosticQuestionnaire locationsRef={locationsRef} onLocationChange={onLocationChange} current={current} onChange={onChange}/>
-  </ContentPillar>
+  return <diagnosticPillar active={active}>
+    <ContentPillar>
+      <button onclick={toBack} class={style.back}>Back to Search</button>
+      <Br1/>
+      <DiagnosticQuestionnaire locationsRef={locationsRef} onLocationChange={onLocationChange} current={current} onChange={onChange}/>
+    </ContentPillar>
+  </diagnosticPillar>
 };
 
 export default DiagnosticPillar;

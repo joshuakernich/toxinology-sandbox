@@ -138,8 +138,7 @@ const SearchPillar = ({ isSearchHidden, setSearchHidden, diagnostics, onChange, 
         <Br2/>
         <button onclick={toDiagnostic} class={style.more}>{diagnosticCount?diagnosticCount + ' effect'+(diagnosticCount>1?'s':'')+' observed':'No Effects Observed'}</button>
       </ContentPillar>):undefined}
-      {drill == 'diagnostic' && <DiagnosticPillar locationsRef={locationsRef} onLocationChange={onLocationChange} current={diagnosticTypesRef.current} onChange={onDiagnosticTypesChange} toBack={toBack}/>}
-      {drill == 'labs' && <LabsPillar toBack={toBack}/>}
+      <DiagnosticPillar active={drill=='diagnostic'} locationsRef={locationsRef} onLocationChange={onLocationChange} current={diagnosticTypesRef.current} onChange={onDiagnosticTypesChange} toBack={toBack}/>
     </scrollPillar>
     <searchTogglePanel>
       <button onclick={()=> setSearchHidden(true)} class={style.more}>Show {resultCount && !isSearching?resultCount:'Search'} Results {isSearching?<littleLoadWheel/>:undefined}</button>

@@ -376,6 +376,32 @@ button.restart:before{
   background-size: 100%;
 }
 
+button.confirm:before{
+  content: "";
+  width: 20px;
+  height: 20px;
+  border: 1px solid white;
+  
+  position: absolute;
+  right: 8px;
+  bottom: 8px;
+  opacity: 0.1;
+}
+
+button.confirm:after{
+  content: "";
+  display: block;
+  width: 4px;
+  height: 10px;
+  border-color: white;
+  border-width: 0px 1px 1px 0px;
+  transform: rotate(35deg);
+  position: absolute;
+  right: 17px;
+  bottom: 15px;
+  opacity: 0.2;
+}
+
 resultspillar button{
   background: var(--dark);
 }
@@ -932,6 +958,8 @@ homePillar{
   }
 }
 
+
+
 diagnosticQuestionContainer{
   display: none;
   
@@ -952,6 +980,13 @@ diagnosticQuestionWrapper[viable] diagnosticQuestionContainer[answered] + diagno
   margin-left: 5px;
 }
 
+diagnosticPillar{
+  display: none;
+}
+
+diagnosticPillar[active=true]{
+  display: block;
+}
 
 @media only screen and (max-width: 700px){
 
