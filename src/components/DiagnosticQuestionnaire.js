@@ -177,7 +177,7 @@ const DiagnosticQuestionnaire = ({current, onChange, locationsRef, onLocationCha
       Where did the exposure occur?
       <Br2/>
       <LocationBuilder current={locationsRef.current} onChange={onLocationChange}/>
-      <Br2/>
+      <Br1/>
       <diagnosticQuestionWrapper viable={possibleOrganismTracks.length>0}>
         {
           answeredQuestions.map(renderQuestion)
