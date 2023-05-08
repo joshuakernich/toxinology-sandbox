@@ -466,8 +466,13 @@ resultContainer{
 
 resultBody{
   padding: 10px;
+  display: block;
+}
+
+resultlist[mode=list] resultBody{
+  display: flex-item;
   flex-shrink: 1;
-  padding-right: 100px;
+  padding: 5px 100px 10px 10px;
 }
 
 .img{
