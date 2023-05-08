@@ -447,6 +447,7 @@ resultlist[mode=list] resultContainer{
 resultlist[mode=list] resultContainer resultImage{
   width: 50px;
   height: 50px;
+  flex-shrink: 0;
 }
 
 resultlist[mode=list] riskBadge{
@@ -465,7 +466,8 @@ resultContainer{
 
 resultBody{
   padding: 10px;
-  display: block;
+  flex-shrink: 1;
+  padding-right: 100px;
 }
 
 .img{
@@ -989,7 +991,6 @@ diagnosticPillar[active=true]{
 
   homePillar{
     display: block;
-
     height: var(--screen-height);
   }
 
