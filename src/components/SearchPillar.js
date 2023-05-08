@@ -36,6 +36,8 @@ const SearchPillar = ({ isSearchHidden, setSearchHidden, diagnostics, onChange, 
   // using refs here because the child elements seem to be handling their own stuff.
   // that's cool and all <3.
 
+  console.log(countries);
+
   const whereAmI = timeZoneToCountry[Intl.DateTimeFormat().resolvedOptions().timeZone];
 
 
