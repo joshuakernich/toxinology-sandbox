@@ -330,7 +330,7 @@ const OrganismPillar = ({ current, onBack }) => {
 
     return <Collapsible header="Diagnosis">
 
-      { g.length?<Gallery gallery={g}></Gallery>:undefined }
+      { g.length?<Gallery onImage={setImageExpand} gallery={g}></Gallery>:undefined }
 
       {
         currentDetails.treatment.key_diagnostic_features?

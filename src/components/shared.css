@@ -607,7 +607,7 @@ captionContainer{
 }
 
 galleryImage captionContainer{
-  transform: translate(0px,100%);
+  /*transform: translate(0px,100%);*/
   position: absolute;
   bottom: 0px;
   left: 0px;
@@ -616,10 +616,13 @@ galleryImage captionContainer{
   backdrop-filter: blur(5px);
   box-sizing: border-box;
   background: rgba(255,255,255,0.5);
+  text-overflow: ellipsis;
+  white-space: nowrap; 
+  overflow: hidden;
 }
 
 galleryImage:hover captionContainer{
-  transform: translate(0px,0px);
+  white-space: normal;
 }
 
 @keyframes spin{
