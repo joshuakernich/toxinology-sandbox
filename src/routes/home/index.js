@@ -123,6 +123,7 @@ const Home = () => {
         isSearching={isSearching} 
         isSearchHidden={isSearchHidden} 
         setSearchHidden={setSearchHidden} 
+        searchCriteria={currentSearchCriteria}
         diagnostics={diagnostics}
         onChange={onSearchChanged}
         onDiagnosticChange={onDiagnosticChange}>

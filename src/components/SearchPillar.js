@@ -6,6 +6,7 @@ import LabsPillar from './LabsPillar';
 import DiagnosticPillar from './DiagnosticPillar';
 import LocationBuilder from './LocationBuilder';
 import KeywordBuilder from './KeywordBuilder';
+import { getSearchCriteria } from './ResultsPillar';
 import {RadioGroup} from './Radio';
 import { Br1, Br2 } from './Br';
 import { useState, useRef, useContext } from 'preact/hooks';
@@ -30,7 +31,7 @@ const ORGANISM_TYPES = [
   { key: "pp", t: 'Poisonous Plant', i: '../assets/icons/icon-flower.svg' },
 ];
 
-const SearchPillar = ({ isSearchHidden, setSearchHidden, diagnostics, onChange, onDiagnosticChange, isSearching }) => {
+const SearchPillar = ({ isSearchHidden, setSearchHidden, searchCriteria, diagnostics, onChange, onDiagnosticChange, isSearching }) => {
   const searchResults = useContext(SearchResults);
   // PF: we need to keep track of the list/keyword/organisms between renders.
   // using refs here because the child elements seem to be handling their own stuff.
@@ -112,7 +113,7 @@ const SearchPillar = ({ isSearchHidden, setSearchHidden, diagnostics, onChange, 
     onDiagnosticChange(diagnosticTypesRef.current);
   }
 
-  const resultCount = searchResults && (searchResults.exclusiveCount + searchResults.unexclusiveCount);
+  const resultCount = searchResults && searchResults.exclusiveCount;
 
   const diagnosticCount = diagnostics.filter(diagnosticQuestion => !["U", "."].includes(diagnosticQuestion.response)).length;
 
@@ -143,7 +144,13 @@ const SearchPillar = ({ isSearchHidden, setSearchHidden, diagnostics, onChange, 
       <DiagnosticPillar active={drill=='diagnostic'} locationsRef={locationsRef} onLocationChange={onLocationChange} current={diagnosticTypesRef.current} onChange={onDiagnosticTypesChange} toBack={toBack}/>
     </scrollPillar>
     <searchTogglePanel>
-      <button onclick={()=> setSearchHidden(true)} class={style.more}>Show {resultCount && !isSearching?resultCount:'Search'} Results {isSearching?<littleLoadWheel/>:undefined}</button>
+
+      <button onclick={()=> setSearchHidden(true)} class={style.more}>
+        <resultsHeaderDetails>
+          <h1>{!isSearching?('Show '+resultCount+' Results'):'Updating Results...'} {isSearching?<littleLoadWheel/>:undefined}</h1>
+          {getSearchCriteria(searchCriteria,diagnostics)}
+        </resultsHeaderDetails>
+        </button>
     </searchTogglePanel>
   </searchPillar>
 };

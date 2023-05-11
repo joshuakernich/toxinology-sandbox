@@ -11,6 +11,23 @@ import { getNames } from './Result'
 import { getRiskIndex } from './OrganismPillar'
 
 
+export const getSearchCriteria = (searchCriteria,diagnostics) =>{
+
+  if(!searchCriteria.keywords) return undefined;
+
+  var orgs = [];
+  searchCriteria.organismTypes.map( type => orgs.push( ORG_NAME[ORG_KEY.indexOf(type)] ));
+  const countDiagnostic = diagnostics.filter(diagnosticQuestion => !["U", "."].includes(diagnosticQuestion.response)).length;
+
+  return<h3>
+    for{' '}
+    {searchCriteria.organismTypes.length?orgs.join(', '):'all organisms'}{' '}
+    {searchCriteria.locations.length?'in '+searchCriteria.locations.join(', '):'Worldwide'}
+    {searchCriteria.keywords.text.length?' matching "'+searchCriteria.keywords.text+'"':undefined}
+    {countDiagnostic?' with '+countDiagnostic+' specified diagnostic effects':undefined}
+  </h3>
+}
+
 const ResultsPillar = ({setSearchHidden, isSearching, searchCriteria, diagnostics, results, resultPills, toBack}) => {
 
   const sample = undefined;
@@ -78,28 +95,13 @@ const ResultsPillar = ({setSearchHidden, isSearching, searchCriteria, diagnostic
     refilter();
   }
   
-  const getSearchCriteria = () =>{
-
-    if(!searchCriteria.keywords) return undefined;
-
-    var orgs = [];
-    searchCriteria.organismTypes.map( type => orgs.push( ORG_NAME[ORG_KEY.indexOf(type)] ));
-    const countDiagnostic = diagnostics.filter(diagnosticQuestion => !["U", "."].includes(diagnosticQuestion.response)).length;
-
-    return<h3>
-      for{' '}
-      {searchCriteria.organismTypes.length?orgs.join(', '):'all organisms'}{' '}
-      {searchCriteria.locations.length?'in '+searchCriteria.locations.join(', '):'Worldwide'}
-      {searchCriteria.keywords.text.length?' matching "'+searchCriteria.keywords.text+'"':undefined}
-      {countDiagnostic?' with '+countDiagnostic+' specified diagnostic effects':undefined}
-    </h3>
-  }
+  
 
   if(!organism && isSearching){
     return <resultsPillar class={style.ghostResults}>
       <ContentPillar>
         <h1><span>Updating Results...</span></h1>
-        {getSearchCriteria()}
+        {getSearchCriteria(searchCriteria,diagnostics)}
         <Br1/>
         <resultList mode={displayMode}>
           <Result/>
@@ -159,7 +161,7 @@ const ResultsPillar = ({setSearchHidden, isSearching, searchCriteria, diagnostic
           <resultsHeader>
             <resultsHeaderDetails>
               {results && <h1>{results.exclusiveCount} Results</h1>}
-              {getSearchCriteria()}
+              {getSearchCriteria(searchCriteria,diagnostics)}
             </resultsHeaderDetails>
             <displayViewOptions>
               
