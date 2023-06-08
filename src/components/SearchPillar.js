@@ -9,7 +9,7 @@ import KeywordBuilder from './KeywordBuilder';
 import { getSearchCriteria } from './ResultsPillar';
 import {RadioGroup} from './Radio';
 import { Br1, Br2 } from './Br';
-import { useState, useRef, useContext } from 'preact/hooks';
+import { useState, useRef, useContext, useEffect } from 'preact/hooks';
 import SearchResults from './SearchResultsContext';
 
 const { countries, zones } = require("moment-timezone/data/meta/latest.json");
@@ -31,19 +31,26 @@ const ORGANISM_TYPES = [
   { key: "pp", t: 'Poisonous Plant', i: '../assets/icons/icon-flower.svg' },
 ];
 
-const SearchPillar = ({ isSearchHidden, setSearchHidden, searchCriteria, diagnostics, onChange, onDiagnosticChange, isSearching }) => {
+const SearchPillar = ({ initialProps, isSearchHidden, setSearchHidden, searchCriteria, diagnostics, onChange, onDiagnosticChange, isSearching }) => {
   const searchResults = useContext(SearchResults);
   // PF: we need to keep track of the list/keyword/organisms between renders.
   // using refs here because the child elements seem to be handling their own stuff.
   // that's cool and all <3.
 
+  // populate the inital list based upon the props we have.
+
   console.log(countries);
 
-  const whereAmI = timeZoneToCountry[Intl.DateTimeFormat().resolvedOptions().timeZone];
+  const startingLocations = (initialProps.countries 
+    ? initialProps.countries.split(",") 
+    : [timeZoneToCountry[Intl.DateTimeFormat().resolvedOptions().timeZone]])
+      .filter(v => v)
+      .map(v => v.charAt(0).toUpperCase() + v.slice(1));
 
+  const startingKeywords = initialProps.text || "";
 
-  const locationsRef = useRef([whereAmI]);
-  const keywordsRef = useRef({text: "", matchingTerms: []});
+  const locationsRef = useRef(startingLocations);
+  const keywordsRef = useRef({text: startingKeywords, matchingTerms: []});
   const organismTypesRef = useRef({});
 
   // PF TODO: implement search criteria

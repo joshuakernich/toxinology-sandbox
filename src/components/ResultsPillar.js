@@ -6,7 +6,7 @@ import LoadModal from './LoadModal';
 import Pill from './Pill';
 import Result from './Result';
 import { Br1, Br2 } from './Br';
-import { useLayoutEffect, useState, useRef } from 'preact/hooks';
+import { useLayoutEffect, useEffect, useState, useRef } from 'preact/hooks';
 import { getNames } from './Result'
 import { getRiskIndex } from './OrganismPillar'
 
@@ -28,22 +28,35 @@ export const getSearchCriteria = (searchCriteria,diagnostics) =>{
   </h3>
 }
 
-const ResultsPillar = ({setSearchHidden, isSearching, searchCriteria, diagnostics, results, resultPills, toBack}) => {
+const ResultsPillar = ({onChange, initialProps, setSearchHidden, isSearching, searchCriteria, diagnostics, results, resultPills, toBack}) => {
 
-  const sample = undefined;
+  const intialSortMode = initialProps.sortMode || 'relevant';
+  const initialFilters = initialProps.filters || [];
 
-  const [organism, setOrganism] = useState(sample);
+  const initialOrganism = initialProps.organism && { oid: initialProps.organism };
+
+  const [organism, setOrganism] = useState(initialOrganism);
   const [displayMode, setDisplayMode] = useState('grid');
-  const [sortMode, setSortMode] = useState('relevant');
+  const [sortMode, setSortMode] = useState(intialSortMode);
 
   const [resultsFiltered, setResultsFiltered] = useState([]);
   const [orgTypeCounts, setOrgTypeCounts] = useState([]);
-  const [orgTypeFilters, setOrgTypeFilters] = useState([]);
+  const [orgTypeFilters, setOrgTypeFilters] = useState(initialFilters);
 
   const ORG_KEY = ["SN","SC","SP","PM","PP","TV","TI","MV","MI"]
   const ORG_MAP = [0,1,2,3,3,4,4,5,5]
   const ORG_CONSOLIDATED = ["SN","SC","SP","PM","TI","MI"]
   const ORG_NAME = ['snakes','scorpions','spiders','plants & mushrooms','other land','other aquatic']
+
+  useEffect(() => {
+    const organismIsObject = typeof organism === 'object';
+    
+    onChange({
+      initialFilters: orgTypeFilters,
+      initialSortMode: sortMode,
+      organism: organismIsObject ? organism.oid : organism,
+    });
+  }, [organism, sortMode, orgTypeFilters]);
 
   useLayoutEffect(() => {
     if(!results) return;
@@ -94,8 +107,6 @@ const ResultsPillar = ({setSearchHidden, isSearching, searchCriteria, diagnostic
     setOrgTypeFilters(orgTypeFilters);
     refilter();
   }
-  
-  
 
   if(!organism && isSearching){
     return <resultsPillar class={style.ghostResults}>
@@ -190,7 +201,14 @@ const ResultsPillar = ({setSearchHidden, isSearching, searchCriteria, diagnostic
         <Br2/>
         <sortSelect>
           {'Sort by '}
-          <select onChange={(e)=> setSortMode(e.target.value)} value={sortMode}>
+          <select onChange={(e)=> {
+              setSortMode(e.target.value);
+              onChange({
+                initialFilters: orgTypeFilters,
+                initialSortMode: sortMode,
+                organism: organism
+              });
+            }} value={sortMode}>
             <option value='relevant'>Relevant</option>
             <option value='risk'>Risk</option>
             <option value='name'>Name</option>

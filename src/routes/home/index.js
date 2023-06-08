@@ -4,6 +4,7 @@ import SearchPillar from '../../components/SearchPillar';
 import ResultsPillar from '../../components/ResultsPillar';
 import API from '../../services/api';
 import { sitemap } from "../../libs/sitemap.js";
+import {route} from 'preact-router';
 
 import SearchResults from "../../components/SearchResultsContext";
 
@@ -13,9 +14,12 @@ import { API_URL } from '../../libs/consts';
 
 const SEARCH_POLL_DURATION = 500;
 
-const Home = () => {
+const Home = (props) => {
   const searchPollCallback = useRef();
   const searchCriteria = useRef({});
+
+  const initialPropState = useRef(props);
+  const resultsProps = useRef({});
 
   const [isSearchHidden, setSearchHidden] = useState(false);
   const [isSearching, setIsSearching] = useState(false);
@@ -24,11 +28,6 @@ const Home = () => {
   const [searchResults, setSearchResults] = useState(undefined);
 
   const [diagnostics, setDiagnostics] = useState([]);
-
-  useEffect(() => {
-    // PF: uncomment this if you want to perform a search immediately on load
-    // performSearch();
-  }, []);
   
   const performSearch = async () => {
     // break down everything we have into something we can search for... Fun
@@ -48,10 +47,12 @@ const Home = () => {
         ...(currentSearch.keywords.matchingTerms || [])
       ];
       
+      updatePath();
       const newSearchResults = await API.advancedSearch(searchText, {matchingTerms});
 
       // we're in a race condition, disregard this search, the criteria has changed.
       if (searchCriteria.current.timeStamp != currentSearch.timeStamp) return;
+
 
       // check if things have updated in this time.
       setSearchResults(newSearchResults);
@@ -96,6 +97,36 @@ const Home = () => {
       });
   };
 
+  const updatePath = () => {
+    const currentSearch = {...searchCriteria.current};
+
+    const searchTermsReduced = [
+      currentSearch.keywords.text
+    ];
+    const searchText = searchTermsReduced.join(" ");
+    const matchingTerms = [
+      ...currentSearch.organismTypes.map(type => ({ key: "orgclass", value: type})),
+      ...currentSearch.locations.map(location => ({ key: "countries", value: location.toLowerCase()})),
+      ...(currentSearch.keywords.matchingTerms || [])
+    ];
+
+    // update the url
+    const countries = matchingTerms.filter(term => term.key == "countries").map(term => term.value);
+    const params = [
+      ...Object.keys(resultsProps.current || {})
+        .map(key => 
+          resultsProps.current[key] && 
+          resultsProps.current[key].length && 
+          resultsProps.current[key] != "undefined" && 
+          `${key}=${resultsProps.current[key]}`)
+        .filter(v => v),
+      (searchText && `text=${searchText}`),
+      (countries.length > 0 && `countries=${countries.join(",")}`),
+    ].filter(param => param);
+
+    route(`${props.path}${params.length ? `?${params.join("&")}` : ''}`);
+  }
+
   // filter the search
   const getResults = (unfilteredResults) => {
     if (!diagnostics || diagnostics.length == 0) return unfilteredResults;
@@ -115,11 +146,18 @@ const Home = () => {
     };
   };
 
+  const onResultsChange = (newResultsProps) => {
+    resultsProps.current = newResultsProps;
+
+    updatePath();
+  }
+
   const filteredResults = getResults(searchResults);
 
 	return <homePillar>
     <SearchResults.Provider value={searchResults}>
       <SearchPillar 
+        initialProps={initialPropState.current}
         isSearching={isSearching} 
         isSearchHidden={isSearchHidden} 
         setSearchHidden={setSearchHidden} 
@@ -129,11 +167,14 @@ const Home = () => {
         onDiagnosticChange={onDiagnosticChange}>
         </SearchPillar>
       <ResultsPillar 
+        onChange={onResultsChange}
+        initialProps={initialPropState.current}
         isSearching={isSearching} 
         setSearchHidden={setSearchHidden} 
         searchCriteria={currentSearchCriteria}
         diagnostics={diagnostics}
-        results={filteredResults}>
+        results={filteredResults}
+        onChange={onResultsChange}>
       </ResultsPillar>
     </SearchResults.Provider>
 	</homePillar>
